@@ -1,0 +1,19 @@
+{"groupName":"fruit vegetable","vegName":"sweet red pepper","kcalPer100g":27,"proteinsPer100g":1.3,"fatsPer100g":0.0,"carbohydratesPer100g":5.3}
+{"groupName":"fruit vegetable","vegName":"cucumber","kcalPer100g":15,"proteinsPer100g":0.8,"fatsPer100g":0.1,"carbohydratesPer100g":2.8}
+{"groupName":"fruit vegetable","vegName":"tomato","kcalPer100g":20,"proteinsPer100g":1.1,"fatsPer100g":0.2,"carbohydratesPer100g":3.7}
+{"groupName":"fruit vegetable","vegName":"eggplant","kcalPer100g":24,"proteinsPer100g":1.2,"fatsPer100g":0.1,"carbohydratesPer100g":4.5}
+{"groupName":"fruit vegetable","vegName":"zucchini","kcalPer100g":24,"proteinsPer100g":0.6,"fatsPer100g":0.3,"carbohydratesPer100g":4.6}
+{"groupName":"bulbous vegetable","vegName":"onion","kcalPer100g":47,"proteinsPer100g":1.4,"fatsPer100g":0.0,"carbohydratesPer100g":10.4}
+{"groupName":"bulbous vegetable","vegName":"garlic","kcalPer100g":143,"proteinsPer100g":6.5,"fatsPer100g":0.5,"carbohydratesPer100g":29.9}
+{"groupName":"leafy vegetable","vegName":"arugula","kcalPer100g":25,"proteinsPer100g":2.6,"fatsPer100g":0.7,"carbohydratesPer100g":2.1}
+{"groupName":"leafy vegetable","vegName":"white cabbage","kcalPer100g":27,"proteinsPer100g":1.8,"fatsPer100g":0.1,"carbohydratesPer100g":4.7}
+{"groupName":"leafy vegetable","vegName":"dill","kcalPer100g":38,"proteinsPer100g":2.5,"fatsPer100g":0.5,"carbohydratesPer100g":6.3}
+{"groupName":"leafy vegetable","vegName":"spinach","kcalPer100g":22,"proteinsPer100g":2.9,"fatsPer100g":0.3,"carbohydratesPer100g":2.0}
+{"groupName":"leafy vegetable","vegName":"sorrel","kcalPer100g":19,"proteinsPer100g":1.5,"fatsPer100g":0.3,"carbohydratesPer100g":2.9}
+{"groupName":"leafy vegetable","vegName":"parsley","kcalPer100g":47,"proteinsPer100g":3.7,"fatsPer100g":0.4,"carbohydratesPer100g":7.6}
+{"groupName":"leafy vegetable","vegName":"lettuce leaves","kcalPer100g":12,"proteinsPer100g":1.2,"fatsPer100g":0.3,"carbohydratesPer100g":1.3}
+{"groupName":"root vegetable","vegName":"beetroot","kcalPer100g":43,"proteinsPer100g":1.5,"fatsPer100g":0.1,"carbohydratesPer100g":8.8}
+{"groupName":"root vegetable","vegName":"carrot","kcalPer100g":32,"proteinsPer100g":1.3,"fatsPer100g":0.1,"carbohydratesPer100g":6.9}
+{"groupName":"root vegetable","vegName":"potato","kcalPer100g":76,"proteinsPer100g":2.0,"fatsPer100g":0.4,"carbohydratesPer100g":16.1}
+{"groupName":"root vegetable","vegName":"radish","kcalPer100g":19,"proteinsPer100g":1.2,"fatsPer100g":0.1,"carbohydratesPer100g":3.4}
+{"groupName":"bean vegetable","vegName":"green peas","kcalPer100g":73,"proteinsPer100g":5.0,"fatsPer100g":0.2,"carbohydratesPer100g":13.8}
