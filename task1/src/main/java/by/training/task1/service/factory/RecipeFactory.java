@@ -1,6 +1,6 @@
 package by.training.task1.service.factory;
 
-import by.training.task1.coder.RecipeDecoder;
+import by.training.task1.service.coder.RecipeDecoder;
 import by.training.task1.bean.entity.Recipe;
 import by.training.task1.bean.exception.RecipeSyntaxException;
 import by.training.task1.service.validator.RecipeValidator;
@@ -44,21 +44,27 @@ public final class RecipeFactory {
         Optional<Recipe> optionalRec = recipeDecoder.decodeRecipe(rawRecipe);
         Recipe recipe = optionalRec.orElseThrow(() ->
                 new RecipeSyntaxException(getContentError()));
-        return validateRec(recipe);
+        return validateRec(recipe, rawRecipe);
     }
 
-    private Recipe validateRec(final Recipe recipe)
+    private Recipe validateRec(final Recipe recipe, final String rawRecipe)
             throws RecipeSyntaxException {
         ValidatorFactory validatorFactory = ValidatorFactory.
                 getSingleInstance();
         RecipeValidator recipeValidator = validatorFactory.getRecipeValid();
+        if (recipe.getDishName() == null || recipe.getComposition() == null) {
+            String msg = String.format("%s: %s", getContentError(), rawRecipe);
+            throw new RecipeSyntaxException(msg);
+        }
         if (recipeValidator.validateIsRecipeNameEmpty(recipe.getDishName())
                 || recipeValidator.validateIsIngrNameEmpty(recipe.
                 getComposition())) {
-            throw new RecipeSyntaxException(getNameError());
+            String msg = String.format("%s: %s", getNameError(), rawRecipe);
+            throw new RecipeSyntaxException(msg);
         }
         if (recipeValidator.validateNegIngrNum(recipe.getComposition())) {
-            throw new RecipeSyntaxException(getAmountError());
+            String msg = String.format("%s: %s", getAmountError(), rawRecipe);
+            throw new RecipeSyntaxException(msg);
         }
         return recipe;
     }

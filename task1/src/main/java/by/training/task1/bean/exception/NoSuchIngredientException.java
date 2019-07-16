@@ -21,10 +21,11 @@ public class NoSuchIngredientException extends IllegalArgumentException {
      */
     private static final String AMOUNT_ERROR;
     static {
-        CONTENT_ERROR = "File content error. The line cannot be converted to a vegetable.";
-        NAME_ERROR = "Vegetable name cannot be an empty value.";
-        GROUP_ERROR = "Such group of vegetables does not exist.";
-        AMOUNT_ERROR = "The amount of nutrients cannot be less than zero.";
+        CONTENT_ERROR = "File content error. "
+                + "The line cannot be converted to a vegetable";
+        NAME_ERROR = "Vegetable name cannot be an empty value";
+        GROUP_ERROR = "Such group of vegetables does not exist";
+        AMOUNT_ERROR = "The amount of nutrients cannot be less than zero";
     }
 
     /**
@@ -40,7 +41,8 @@ public class NoSuchIngredientException extends IllegalArgumentException {
      * @param message error message
      * @param cause throwable instance
      */
-    public NoSuchIngredientException(final String message, final Throwable cause) {
+    public NoSuchIngredientException(final String message,
+                                     final Throwable cause) {
         super(message, cause);
     }
 

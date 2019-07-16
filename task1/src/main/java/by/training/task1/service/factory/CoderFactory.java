@@ -1,9 +1,9 @@
 package by.training.task1.service.factory;
 
-import by.training.task1.coder.RecipeDecoder;
-import by.training.task1.coder.RecipeEncoder;
-import by.training.task1.coder.VegetableDecoder;
-import by.training.task1.coder.VegetableEncoder;
+import by.training.task1.service.coder.RecipeDecoder;
+import by.training.task1.service.coder.RecipeEncoder;
+import by.training.task1.service.coder.VegetableDecoder;
+import by.training.task1.service.coder.VegetableEncoder;
 
 /**
  * Class for keeping coders.

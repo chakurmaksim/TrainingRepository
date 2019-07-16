@@ -1,4 +1,4 @@
-package by.training.task1.coder;
+package by.training.task1.service.coder;
 
 import by.training.task1.bean.entity.Recipe;
 import by.training.task1.bean.exception.RecipeSyntaxException;
@@ -6,6 +6,8 @@ import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 
 import java.util.Optional;
+
+import static by.training.task1.bean.exception.NoSuchIngredientException.getContentError;
 
 public class RecipeDecoder {
     /**
@@ -26,8 +28,8 @@ public class RecipeDecoder {
             Recipe recipe = gson.fromJson(rawRecipe, Recipe.class);
             optionalRec = Optional.ofNullable(recipe);
         } catch (JsonSyntaxException e) {
-            throw new RecipeSyntaxException(RecipeSyntaxException.
-                    getContentError(), e);
+            String msg = String.format("%s: %s", getContentError(), rawRecipe);
+            throw new RecipeSyntaxException(msg, e);
         }
         return optionalRec;
     }

@@ -2,14 +2,13 @@ package by.training.task1.service.factory;
 
 import by.training.task1.bean.entity.Vegetable;
 import by.training.task1.bean.exception.NoSuchIngredientException;
-import by.training.task1.coder.VegetableDecoder;
+import by.training.task1.service.coder.VegetableDecoder;
 import by.training.task1.service.caloriescalc.CaloriesCalculator;
 import by.training.task1.service.validator.VegetableValidator;
 
 import java.util.Optional;
 
 import static by.training.task1.bean.exception.NoSuchIngredientException.getContentError;
-import static by.training.task1.bean.exception.NoSuchIngredientException.getGroupError;
 import static by.training.task1.bean.exception.NoSuchIngredientException.getNameError;
 import static by.training.task1.bean.exception.NoSuchIngredientException.getAmountError;
 
@@ -46,18 +45,20 @@ public final class VegetableFactory {
         Optional<Vegetable> optionalVeg = vegDecoder.decodeVegetable(rawVeg);
         Vegetable vegetable = optionalVeg.orElseThrow(() ->
                 new NoSuchIngredientException(getContentError()));
-        return validateVeg(vegetable);
+        return validateVeg(vegetable, rawVeg);
     }
 
-    private Vegetable validateVeg(final Vegetable veg)
+    private Vegetable validateVeg(final Vegetable veg, final String rawVeg)
             throws NoSuchIngredientException {
         ValidatorFactory validFactory = ValidatorFactory.getSingleInstance();
         VegetableValidator vegValidator = validFactory.getVegetableValid();
-        if (!vegValidator.validateGroupName(veg.getGroupName())) {
-            throw new NoSuchIngredientException(getGroupError());
+        if (veg.getGroupName() == null || veg.getVegName() == null) {
+            String msg = String.format("%s: %s", getContentError(), rawVeg);
+            throw new NoSuchIngredientException(msg);
         }
         if (vegValidator.validateIsNameEmpty(veg.getVegName())) {
-            throw new NoSuchIngredientException(getNameError());
+            String msg = String.format("%s: %s", getNameError(), rawVeg);
+            throw new NoSuchIngredientException(msg);
         }
         if (vegValidator.validateNegCaloriesNum(veg.getKcalPer100g())) {
             double proteins = veg.getProteinsPer100g();
@@ -66,7 +67,8 @@ public final class VegetableFactory {
             if (vegValidator.validateNegNutrientNum(proteins)
                     || vegValidator.validateNegNutrientNum(fats)
                     || vegValidator.validateNegNutrientNum(carbohydrates)) {
-                throw new NoSuchIngredientException(getAmountError());
+                String msg = String.format("%s: %s", getAmountError(), rawVeg);
+                throw new NoSuchIngredientException(msg);
             }
             int calories = CaloriesCalculator.calcCaloriesUseNutrients(proteins,
                     fats, carbohydrates);

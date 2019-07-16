@@ -1,0 +1,20 @@
+2019-07-16 17:15:08 [ERROR] File content error. The line cannot be converted to a vegetable: {:"bean vegetable","vegName":"green peas","kcalPer100g":73,"proteinsPer100g":5.0,"fatsPer100g":0.2,"carbohydratesPer100g":13.8}
+2019-07-16 17:25:06 [ERROR] File content error. The line cannot be converted to a vegetable: {:"Vegetable salad","composition":{"sweet red pepper":80.0,"cucumber":200.0,"dill":7.0,"tomato":200.0}}
+2019-07-16 17:37:20 [ERROR] Name cannot be an empty value.: {"dish":"Vegetable salad with arugula","composition":{"arugula":120.0,"dill":30.0,"parsley":30.0,"tomato":190.0,"lettuce leaves":80.0}}
+2019-07-16 17:42:49 [ERROR] Name cannot be an empty value.: {"dishName":"Vegetable salad with spinach","":{"spinach":400.0,"cucumber":100.0,"tomato":190.0}}
+2019-07-16 17:45:44 [ERROR] Name cannot be an empty value.: {"dishName":"Vegetable salad healthy","composition":{"":50.0,"carrot":50.0,"onion":20.0}}
+2019-07-16 17:46:15 [ERROR] File content error. The line cannot be converted to a vegetable: {"dishName":"Vegetable salad healthy","composition":{:50.0,"carrot":50.0,"onion":20.0}}
+2019-07-16 17:47:25 [ERROR] File content error. The line cannot be converted to a vegetable: {"dishName":"Spring salad","composition":{"onion":30.0,"cucumber":,"radish":150.0,"lettuce leaves":100.0,"carrot":75.0}}
+2019-07-16 17:49:46 [ERROR] The amount of ingredients cannot be less than zero.: {"dishName":"Vegetable salad healthy","composition":{"white cabbage":50.0,"carrot":-50.0,"onion":20.0}}
+2019-07-16 18:04:19 [ERROR] File content error. The line cannot be converted to a recipe.: {"dishName":"Vegetable salad healthy","":{"white cabbage":50.0,"carrot":50.0,"onion":20.0}}
+2019-07-16 18:04:43 [ERROR] File content error. The line cannot be converted to a vegetable: {"dishName":"Spring salad",:{"onion":30.0,"cucumber":100.0,"radish":150.0,"lettuce leaves":100.0,"carrot":75.0}}
+2019-07-16 18:05:05 [ERROR] File content error. The line cannot be converted to a recipe.: {"dish":"Spring salad","composition":{"onion":30.0,"cucumber":100.0,"radish":150.0,"lettuce leaves":100.0,"carrot":75.0}}
+2019-07-16 18:05:27 [ERROR] File content error. The line cannot be converted to a vegetable: {:"Vegetable salad healthy","composition":{"white cabbage":50.0,"carrot":50.0,"onion":20.0}}
+2019-07-16 18:05:46 [ERROR] File content error. The line cannot be converted to a vegetable: {"dishName":"Vegetable salad with spinach","composition":{"spinach":400.0,"cucumber":100.0,:190.0}}
+2019-07-16 18:06:01 [ERROR] Name cannot be an empty value.: {"dishName":"Vegetable salad with arugula","composition":{"arugula":120.0,"":30.0,"parsley":30.0,"tomato":190.0,"lettuce leaves":80.0}}
+2019-07-16 18:06:22 [ERROR] File content error. The line cannot be converted to a vegetable: {"dishName":"Vegetable salad with arugula","composition":{"arugula":120.0,"dill":30.0,"parsley":,"tomato":190.0,"lettuce leaves":80.0}}
+2019-07-16 18:08:03 [ERROR] File content error. The line cannot be converted to a vegetable: {"dishName":,"composition":{"spinach":400.0,"cucumber":100.0,"tomato":190.0}}
+2019-07-16 18:17:14 [ERROR] File content error. The line cannot be converted to a vegetable: {"groupName":"leafy vegetable","":"dill","kcalPer100g":38,"proteinsPer100g":2.5,"fatsPer100g":0.5,"carbohydratesPer100g":6.3}
+2019-07-16 18:23:28 [ERROR] File content error. The line cannot be converted to a vegetable: {"":"leafy vegetable","vegName":"dill","kcalPer100g":38,"proteinsPer100g":2.5,"fatsPer100g":0.5,"carbohydratesPer100g":6.3}
+2019-07-16 18:27:13 [ERROR] File content error. The line cannot be converted to a vegetable: {:"leafy vegetable","vegName":"white cabbage","kcalPer100g":27,"proteinsPer100g":1.8,"fatsPer100g":0.1,"carbohydratesPer100g":4.7}
+2019-07-16 18:27:13 [ERROR] No names matchesin vegetable and recipe lists. Recipe name: Vegetable salad healthy

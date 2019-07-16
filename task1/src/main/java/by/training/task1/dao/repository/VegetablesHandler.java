@@ -1,14 +1,28 @@
 package by.training.task1.dao.repository;
 
 import by.training.task1.bean.entity.Vegetable;
+import by.training.task1.service.specification.Specification;
 
 import java.io.Serializable;
 import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Set;
 
-public class VegetablesHandler implements Cloneable, Serializable {
+/**
+ * Storage for the collection of vegetables.
+ */
+public final class VegetablesHandler implements Repository<Vegetable>,
+        Cloneable, Serializable {
+    /**
+     * Variable for keeping VegetablesHandler instance.
+     */
     private static final VegetablesHandler SINGLE_INSTANCE;
+    /**
+     * Set of vegetables.
+     */
     private final Set<Vegetable> vegetableSet;
+
     static {
         SINGLE_INSTANCE = new VegetablesHandler();
     }
@@ -17,6 +31,11 @@ public class VegetablesHandler implements Cloneable, Serializable {
         vegetableSet = new HashSet<>();
     }
 
+    /**
+     * Get method.
+     *
+     * @return single instance of VegetablesHandler
+     */
     public static VegetablesHandler getInstance() {
         return SINGLE_INSTANCE;
     }
@@ -30,7 +49,28 @@ public class VegetablesHandler implements Cloneable, Serializable {
         return SINGLE_INSTANCE;
     }
 
-    public Set<Vegetable> getVegetableSet() {
-        return vegetableSet;
+    @Override
+    public List<Vegetable> readAll() {
+        List<Vegetable> copyList = new LinkedList<>(vegetableSet);
+        return copyList;
+    }
+
+    @Override
+    public void add(final Vegetable item) {
+        vegetableSet.add(item);
+    }
+
+    @Override
+    public void remove(final Vegetable item) {
+        vegetableSet.remove(item);
+    }
+
+    @Override
+    public void update(final Vegetable item) {
+    }
+
+    @Override
+    public List<Vegetable> query(final Specification specification) {
+        return null;
     }
 }

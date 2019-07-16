@@ -6,8 +6,8 @@ import by.training.task1.bean.entity.Vegetable;
 import by.training.task1.bean.exception.RecipeSyntaxException;
 import by.training.task1.service.timestamp.TimeStamp;
 
+import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import static by.training.task1.service.caloriescalc.CaloriesCalculator.calcGeneralNumCalories;
 import static by.training.task1.service.caloriescalc.CaloriesCalculator.calcNumCaloriesPer100g;
@@ -40,7 +40,7 @@ public final class SaladFactory {
      * and in the set do not match
      */
     public Salad makeSalad(final Recipe recipe,
-                           final Set<Vegetable> vegetableSet)
+                           final List<Vegetable> vegetableSet)
             throws RecipeSyntaxException {
         Salad salad = new Salad(recipe.getDishName());
         Map<String, Integer> composition = recipe.getComposition();
@@ -56,7 +56,7 @@ public final class SaladFactory {
             }
         }
         if (salad.getIngredients().size() != recipe.getComposition().size()) {
-            String message = String.format("No names matches"
+            String message = String.format("No names matches "
                     + "in vegetable and recipe lists. Recipe name: %s",
                     recipe.getDishName());
             throw new RecipeSyntaxException(message);

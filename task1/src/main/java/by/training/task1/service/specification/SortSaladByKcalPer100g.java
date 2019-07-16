@@ -6,19 +6,18 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-public class SortSaladByWeight implements SortSpecification<Salad> {
-
+public class SortSaladByKcalPer100g implements SortSpecification<Salad> {
     /**
-     * Method to sort the list of vegetables by weight and then by kcal.
+     * Method to sort the list of vegetables by kcal per 100g and then by name.
      * @param entity list of entities
      */
     @Override
     public void sortSpecifiedComparator(final List<Salad> entity) {
-        Comparator<Salad> comparatorByWeight = (s1, s2) ->
-                s1.getWeight() - s2.getWeight();
         Comparator<Salad> comparatorByKcal = (s1, s2) ->
-                Double.compare(s1.getKcal(), s2.getKcal());
+                Double.compare(s1.getKcalPer100g(), s2.getKcalPer100g());
+        Comparator<Salad> comparatorByName = (s1, s2) ->
+                s1.getName().compareTo(s2.getName());
         Collections.sort(entity,
-                comparatorByWeight.thenComparing(comparatorByKcal));
+                comparatorByKcal.thenComparing(comparatorByName));
     }
 }

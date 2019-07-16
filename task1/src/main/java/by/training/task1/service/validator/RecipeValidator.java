@@ -13,7 +13,7 @@ public class RecipeValidator {
      * @return true if name is empty
      */
     public boolean validateIsRecipeNameEmpty(final String recipeName) {
-        return "".equals(recipeName.trim());
+        return recipeName != null ? "".equals(recipeName.trim()) : true;
     }
 
     /**
@@ -24,6 +24,9 @@ public class RecipeValidator {
      */
     public boolean validateIsIngrNameEmpty(final Map<String,
             Integer> composition) {
+        if (composition == null) {
+            return true;
+        }
         for (Map.Entry<String, Integer> entry : composition.entrySet()) {
             if ("".equals(entry.getKey().trim())) {
                 return true;
@@ -34,10 +37,14 @@ public class RecipeValidator {
 
     /**
      * Method to check value of each salad ingridient is less than zero.
+     *
      * @param composition salad ingredients
      * @return true if one of the salad ingredients is negative value
      */
     public boolean validateNegIngrNum(final Map<String, Integer> composition) {
+        if (composition == null) {
+            return true;
+        }
         for (Map.Entry<String, Integer> entry : composition.entrySet()) {
             if (entry.getValue() < 0) {
                 return true;

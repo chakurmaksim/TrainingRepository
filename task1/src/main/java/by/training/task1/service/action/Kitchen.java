@@ -14,6 +14,8 @@ import by.training.task1.service.factory.DAOFactory;
 import by.training.task1.service.factory.RecipeFactory;
 import by.training.task1.service.factory.SaladFactory;
 import by.training.task1.service.factory.VegetableFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.Optional;
 import java.util.Properties;
@@ -27,6 +29,10 @@ public class Kitchen {
      * Path to the file with recipes.
      */
     private static String recipesFileName;
+    /**
+     * Events logger.
+     */
+    private static Logger logger;
     /**
      * Recipes repository.
      */
@@ -46,6 +52,7 @@ public class Kitchen {
                 "recipes.txt");
         vegetablesFileName = properties.getProperty("vegetablesFileName",
                 "vegetables.txt");
+        logger = LogManager.getLogger(Kitchen.class);
     }
 
     /**
@@ -64,13 +71,13 @@ public class Kitchen {
         deliverRecipesFromFile();
         deliverVegetablesFromFile();
         SaladFactory saladFactory = SaladFactory.getSingleInstance();
-        for (Recipe recipe : recipesHandler.getRecipes()) {
+        for (Recipe recipe : recipesHandler.readAll()) {
             try {
                 Salad salad = saladFactory.makeSalad(recipe,
-                        vegetablesHandler.getVegetableSet());
+                        vegetablesHandler.readAll());
                 saladsHandler.add(salad);
             } catch (RecipeSyntaxException e) {
-                //  логирование события
+                logger.error(e.getMessage());
             }
         }
     }
@@ -96,9 +103,9 @@ public class Kitchen {
         RecipeFactory recipeFactory = RecipeFactory.getSingleInstance();
         try {
             Recipe recipe = recipeFactory.createRecipeFromJson(rawRec);
-            recipesHandler.getRecipes().add(recipe);
+            recipesHandler.add(recipe);
         } catch (RecipeSyntaxException e) {
-            // логирование события
+            logger.error(e.getMessage());
         }
     }
 
@@ -120,9 +127,9 @@ public class Kitchen {
         VegetableFactory factory = VegetableFactory.getSingleInstance();
         try {
             Vegetable vegetable = factory.createVegFromJson(rawVeg);
-            vegetablesHandler.getVegetableSet().add(vegetable);
+            vegetablesHandler.add(vegetable);
         } catch (NoSuchIngredientException e) {
-            // логирование события
+            logger.error(e.getMessage());
         }
     }
 }

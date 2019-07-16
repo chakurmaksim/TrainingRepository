@@ -1,5 +1,8 @@
 package by.training.task1.dao.filereader;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.io.FileReader;
 import java.io.BufferedReader;
 import java.io.FileOutputStream;
@@ -9,6 +12,10 @@ import java.io.IOException;
 import java.util.Optional;
 
 public class FileWriteReader {
+    /**
+     * Events logger.
+     */
+    private static Logger logger = LogManager.getLogger(FileWriteReader.class);
     /**
      * file reader variable.
      */
@@ -40,7 +47,7 @@ public class FileWriteReader {
             fileReader = new FileReader(fileName);
             bufferedReader = new BufferedReader(fileReader);
         } catch (IOException e) {
-            // добавить логирование события
+            logger.error(e.toString());
             throw new RuntimeException();
         }
     }
@@ -52,8 +59,7 @@ public class FileWriteReader {
         try {
             bufferedReader.close();
         } catch (IOException e) {
-            // добавить логирование события
-            e.printStackTrace();
+            logger.error(e.toString());
         }
     }
 
@@ -68,7 +74,7 @@ public class FileWriteReader {
             String rawVeg = bufferedReader.readLine();
             optionalRaw = Optional.ofNullable(rawVeg);
         } catch (IOException e) {
-            e.printStackTrace();
+            logger.error(e.toString());
         }
         return optionalRaw;
     }
@@ -85,7 +91,7 @@ public class FileWriteReader {
             outputStreamWriter = new OutputStreamWriter(fileOutputStream);
             bufferedWriter = new BufferedWriter(outputStreamWriter);
         } catch (IOException e) {
-            // добавить логирование события
+            logger.error(e.toString());
             throw new RuntimeException();
         }
     }
@@ -97,7 +103,7 @@ public class FileWriteReader {
         try {
             bufferedWriter.close();
         } catch (IOException e) {
-            // логирование события
+            logger.error(e.toString());
         }
     }
 
@@ -110,7 +116,7 @@ public class FileWriteReader {
             bufferedWriter.write(rawStr + "\r\n");
             bufferedWriter.flush();
         } catch (IOException e) {
-            // логирование события
+            logger.error(e.toString());
         }
     }
 }

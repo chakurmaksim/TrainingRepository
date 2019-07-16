@@ -15,7 +15,13 @@ import java.util.ArrayList;
  */
 public final class SaladsHandler implements Repository<Salad>,
         Cloneable, Serializable {
+    /**
+     * Variable for keeping SaladsHandler instance.
+     */
     private static final SaladsHandler SINGLE_INSTANCE;
+    /**
+     * List of prepared salads.
+     */
     private final List<Salad> saladList;
 
     static {
@@ -26,6 +32,11 @@ public final class SaladsHandler implements Repository<Salad>,
         saladList = new LinkedList<>();
     }
 
+    /**
+     * Get method.
+     *
+     * @return single instance of SaladsHandler
+     */
     public static SaladsHandler getInstance() {
         return SINGLE_INSTANCE;
     }
@@ -39,8 +50,10 @@ public final class SaladsHandler implements Repository<Salad>,
         return SINGLE_INSTANCE;
     }
 
-    public List<Salad> getSaladList() {
-        return saladList;
+    @Override
+    public List<Salad> readAll() {
+        List<Salad> copyList = new LinkedList<>(saladList);
+        return copyList;
     }
 
     @Override
@@ -58,7 +71,7 @@ public final class SaladsHandler implements Repository<Salad>,
     }
 
     @Override
-    public List<Salad> query(Specification specification) {
+    public List<Salad> query(final Specification specification) {
         List<Salad> requiredList = null;
         if (specification instanceof FindSpecification) {
             requiredList = new ArrayList<>();
@@ -71,7 +84,8 @@ public final class SaladsHandler implements Repository<Salad>,
         }
         if (specification instanceof SortSpecification) {
             requiredList = new LinkedList<>(saladList);
-            ((SortSpecification) specification).sortSpecifiedComparator(requiredList);
+            ((SortSpecification) specification).
+                    sortSpecifiedComparator(requiredList);
         }
         return requiredList;
     }

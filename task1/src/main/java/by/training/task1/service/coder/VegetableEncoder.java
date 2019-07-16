@@ -1,4 +1,4 @@
-package by.training.task1.coder;
+package by.training.task1.service.coder;
 
 import by.training.task1.bean.entity.Vegetable;
 import com.google.gson.Gson;
