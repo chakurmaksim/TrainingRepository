@@ -1,0 +1,6 @@
+Salad{saladID=1, date='[20/07/2019 at 23:41:25]', name='Vegetable salad', weight=487, kcal=94.26, kcalPer100g=19.35523613963039}
+Salad{saladID=3, date='[20/07/2019 at 23:41:25]', name='Vegetable salad with spinach', weight=690, kcal=141.0, kcalPer100g=20.434782608695652}
+Salad{saladID=6, date='[20/07/2019 at 23:41:25]', name='Spring salad', weight=455, kcal=93.6, kcalPer100g=20.571428571428573}
+Salad{saladID=5, date='[20/07/2019 at 23:41:25]', name='Spring salad with radish', weight=455, kcal=93.6, kcalPer100g=20.571428571428573}
+Salad{saladID=2, date='[20/07/2019 at 23:41:25]', name='Vegetable salad with arugula', weight=455, kcal=103.7, kcalPer100g=22.791208791208792}
+Salad{saladID=4, date='[20/07/2019 at 23:41:25]', name='Vegetable salad healthy', weight=120, kcal=38.9, kcalPer100g=32.416666666666664}

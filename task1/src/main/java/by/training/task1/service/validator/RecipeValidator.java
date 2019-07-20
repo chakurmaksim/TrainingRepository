@@ -13,22 +13,22 @@ public class RecipeValidator {
      * @return true if name is empty
      */
     public boolean validateIsRecipeNameEmpty(final String recipeName) {
-        return recipeName != null ? "".equals(recipeName.trim()) : true;
+        return "".equals(recipeName.trim());
     }
 
     /**
-     * Method to check recipe name is empty.
+     * Method to check ingredients names are empty.
      *
      * @param composition salad ingredients
      * @return true if one of the salad ingredients name is empty
      */
-    public boolean validateIsIngrNameEmpty(final Map<String,
-            Integer> composition) {
-        if (composition == null) {
+    public boolean validateIsIngrNameEmpty(
+            final Map<String, Integer> composition) {
+        if (composition.isEmpty()) {
             return true;
         }
         for (Map.Entry<String, Integer> entry : composition.entrySet()) {
-            if ("".equals(entry.getKey().trim())) {
+            if (entry.getKey() == null || "".equals(entry.getKey().trim())) {
                 return true;
             }
         }
@@ -41,12 +41,10 @@ public class RecipeValidator {
      * @param composition salad ingredients
      * @return true if one of the salad ingredients is negative value
      */
-    public boolean validateNegIngrNum(final Map<String, Integer> composition) {
-        if (composition == null) {
-            return true;
-        }
+    public boolean validateNegativeIngrNum(
+            final Map<String, Integer> composition) {
         for (Map.Entry<String, Integer> entry : composition.entrySet()) {
-            if (entry.getValue() < 0) {
+            if (entry.getValue() == null || entry.getValue() < 0) {
                 return true;
             }
         }

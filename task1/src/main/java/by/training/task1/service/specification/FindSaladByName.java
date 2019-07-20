@@ -20,8 +20,8 @@ public class FindSaladByName implements FindSpecification<Salad> {
     /**
      * Method to compare salads name.
      *
-     * @param entity entity
-     * @return
+     * @param entity Salad entity
+     * @return true if names are equals
      */
     @Override
     public boolean findSpecified(final Salad entity) {

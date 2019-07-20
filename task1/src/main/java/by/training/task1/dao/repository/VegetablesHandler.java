@@ -4,10 +4,7 @@ import by.training.task1.bean.entity.Vegetable;
 import by.training.task1.service.specification.Specification;
 
 import java.io.Serializable;
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Storage for the collection of vegetables.
@@ -51,7 +48,7 @@ public final class VegetablesHandler implements Repository<Vegetable>,
 
     @Override
     public List<Vegetable> readAll() {
-        List<Vegetable> copyList = new LinkedList<>(vegetableSet);
+        List<Vegetable> copyList = new ArrayList<>(vegetableSet);
         return copyList;
     }
 

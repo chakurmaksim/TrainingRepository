@@ -28,52 +28,61 @@ public final class SaladFactory {
     static {
         SINGLE_INSTANCE = new SaladFactory();
     }
+
     private SaladFactory() {
     }
 
     /**
      * Method to create a salad from a recipe and a set of vegetables.
-     * @param recipe particular recipe
-     * @param vegetableSet set of vegetables
+     *
+     * @param recipe        particular recipe
+     * @param vegetableList set of vegetables
      * @return object of Salad class
      * @throws RecipeSyntaxException when the names of vegetables on the recipe
-     * and in the set do not match
+     *                               and in the set do not match
      */
-    public Salad makeSalad(final Recipe recipe,
-                           final List<Vegetable> vegetableSet)
+    public Salad makeSalad(
+            final Recipe recipe, final List<Vegetable> vegetableList)
             throws RecipeSyntaxException {
         Salad salad = new Salad(recipe.getDishName());
-        Map<String, Integer> composition = recipe.getComposition();
-        for (Map.Entry<String, Integer> entry : composition.entrySet()) {
-            for (Vegetable vegetable : vegetableSet) {
+        for (Map.Entry<String, Integer> entry
+                : recipe.getComposition().entrySet()) {
+            for (Vegetable vegetable : vegetableList) {
                 if (entry.getKey().equalsIgnoreCase(vegetable.getVegName())) {
                     salad.getIngredients().put(vegetable, entry.getValue());
                     salad.setWeight(salad.getWeight() + entry.getValue());
-                    double kcal = calcGeneralNumCalories(salad.getKcal(),
-                            vegetable.getKcalPer100g(), entry.getValue());
-                    salad.setKcal(kcal);
+                    salad.setKcal(calcGeneralNumCalories(salad.getKcal(),
+                            vegetable.getKcalPer100g(), entry.getValue()));
                 }
             }
         }
         if (salad.getIngredients().size() != recipe.getComposition().size()) {
             String message = String.format("No names matches "
-                    + "in vegetable and recipe lists. Recipe name: %s",
+                            + "in vegetable and recipe lists. Recipe name: %s",
                     recipe.getDishName());
             throw new RecipeSyntaxException(message);
         }
         salad.setKcalPer100g(calcNumCaloriesPer100g(salad.getKcal(),
                 salad.getWeight()));
         salad.setDate(TimeStamp.getTimeStamp());
-        salad.setSaladID(++orderID);
         return salad;
     }
 
     /**
      * Get method.
      *
-     * @return single instance SaladFactory
+     * @return single instance of SaladFactory
      */
     public static SaladFactory getSingleInstance() {
         return SINGLE_INSTANCE;
+    }
+
+    /**
+     * Increment and get method.
+     *
+     * @return next order ID.
+     */
+    public static long incrementAndGetOrderID() {
+        return ++orderID;
     }
 }

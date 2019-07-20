@@ -108,7 +108,7 @@ public class Salad {
      * @param newIngredients map of the salad ingridients
      */
     public void setIngredients(final Map<Vegetable, Integer> newIngredients) {
-        this.ingredients = ingredients;
+        this.ingredients = newIngredients;
     }
 
     /**

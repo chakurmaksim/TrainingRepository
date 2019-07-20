@@ -1,6 +1,6 @@
-{"dishName":"Vegetable salad","composition":{"sweet red pepper":80.0,"cucumber":200.0,"dill":7.0,"tomato":200.0}}
-{"dishName":"Vegetable salad with arugula","composition":{"arugula":120.0,"dill":30.0,"parsley":30.0,"tomato":190.0,"lettuce leaves":85.0}}
-{"dishName":"Vegetable salad with spinach","composition":{"spinach":400.0,"cucumber":100.0,"tomato":190.0}}
-{"dishName":"Vegetable salad healthy","composition":{"white cabbage":50.0,"carrot":50.0,"onion":20.0}}
-{"dishName":"Spring salad with radish","composition":{"onion":30.0,"cucumber":100.0,"radish":150.0,"lettuce leaves":100.0,"carrot":75.0}}
-{"dishName":"Spring salad","composition":{"onion":30.0,"cucumber":100.0,"radish":150.0,"lettuce leaves":100.0,"carrot":75.0}}
+{"dishName":"Vegetable salad","composition":{"sweet red pepper":80,"cucumber":200,"dill":7,"tomato":200}}
+{"dishName":"Vegetable salad with arugula","composition":{"arugula":120,"dill":30,"parsley":30,"tomato":190,"lettuce leaves":85}}
+{"dishName":"Vegetable salad with spinach","composition":{"spinach":400,"cucumber":100,"tomato":190}}
+{"dishName":"Vegetable salad healthy","composition":{"white cabbage":50,"carrot":50,"onion":20}}
+{"dishName":"Spring salad with radish","composition":{"onion":30,"cucumber":100,"radish":150,"lettuce leaves":100,"carrot":75}}
+{"dishName":"Spring salad","composition":{"onion":30,"cucumber":100,"radish":150,"lettuce leaves":100,"carrot":75}}

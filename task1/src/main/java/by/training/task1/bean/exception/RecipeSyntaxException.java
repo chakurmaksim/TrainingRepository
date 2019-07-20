@@ -19,8 +19,8 @@ public class RecipeSyntaxException extends Exception {
     static {
         CONTENT_ERROR = "File content error. "
                 + "The line cannot be converted to a recipe.";
-        NAME_ERROR = "Name cannot be an empty value.";
-        AMOUNT_ERROR = "The amount of ingredients cannot be less than zero.";
+        NAME_ERROR = "Names cannot be an empty value.";
+        AMOUNT_ERROR = "The amount of ingredients cannot be negative value.";
     }
 
     /**

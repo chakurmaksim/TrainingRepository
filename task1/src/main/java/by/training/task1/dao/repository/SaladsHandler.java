@@ -1,6 +1,7 @@
 package by.training.task1.dao.repository;
 
 import by.training.task1.bean.entity.Salad;
+import by.training.task1.service.factory.SaladFactory;
 import by.training.task1.service.specification.FindSpecification;
 import by.training.task1.service.specification.SortSpecification;
 import by.training.task1.service.specification.Specification;
@@ -9,6 +10,7 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.LinkedList;
 import java.util.ArrayList;
+import java.util.ListIterator;
 
 /**
  * Storage for the collection of salads.
@@ -68,6 +70,17 @@ public final class SaladsHandler implements Repository<Salad>,
 
     @Override
     public void update(final Salad item) {
+        ListIterator<Salad> iterator = saladList.listIterator();
+        while (iterator.hasNext()) {
+            Salad salad = iterator.next();
+            if (item.getName().equals(salad.getName())) {
+                item.setSaladID(salad.getSaladID());
+                iterator.set(item);
+                return;
+            }
+        }
+        item.setSaladID(SaladFactory.incrementAndGetOrderID());
+        saladList.add(item);
     }
 
     @Override
@@ -78,7 +91,6 @@ public final class SaladsHandler implements Repository<Salad>,
             for (Salad salad : saladList) {
                 if (((FindSpecification) specification).findSpecified(salad)) {
                     requiredList.add(salad);
-                    break;
                 }
             }
         }

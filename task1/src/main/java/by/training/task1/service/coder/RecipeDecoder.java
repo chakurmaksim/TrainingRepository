@@ -23,14 +23,14 @@ public class RecipeDecoder {
      */
     public Optional<Recipe> decodeRecipe(final String rawRecipe)
             throws RecipeSyntaxException {
-        Optional<Recipe> optionalRec;
+        Optional<Recipe> optionalRecipe;
         try {
             Recipe recipe = gson.fromJson(rawRecipe, Recipe.class);
-            optionalRec = Optional.ofNullable(recipe);
+            optionalRecipe = Optional.ofNullable(recipe);
         } catch (JsonSyntaxException e) {
             String msg = String.format("%s: %s", getContentError(), rawRecipe);
             throw new RecipeSyntaxException(msg, e);
         }
-        return optionalRec;
+        return optionalRecipe;
     }
 }

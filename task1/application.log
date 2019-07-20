@@ -17,4 +17,5 @@
 2019-07-16 18:17:14 [ERROR] File content error. The line cannot be converted to a vegetable: {"groupName":"leafy vegetable","":"dill","kcalPer100g":38,"proteinsPer100g":2.5,"fatsPer100g":0.5,"carbohydratesPer100g":6.3}
 2019-07-16 18:23:28 [ERROR] File content error. The line cannot be converted to a vegetable: {"":"leafy vegetable","vegName":"dill","kcalPer100g":38,"proteinsPer100g":2.5,"fatsPer100g":0.5,"carbohydratesPer100g":6.3}
 2019-07-16 18:27:13 [ERROR] File content error. The line cannot be converted to a vegetable: {:"leafy vegetable","vegName":"white cabbage","kcalPer100g":27,"proteinsPer100g":1.8,"fatsPer100g":0.1,"carbohydratesPer100g":4.7}
-2019-07-16 18:27:13 [ERROR] No names matchesin vegetable and recipe lists. Recipe name: Vegetable salad healthy
+2019-07-16 18:27:13 [ERROR] No names matches in vegetable and recipe lists. Recipe name: Vegetable salad healthy
+2019-07-19 15:26:11 [ERROR] java.util.ConcurrentModificationException

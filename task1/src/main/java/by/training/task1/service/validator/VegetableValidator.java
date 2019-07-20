@@ -28,7 +28,7 @@ public class VegetableValidator {
      * @return true if name is empty
      */
     public boolean validateIsNameEmpty(final String vegName) {
-        return vegName != null ? "".equals(vegName.trim()) : true;
+        return "".equals(vegName.trim());
     }
 
     /**

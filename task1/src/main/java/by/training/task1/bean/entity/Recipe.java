@@ -1,6 +1,5 @@
 package by.training.task1.bean.entity;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
@@ -16,16 +15,6 @@ public class Recipe {
      * Names of ingredients and its amount that the salad contains.
      */
     private Map<String, Integer> composition;
-
-    /**
-     * Constructor with only one argument.
-     *
-     * @param newDishName name of the recipe and salad respectively
-     */
-    public Recipe(final String newDishName) {
-        this.dishName = newDishName;
-        composition = new HashMap<>();
-    }
 
     /**
      * Constructor with two parameters.
@@ -96,6 +85,7 @@ public class Recipe {
 
     /**
      * Overridden hashCode method.
+     *
      * @return number with integer format
      */
     @Override
@@ -105,6 +95,7 @@ public class Recipe {
 
     /**
      * Overridden toString method.
+     *
      * @return string representation of the object
      */
     @Override
