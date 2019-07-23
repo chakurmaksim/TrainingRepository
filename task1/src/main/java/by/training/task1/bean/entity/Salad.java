@@ -6,11 +6,11 @@ import java.util.Objects;
 
 /**
  * This class contains information about the calories of salad
- * and which vegetables are in the composition.
+ * and about vegetables are in the composition.
  */
 public class Salad {
     /**
-     * Order number.
+     * Order number (salad id).
      */
     private long saladID;
     /**
@@ -40,6 +40,7 @@ public class Salad {
 
     /**
      * Constructor with one parameter.
+     *
      * @param newName salad name
      */
     public Salad(final String newName) {
@@ -49,6 +50,7 @@ public class Salad {
 
     /**
      * Get method.
+     *
      * @return salad order number or salad ID
      */
     public long getSaladID() {
@@ -57,6 +59,7 @@ public class Salad {
 
     /**
      * Set method.
+     *
      * @param newSaladID salad order number or salad ID
      */
     public void setSaladID(final long newSaladID) {
@@ -65,6 +68,7 @@ public class Salad {
 
     /**
      * Get method.
+     *
      * @return date of manufacture
      */
     public String getDate() {
@@ -73,6 +77,7 @@ public class Salad {
 
     /**
      * Set method.
+     *
      * @param newDate date of manufacture
      */
     public void setDate(final String newDate) {
@@ -81,6 +86,7 @@ public class Salad {
 
     /**
      * Get method.
+     *
      * @return salad name
      */
     public String getName() {
@@ -89,6 +95,7 @@ public class Salad {
 
     /**
      * Set method.
+     *
      * @param newName salad name
      */
     public void setName(final String newName) {
@@ -97,7 +104,8 @@ public class Salad {
 
     /**
      * Get method.
-     * @return map of the salad ingridients
+     *
+     * @return map of the salad ingredients
      */
     public Map<Vegetable, Integer> getIngredients() {
         return ingredients;
@@ -105,7 +113,8 @@ public class Salad {
 
     /**
      * Set method.
-     * @param newIngredients map of the salad ingridients
+     *
+     * @param newIngredients map of the salad ingredients
      */
     public void setIngredients(final Map<Vegetable, Integer> newIngredients) {
         this.ingredients = newIngredients;
@@ -113,6 +122,7 @@ public class Salad {
 
     /**
      * Get method.
+     *
      * @return general weight of the salad
      */
     public int getWeight() {
@@ -121,6 +131,7 @@ public class Salad {
 
     /**
      * Set method.
+     *
      * @param newWeight general weight of the salad
      */
     public void setWeight(final int newWeight) {
@@ -129,7 +140,8 @@ public class Salad {
 
     /**
      * Get method.
-     * @return general amount of kilocalories
+     *
+     * @return total amount of kilocalories
      */
     public double getKcal() {
         return kcal;
@@ -137,7 +149,8 @@ public class Salad {
 
     /**
      * Set method.
-     * @param newKcal general amount of kilocalories
+     *
+     * @param newKcal total amount of kilocalories
      */
     public void setKcal(final double newKcal) {
         this.kcal = newKcal;
@@ -145,6 +158,7 @@ public class Salad {
 
     /**
      * Get method.
+     *
      * @return amount of kilocalories per 100 gram of salad
      */
     public double getKcalPer100g() {
@@ -153,6 +167,7 @@ public class Salad {
 
     /**
      * Set method.
+     *
      * @param newKcalPer100g amount of kilocalories per 100 gram of salad
      */
     public void setKcalPer100g(final double newKcalPer100g) {
@@ -185,6 +200,7 @@ public class Salad {
 
     /**
      * Overridden hashCode method.
+     *
      * @return number with integer format
      */
     @Override
@@ -195,6 +211,7 @@ public class Salad {
 
     /**
      * Overridden toString method.
+     *
      * @return string representation of the object
      */
     @Override

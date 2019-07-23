@@ -20,14 +20,16 @@ public final class CaloriesCalculator {
      * Weight constant in grams.
      */
     private static final double WEIGHT_100 = 100.0;
+
     private CaloriesCalculator() {
     }
 
     /**
      * Method to calculate calories using nutrients: proteins,
      * fats and carbohydrates.
-     * @param proteins proteins
-     * @param fats fats
+     *
+     * @param proteins      proteins
+     * @param fats          fats
      * @param carbohydrates carbohydrates
      * @return kilocalories in integer format
      */
@@ -40,8 +42,9 @@ public final class CaloriesCalculator {
 
     /**
      * Count a general amount of kilocalories at particular salad.
+     *
      * @param currentVal current value kilocalories
-     * @param prodKcal number of kilocalories in the added ingredient
+     * @param prodKcal   number of kilocalories in the added ingredient
      * @param prodWeight ingredient weight
      * @return total calories dishes
      */
@@ -53,7 +56,8 @@ public final class CaloriesCalculator {
 
     /**
      * Calculate the number of kilocalories per 100 g of salad.
-     * @param generalKcal total quantity of kilocalories
+     *
+     * @param generalKcal   total quantity of kilocalories
      * @param generalWeight total dish weight
      * @return number of kilocalories per 100 g of salad
      */

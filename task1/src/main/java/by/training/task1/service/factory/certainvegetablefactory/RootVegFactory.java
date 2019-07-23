@@ -46,10 +46,10 @@ public final class RootVegFactory {
             throws NoSuchIngredientException {
         ValidatorFactory validFactory = ValidatorFactory.getSingleInstance();
         VegetableValidator vegValidator = validFactory.getVegetableValid();
-        if (vegValidator.validateIsNameEmpty(name)) {
+        if (name == null || vegValidator.validateIsNameEmpty(name)) {
             throw new NoSuchIngredientException(getNameError());
         }
-        if (name == null || vegValidator.validateNegCaloriesNum(kcal)
+        if (vegValidator.validateNegCaloriesNum(kcal)
                 || vegValidator.validateNegNutrientNum(proteins)
                 || vegValidator.validateNegNutrientNum(fats)
                 || vegValidator.validateNegNutrientNum(carbohydrates)) {

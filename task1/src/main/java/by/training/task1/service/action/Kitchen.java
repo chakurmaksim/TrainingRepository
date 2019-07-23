@@ -151,7 +151,7 @@ public class Kitchen implements Subscriber<Recipe> {
     }
 
     /**
-     * Write the result of created and if necessary sorted salads to an file.
+     * Write the result of created and if necessary sorted salads to the file.
      * @param salads list of salads
      */
     public void writeResultToFile(final List<Salad> salads) {

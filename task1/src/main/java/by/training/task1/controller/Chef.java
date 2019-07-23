@@ -5,7 +5,11 @@ import by.training.task1.bean.entity.Salad;
 import by.training.task1.dao.repository.RecipesHandler;
 import by.training.task1.dao.repository.SaladsHandler;
 import by.training.task1.service.action.Kitchen;
-import by.training.task1.service.specification.*;
+import by.training.task1.service.specification.FindSaladById;
+import by.training.task1.service.specification.FindSaladByName;
+import by.training.task1.service.specification.FindSaladByKcal;
+import by.training.task1.service.specification.SortSaladByWeight;
+import by.training.task1.service.specification.SortSaladByKcalPer100g;
 
 import java.util.List;
 

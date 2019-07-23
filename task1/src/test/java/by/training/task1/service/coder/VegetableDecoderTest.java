@@ -91,7 +91,8 @@ public class VegetableDecoderTest {
         return new Object[]{raw1, raw2, raw3, raw4, raw5, raw6};
     }
 
-    @Test(dataProvider = "positiveDataForDecodeVegetable")
+    @Test(description = "Positive scenario for validate decode vegetable",
+            dataProvider = "positiveDataForDecodeVegetable")
     public void testDecodeVegetable(String raw, Optional<Vegetable> expected) {
         CoderFactory coderFactory = CoderFactory.getSingleInstance();
         VegetableDecoder vegetableDecoder = coderFactory.getVegetableDecoder();

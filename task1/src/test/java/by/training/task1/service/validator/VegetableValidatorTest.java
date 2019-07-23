@@ -17,7 +17,7 @@ public class VegetableValidatorTest {
         vegValidator = validatorFactory.getVegetableValid();
     }
 
-    @Test
+    @Test(description = "Positive scenario for validate is group name empty")
     public void testValidateGroupName() {
         VegetableGroup[] groupArr = VegetableGroup.values();
         boolean[] actual = new boolean[groupArr.length + 1];
@@ -33,7 +33,7 @@ public class VegetableValidatorTest {
         assertEquals(actual, expected);
     }
 
-    @Test
+    @Test(description = "Positive scenario for validate is name empty")
     public void testValidateIsNameEmpty() {
         String[] namesArr = {"", " ", "\r\n", "name"};
         boolean[] expected = {true, true, true, false};
@@ -44,7 +44,7 @@ public class VegetableValidatorTest {
         assertEquals(actual, expected);
     }
 
-    @Test
+    @Test(description = "Positive scenario for validate kcal value is negative")
     public void testValidateNegCaloriesNum() {
         int kcal = -1;
         boolean actual = vegValidator.validateNegCaloriesNum(kcal);
@@ -52,7 +52,7 @@ public class VegetableValidatorTest {
         assertEquals(actual, expected);
     }
 
-    @Test
+    @Test(description = "Positive scenario for validate nutrient value is negative")
     public void testValidateNegNutrientNum() {
         double nutrient = -1.0;
         boolean actual = vegValidator.validateNegNutrientNum(nutrient);

@@ -53,7 +53,7 @@ public class RecipeDecoderTest {
         return new Object[]{r1, r2, r3, r4, r5};
     }
 
-    @Test
+    @Test(description = "Positive scenario for validate decode recipe")
     public void testDecodeRecipe() throws Exception {
         Optional<Recipe> actual = recipeDecoder.decodeRecipe(rawRecipe);
         assertEquals(actual, expected);

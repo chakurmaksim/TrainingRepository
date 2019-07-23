@@ -1,6 +1,10 @@
 package by.training.task1.service.factory;
 
-import by.training.task1.bean.entity.*;
+import by.training.task1.bean.entity.Salad;
+import by.training.task1.bean.entity.Recipe;
+import by.training.task1.bean.entity.Vegetable;
+import by.training.task1.bean.entity.FruitVegetable;
+import by.training.task1.bean.entity.BulbousVegetable;
 import by.training.task1.bean.exception.RecipeSyntaxException;
 import by.training.task1.service.timestamp.TimeStamp;
 import org.testng.annotations.AfterTest;

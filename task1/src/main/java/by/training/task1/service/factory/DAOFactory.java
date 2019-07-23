@@ -3,7 +3,7 @@ package by.training.task1.service.factory;
 import by.training.task1.dao.filereader.FileWriteReader;
 
 /**
- * Class that contains repository and file instances.
+ * Class that contains file instance.
  */
 public final class DAOFactory {
     /**

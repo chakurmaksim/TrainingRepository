@@ -13,7 +13,7 @@ import static by.training.task1.bean.exception.NoSuchIngredientException.getName
  */
 public final class BulbousVegFactory {
     /**
-     * Variable for keeping BeanVegFactory instance.
+     * Variable for keeping BulbousVegFactory instance.
      */
     private static final BulbousVegFactory SINGLE_INSTANCE;
 
@@ -65,7 +65,7 @@ public final class BulbousVegFactory {
 
     /**
      * Get method.
-     * @return single instance BeanVegFactory
+     * @return single instance BulbousVegFactory
      */
     public static BulbousVegFactory getSingleInstance() {
         return SINGLE_INSTANCE;

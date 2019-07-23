@@ -8,6 +8,7 @@ import by.training.task1.dao.repository.SaladsHandler;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -18,7 +19,6 @@ final class Main {
      * An object of this class is not created.
      */
     private Main() {
-
     }
 
     /**
@@ -64,26 +64,33 @@ final class Main {
         chef.getKitchen().writeResultToFile(chef.sortSaladByKcalPer100g());
 
         chef.createSubscription();
-        int changesNum = 2;
-        Recipe recipe = RecipesHandler.getInstance().readAll().get(0);
-        logger.info(recipe);
-        for (Map.Entry<String, Integer> entry
-                : recipe.getComposition().entrySet()) {
-            entry.setValue(100);
-        }
-        logger.info(recipe);
-        chef.changeRecipe(recipe);
-        logger.info("------------------------------");
+        int changesNum = 0;
 
-        recipe = RecipesHandler.getInstance().readAll().get(1);
-        logger.info(recipe);
-        for (Map.Entry<String, Integer> entry
-                : recipe.getComposition().entrySet()) {
-            entry.setValue(100);
+        List<Recipe> recipeList = RecipesHandler.getInstance().readAll();
+        if (recipeList.size() > 0) {
+            changesNum = 1;
+            Recipe recipe = recipeList.get(0);
+            logger.info(recipe);
+            for (Map.Entry<String, Integer> entry
+                    : recipe.getComposition().entrySet()) {
+                entry.setValue(100);
+            }
+            logger.info(recipe);
+            chef.changeRecipe(recipe);
+            logger.info("------------------------------");
         }
-        logger.info(recipe);
-        chef.changeRecipe(recipe);
-        logger.info("------------------------------");
+        if (recipeList.size() > 1) {
+            changesNum = 2;
+            Recipe recipe = recipeList.get(1);
+            logger.info(recipe);
+            for (Map.Entry<String, Integer> entry
+                    : recipe.getComposition().entrySet()) {
+                entry.setValue(100);
+            }
+            logger.info(recipe);
+            chef.changeRecipe(recipe);
+            logger.info("------------------------------");
+        }
 
         while (chef.getKitchen().getCountChanges() != changesNum) {
             try {

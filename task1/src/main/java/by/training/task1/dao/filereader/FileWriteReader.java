@@ -17,23 +17,23 @@ public class FileWriteReader {
      */
     private static Logger logger = LogManager.getLogger(FileWriteReader.class);
     /**
-     * file reader variable.
+     * File reader variable.
      */
     private FileReader fileReader;
     /**
-     * buffered reader variable.
+     * Buffered reader variable.
      */
     private BufferedReader bufferedReader;
     /**
-     * file output stream variable.
+     * File output stream variable.
      */
     private FileOutputStream fileOutputStream;
     /**
-     * output stream writer variable.
+     * Output stream writer variable.
      */
     private OutputStreamWriter outputStreamWriter;
     /**
-     * buffered writer.
+     * Buffered writer.
      */
     private BufferedWriter bufferedWriter;
 
@@ -92,7 +92,6 @@ public class FileWriteReader {
             bufferedWriter = new BufferedWriter(outputStreamWriter);
         } catch (IOException e) {
             logger.error(e.toString());
-            throw new RuntimeException();
         }
     }
 
