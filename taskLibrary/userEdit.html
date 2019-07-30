@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/main.css">
+    
+    <title>Profile editing</title>
+</head>
+<body>
+    <header class="alert-dark" style="height: 80px">
+        <div style="height: 58px; position: relative; float: left; margin: 2px">
+            <img src="img/Logo.png" width="76px" height="76px">
+        </div>
+        <div>
+            <ul class="nav">
+                <li class="nav-item">
+                    <a class="nav-link active" href="index.html">Home page</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="UserList.html">List of users</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="contacts.html">Contact us</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="UserEdit.html">Profile editing</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="Login.html">Login</a>
+                </li>
+                <li class="nav-item" style="float: left">
+                    <a class="nav-link" href="Registration.html">Registration</a>
+                </li>
+            </ul>
+        </div>
+    </header>
+    
+    <div id="alert" class="alert alert-danger" style="display: none">
+    </div>
+
+    <div class="container" style="text-align: center;">
+        <div class="alert-warning reg-form">
+            <form action="" onsubmit="checkData(this); return false;">
+                <div class="form-group">
+                    <label for="firstname" >*Enter your name:</label>
+                    <input id="firstname" name="firstname" class="form-control" placeholder="Name">
+                </div>
+                <div class="form-group">
+                    <label for="lastname">*Enter your surname:</label>
+                    <input id="lastname" name="lastname" class="form-control" placeholder="Surname">
+                </div>
+                <div class="form-group">
+                    <label for="email">*Enter your email:</label>
+                    <input id="email" name="email" type="email" class="form-control" placeholder="Email">
+                </div>
+                <div class="form-group">
+                    <label for="age">*Enter your age:</label>
+                    <input id="age" name="age" class="form-control" placeholder="Age">
+                </div>
+                <div class="form-group">
+                    <label for="address">Write your address:</label>
+                    <input id="address" name="address" class="form-control" placeholder="Address">
+                </div>
+                <div class="form-group">
+                    <label for="phone">Write your phone number:</label>
+                    <input id="phone" name="phone" type="tel" pattern="\+[0-9]{12}" class="form-control" placeholder="Phone number">
+                </div>
+                <div class="form-group">
+                    <label for="password">*Fill your password:</label>
+                    <input id="password" name="password" type="password" class="form-control" placeholder="Password">
+                </div>
+                <button id="cancell" type="button" class="btn btn-outline-secondary">Cancell</button>
+                <input type="submit" class="btn btn-outline-success" value="Save">
+            </form>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>

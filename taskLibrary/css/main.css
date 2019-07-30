@@ -1,0 +1,18 @@
+header {
+    height: 58px;
+}
+.logo-form {
+    height: 58px; 
+    position: relative; 
+    float: left;
+    padding: 2px;
+    margin: 2px;
+}
+.reg-form {
+    padding: 20px;
+    margin: 50px;
+}
+table, th, td {
+    border: 1px solid black;
+    text-align: center;
+}

@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css">
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/main.css">
+    
+    <title>Contact us</title>
+</head>
+<body>
+    <header class="alert-dark">
+        <div class="logo-form">
+            <img src="img/logo.png" width="50px" height="50px">
+        </div>
+        <nav class="navbar navbar-expand-md navbar-light">
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="index.html">Home page</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="userList.html">List of users</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="contacts.html">Contact us</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="userEdit.html">Profile editing</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="login.html">Login</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="registration.html">Registration</a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+    
+    <section id="contact">
+            <h2 class="mb-5 font-weight-bold text-center" style="margin: 20px">Contact us</h2>
+        <div class="row">
+            <div class="col-lg-5 col-md-12">
+              <form class="p-5 grey-text">
+                <div class="md-form form-sm"> <i class="fas fa-user prefix"></i>
+                  <input type="text" id="form3" class="form-control form-control-sm" aria-describedby="nameHelp" placeholder="name">
+                  <small id="nameHelp" class="form-text text-muted">Enter your name</small>
+                </div>
+                <div class="md-form form-sm"> <i class="fas fa-envelope prefix"></i>
+                  <input type="email" id="form2" class="form-control form-control-sm" aria-describedby="emailHelp" placeholder="name@example.com">
+                  <small id="emailHelp" class="form-text text-muted">Enter your email</small>
+                </div>
+                <div class="md-form form-sm"> <i class="fas fa-tag prefix"></i>
+                  <input type="text" id="form32" class="form-control form-control-sm" aria-describedby="subjectHelp" placeholder="subject">
+                  <small id="emailHelp" class="form-text text-muted">Write an subject</small>
+                </div>
+                <div class="md-form form-sm"> <i class="fas fa-pencil-alt prefix"></i>
+                  <textarea type="text" id="form8" class="md-textarea form-control form-control-sm" rows="4" aria-describedby="messageHelp" placeholder="message"></textarea>
+                  <small id="messageHelp" class="form-text text-muted">Write your message</small>
+                </div>
+                <div class="text-center mt-4">
+                  <button class="btn btn-secondary">Send <i class="far fa-paper-planeml-1"></i></button>
+                </div>
+              </form>
+            </div>
+            <div class="col-lg-7 col-md-12">
+                <!--Google map-->
+                <div id="map-container" class="z-depth-1-half map-container mb-5" style="height: 400px">
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/main.js"></script>
+    <script src="https://maps.google.com/maps/api/js"></script>
+</body>
+</html>
