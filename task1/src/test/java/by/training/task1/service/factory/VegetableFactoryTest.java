@@ -126,12 +126,6 @@ public class VegetableFactoryTest {
             expectedExceptions = NoSuchIngredientException.class)
     public void testCreateVegFromJson_CheckThrownException(String raw)
             throws NoSuchIngredientException {
-        FruitVegetable expected = new FruitVegetable("cucumber");
-        expected.setKcalPer100g(15);
-        expected.setProteinsPer100g(0.8);
-        expected.setFatsPer100g(0.1);
-        expected.setCarbohydratesPer100g(2.8);
-        Vegetable actual = vegetableFactory.createVegFromJson(raw);
-        assertEquals(actual, expected);
+        vegetableFactory.createVegFromJson(raw);
     }
 }

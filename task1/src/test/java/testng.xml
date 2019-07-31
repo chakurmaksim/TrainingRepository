@@ -1,0 +1,45 @@
+<suite name="ChefApplicationTest" verbose="1" >
+    <test name="VegetableGroupTest" >
+        <classes>
+            <class name="by.training.task1.bean.enumerations.VegetableGroupTest" />
+        </classes>
+    </test>
+
+    <test name="CaloriesCalculatorTest">
+        <classes>
+            <class name="by.training.task1.service.caloriescalc.CaloriesCalculatorTest"/>
+        </classes>
+    </test>
+
+    <test name="CodersTest">
+        <classes>
+            <class name="by.training.task1.service.coder.RecipeDecoderTest"/>
+            <class name="by.training.task1.service.coder.VegetableDecoderTest"/>
+        </classes>
+    </test>
+
+    <test name="FactoriesTest">
+        <packages>
+            <package name="by.training.task1.service.factory.*">
+                <exclude name="by.training.task1.service.factory.certainvegetablefactory"></exclude>
+            </package>
+        </packages>
+    </test>
+
+    <test name="SpecificationsTest">
+        <classes>
+            <class name="by.training.task1.service.specification.FindSaladByIdTest"/>
+            <class name="by.training.task1.service.specification.FindSaladByKcalTest"/>
+            <class name="by.training.task1.service.specification.FindSaladByNameTest"/>
+        </classes>
+    </test>
+
+    <test name="ValidatorsTest">
+        <classes>
+            <class name="by.training.task1.service.validator.RecipeValidatorTest"/>
+            <class name="by.training.task1.service.validator.VegetableValidatorTest"/>
+        </classes>
+    </test>
+
+</suite>
+

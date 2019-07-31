@@ -29,9 +29,6 @@ public class VegetableDecoderTest {
         String rawRootVeg = "{\"groupName\":\"root vegetable\",\"vegName\":\"potato\","
                 + "\"kcalPer100g\":76,\"proteinsPer100g\":2.0,\"fatsPer100g\":0.4,"
                 + "\"carbohydratesPer100g\":16.1}";
-        String rawFruitVegWithNegKcal = "{\"groupName\":\"fruit vegetable\",\"vegName\":\"cucumber\","
-                + "\"kcalPer100g\":-15,\"proteinsPer100g\":0.8,\"fatsPer100g\":0.1,"
-                + "\"carbohydratesPer100g\":2.8}";
         Vegetable[] vegArr = new Vegetable[]{
                 new BeanVegetable("green peas"),
                 new BulbousVegetable("garlic"),
@@ -107,13 +104,6 @@ public class VegetableDecoderTest {
             throws NoSuchIngredientException {
         CoderFactory coderFactory = CoderFactory.getSingleInstance();
         VegetableDecoder vegetableDecoder = coderFactory.getVegetableDecoder();
-        FruitVegetable vegetable = new FruitVegetable("cucumber");
-        vegetable.setKcalPer100g(15);
-        vegetable.setProteinsPer100g(0.8);
-        vegetable.setFatsPer100g(0.1);
-        vegetable.setCarbohydratesPer100g(2.8);
-        Optional<Vegetable> expected = Optional.of(vegetable);
-        Optional<Vegetable> actual = vegetableDecoder.decodeVegetable(raw);
-        assertEquals(actual, expected);
+        vegetableDecoder.decodeVegetable(raw);
     }
 }

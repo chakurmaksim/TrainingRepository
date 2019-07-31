@@ -110,8 +110,7 @@ public class RecipeFactoryTest {
     public void testCreateCertainRecipe_CheckThrownException(
             String name, Map<String, Integer> ingr)
             throws RecipeSyntaxException {
-        Recipe actual = recipeFactory.createCertainRecipe(name, ingr);
-        assertEquals(actual, expected);
+        recipeFactory.createCertainRecipe(name, ingr);
     }
 
     @AfterTest

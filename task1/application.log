@@ -19,3 +19,6 @@
 2019-07-16 18:27:13 [ERROR] File content error. The line cannot be converted to a vegetable: {:"leafy vegetable","vegName":"white cabbage","kcalPer100g":27,"proteinsPer100g":1.8,"fatsPer100g":0.1,"carbohydratesPer100g":4.7}
 2019-07-16 18:27:13 [ERROR] No names matches in vegetable and recipe lists. Recipe name: Vegetable salad healthy
 2019-07-19 15:26:11 [ERROR] java.util.ConcurrentModificationException
+2019-07-31 11:46:02 [ERROR] Names cannot be an empty value.: {"dishName":" ","composition":{"white cabbage":50,"carrot":50,"onion":20}}
+2019-07-31 11:47:13 [ERROR] File content error. The line cannot be converted to a vegetable: {"dishName":"Vegetable salad","composition":{"sweet red pepper":,"cucumber":200,"dill":7,"tomato":200}}
+2019-07-31 11:47:13 [ERROR] Names cannot be an empty value.: {"dishName":" ","composition":{"white cabbage":50,"carrot":50,"onion":20}}

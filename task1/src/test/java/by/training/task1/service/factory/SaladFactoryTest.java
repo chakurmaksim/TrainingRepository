@@ -97,8 +97,7 @@ public class SaladFactoryTest {
             expectedExceptions = RecipeSyntaxException.class)
     public void negativeDataMakeSalad(Recipe rec, List<Vegetable> list)
             throws RecipeSyntaxException {
-        Salad actual = saladFactory.makeSalad(rec, list);
-        assertEquals(actual, expected);
+        saladFactory.makeSalad(rec, list);
     }
 
     @AfterTest

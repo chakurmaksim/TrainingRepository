@@ -64,8 +64,7 @@ public class RecipeDecoderTest {
             expectedExceptions = RecipeSyntaxException.class)
     public void testCreateRecipeFromJson_CheckThrownException(String rawRecipe)
             throws RecipeSyntaxException {
-        Optional<Recipe> actual = recipeDecoder.decodeRecipe(rawRecipe);
-        assertEquals(actual, expected);
+        recipeDecoder.decodeRecipe(rawRecipe);
     }
 
     @AfterTest

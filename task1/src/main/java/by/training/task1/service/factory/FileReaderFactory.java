@@ -5,26 +5,26 @@ import by.training.task1.dao.filereader.FileWriteReader;
 /**
  * Class that contains file instance.
  */
-public final class DAOFactory {
+public final class FileReaderFactory {
     /**
-     * Variable for keeping DAOFactory instance.
+     * Variable for keeping FileReaderFactory instance.
      */
-    public static final DAOFactory SINGLE_INSTANCE = new DAOFactory();
+    public static final FileReaderFactory SINGLE_INSTANCE = new FileReaderFactory();
 
     /**
      * Declaration and instantiating FileWriteReader instance.
      */
     private final FileWriteReader fileWriteReader = new FileWriteReader();
 
-    private DAOFactory() {
+    private FileReaderFactory() {
     }
 
     /**
      * Get method.
      *
-     * @return single instance DAOFactory
+     * @return single instance FileReaderFactory
      */
-    public static DAOFactory getSingleInstance() {
+    public static FileReaderFactory getSingleInstance() {
         return SINGLE_INSTANCE;
     }
 

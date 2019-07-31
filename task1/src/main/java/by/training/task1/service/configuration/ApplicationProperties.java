@@ -1,4 +1,4 @@
-package by.training.task1.service.properties;
+package by.training.task1.service.configuration;
 
 import by.training.task1.dao.filereader.FileWriteReader;
 import org.apache.logging.log4j.LogManager;
@@ -31,7 +31,7 @@ public final class ApplicationProperties {
                 getClassLoader().getResourceAsStream(
                 "application.properties")) {
             if (inputStream == null) {
-                String msg = "File configuration \"application.properties\" "
+                String msg = "File configuration \"application.configuration\" "
                         + "is not found";
                 logger.error(msg);
                 System.exit(0);

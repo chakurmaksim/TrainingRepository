@@ -5,11 +5,11 @@ import by.training.task1.bean.entity.Vegetable;
 import by.training.task1.bean.entity.Salad;
 import by.training.task1.bean.exception.NoSuchIngredientException;
 import by.training.task1.bean.exception.RecipeSyntaxException;
-import by.training.task1.service.properties.ApplicationProperties;
+import by.training.task1.service.configuration.ApplicationProperties;
 import by.training.task1.dao.repository.RecipesHandler;
 import by.training.task1.dao.repository.SaladsHandler;
 import by.training.task1.dao.repository.VegetablesHandler;
-import by.training.task1.service.factory.DAOFactory;
+import by.training.task1.service.factory.FileReaderFactory;
 import by.training.task1.service.factory.RecipeFactory;
 import by.training.task1.service.factory.SaladFactory;
 import by.training.task1.service.factory.VegetableFactory;
@@ -54,7 +54,7 @@ public class Kitchen implements Subscriber<Recipe> {
     /**
      * Files reader repository.
      */
-    private DAOFactory daoFactory;
+    private FileReaderFactory fileReaderFactory;
     /**
      * Subscription at SubmissionPublisher.
      */
@@ -67,11 +67,11 @@ public class Kitchen implements Subscriber<Recipe> {
     static {
         Properties properties = ApplicationProperties.getProperties();
         recipesFileName = properties.getProperty("recipesFileName",
-                "recipes.txt");
+                "data/recipes.txt");
         vegetablesFileName = properties.getProperty("vegetablesFileName",
-                "vegetables.txt");
+                "data/vegetables.txt");
         saladsFileName = properties.getProperty("saladsFileName",
-                "salads.txt");
+                "data/salads.txt");
         logger = LogManager.getLogger(Kitchen.class);
     }
 
@@ -82,7 +82,7 @@ public class Kitchen implements Subscriber<Recipe> {
         recipesHandler = RecipesHandler.getInstance();
         saladsHandler = SaladsHandler.getInstance();
         vegetablesHandler = VegetablesHandler.getInstance();
-        daoFactory = DAOFactory.getSingleInstance();
+        fileReaderFactory = FileReaderFactory.getSingleInstance();
     }
 
     /**
@@ -107,15 +107,15 @@ public class Kitchen implements Subscriber<Recipe> {
      * Method to create Recipe instances are read from file.
      */
     private void deliverRecipesFromFile() {
-        daoFactory.getFileWriteReader().openFileReader(recipesFileName);
+        fileReaderFactory.getFileWriteReader().openFileReader(recipesFileName);
         Optional<String> optionalRecipe;
         do {
-            optionalRecipe = daoFactory.getFileWriteReader().readNextLine();
+            optionalRecipe = fileReaderFactory.getFileWriteReader().readNextLine();
             if (optionalRecipe.isPresent()) {
                 putRecipesToRepository(optionalRecipe.get());
             }
         } while (optionalRecipe.isPresent());
-        daoFactory.getFileWriteReader().closeFileReader();
+        fileReaderFactory.getFileWriteReader().closeFileReader();
     }
 
     private void putRecipesToRepository(final String rawRec) {
@@ -129,15 +129,15 @@ public class Kitchen implements Subscriber<Recipe> {
     }
 
     private void deliverVegetablesFromFile() {
-        daoFactory.getFileWriteReader().openFileReader(vegetablesFileName);
+        fileReaderFactory.getFileWriteReader().openFileReader(vegetablesFileName);
         Optional<String> optionalVeg;
         do {
-            optionalVeg = daoFactory.getFileWriteReader().readNextLine();
+            optionalVeg = fileReaderFactory.getFileWriteReader().readNextLine();
             if (optionalVeg.isPresent()) {
                 putVegetableToRepository(optionalVeg.get());
             }
         } while (optionalVeg.isPresent());
-        daoFactory.getFileWriteReader().closeFileReader();
+        fileReaderFactory.getFileWriteReader().closeFileReader();
     }
 
     private void putVegetableToRepository(final String rawVeg) {
@@ -155,11 +155,11 @@ public class Kitchen implements Subscriber<Recipe> {
      * @param salads list of salads
      */
     public void writeResultToFile(final List<Salad> salads) {
-        daoFactory.getFileWriteReader().openFileWriter(saladsFileName, false);
+        fileReaderFactory.getFileWriteReader().openFileWriter(saladsFileName, false);
         for (Salad salad : salads) {
-            daoFactory.getFileWriteReader().writeNextLine(salad.toString());
+            fileReaderFactory.getFileWriteReader().writeNextLine(salad.toString());
         }
-        daoFactory.getFileWriteReader().closeFileWriter();
+        fileReaderFactory.getFileWriteReader().closeFileWriter();
     }
 
     /**
