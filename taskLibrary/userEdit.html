@@ -9,38 +9,44 @@
     <title>Profile editing</title>
 </head>
 <body>
-    <header class="alert-dark" style="height: 80px">
-        <div style="height: 58px; position: relative; float: left; margin: 2px">
-            <img src="img/Logo.png" width="76px" height="76px">
+    <header class="alert-dark">
+        <div class="logo-form">
+            <img src="img/logo.png" width="50px" height="50px">
         </div>
-        <div>
-            <ul class="nav">
-                <li class="nav-item">
-                    <a class="nav-link active" href="index.html">Home page</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="UserList.html">List of users</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="contacts.html">Contact us</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="UserEdit.html">Profile editing</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="Login.html">Login</a>
-                </li>
-                <li class="nav-item" style="float: left">
-                    <a class="nav-link" href="Registration.html">Registration</a>
-                </li>
-            </ul>
-        </div>
+        <nav class="navbar navbar-expand-md navbar-light">
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="index.html">Home page</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="userList.html">List of users</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="contacts.html">Contact us</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="userEdit.html">Profile editing</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="login.html">Login</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="registration.html">Registration</a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
     </header>
     
     <div id="alert" class="alert alert-danger" style="display: none">
     </div>
 
-    <div class="container" style="text-align: center;">
+    <h2 class="mb-5 font-weight-bold text-center" style="margin: 5px">Profile editing</h2>
+    <div class="container col-md-8 col-sm-12" style="text-align: center;">
         <div class="alert-warning reg-form">
             <form action="" onsubmit="checkData(this); return false;">
                 <div class="form-group">

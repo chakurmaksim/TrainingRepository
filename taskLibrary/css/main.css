@@ -16,3 +16,12 @@ table, th, td {
     border: 1px solid black;
     text-align: center;
 }
+
+#intro {
+    background-image:url(../img/wallpaper.jpg);
+    background-repeat: no-repeat;
+    background-position: center;
+    background-attachment:fixed;
+    background-size: cover;
+    height:600px;
+}

@@ -3,39 +3,98 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css">
     <link rel="stylesheet" href="css/bootstrap.min.css">
     <link rel="stylesheet" href="css/main.css">
     
     <title>Home page</title>
 </head>
 <body>
-    <header class="alert-dark" style="height: 100px">
-        <div style="height: 150px; position: relative; float: left">
-            <img src="img/Logo.png" width="100px" height="100px">
-        </div>
-        <div>
-            <ul class="nav">
-                <li class="nav-item">
-                    <a class="nav-link active" href="index.html">Home page</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="UserList.html">List of users</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="contacts.html">Contact us</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="UserEdit.html">Profile editing</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="Login.html">Login</a>
-                </li>
-                <li class="nav-item" style="float: left">
-                    <a class="nav-link" href="Registration.html">Registration</a>
-                </li>
-            </ul>
-        </div>
+    <header>
+        <nav class="navbar navbar-expand-md navbar-light bg-light fixed-top">
+            <a class="navbar-brand" href="index.html">
+                <img src="img/logo.png" width="80" height="80" alt="">
+            </a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="index.html">Home page</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="userList.html">List of users</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="contacts.html">Contact us</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="userEdit.html">Profile editing</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="login.html">Login</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="registration.html">Registration</a>
+                    </li>
+                </ul>
+                <form class="form-inline my-2 my-lg-0">
+                    <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+                    <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+                </form>
+            </div>
+        </nav>
     </header>
+    
+    <main class="mt-5">
+        <div id="intro" class="view">
+        </div>
+        <div class="container">
+            <section id="best-features" class="text-center">
+              <h2 class="mb-5">Library influence</h2>
+              <div class="row d-flex justify-content-center mb-4">
+                  <div class="col-md-8">
+                      <p>
+                        Libraries play an important part in the cultural development of a country. People have a desire to learn, they seek knowledge. Books satisfy this desire.
+                        Books should not be read only for pleasure. Reading books helps us in our education. We can find all kinds of books in the libraries: novels, biographies, fiction, short stories, books on travelling, technical books, magazines, books for children and so on. In some libraries we can find books in many foreign languages.
+                        When a reader comes to a library for the first time he fills in his library card and the librarian helps him to choose something to read. The reader is allowed to borrow books for a certain number of days. The catalogues help the reader to find the books he needs. We should be careful with the books and not damage them in any way. We should not make notes in library books or dogs-ear the pages. Reading rooms are open to all who wish to work there. Besides books we can get periodicals, newspaper files and magazines to read there.
+                      </p>
+                  </div>
+              </div>
+              <div class="row">
+                  <div class="col-md-4 mb-1">
+                      <i class="fas fa-brain"></i>
+                      <h4 class="my-4">Science</h4>
+                      <p>
+                        Whether it's the sky above us or the tools inside of your house, science is all around us. What you learn in school is only a fraction of the scientific information that is available. However, taking a trip to the science section of your local bookstore is overwhelming, as there are thousands of science books available on millions of topics. 
+                        Luckily for you, we've compiled a list of the 50 best science books that cover an array of different subjects. Whether it's black holes, paranormal activity or mathematics, there's a science book that fits your needs on the following list.
+                      </p>
+                  </div>
+                  <div class="col-md-4 mb-1">
+                      <i class="fas fa-heart"></i>
+                      <h4 class="my-4">Romantic</h4>
+                      <p>
+                        Whether it’s love at first sight or an affair to remember, books about love have a way of taking hold of your heart and never letting go. In this roundup, we’ve included some of the best-known nonfiction and fiction books about love ever published. From 19th-century Russia to modern-day New York City, these unforgettable tales of love and passion transport readers across a variety of settings and depict love as a constantly evolving, utterly crucial experience that can drive us to remarkable feats. Some love stories are so intense that they really do last forever — the ones featured in this roundup just happened to make it to print. 
+                      </p>
+                  </div>
+                  <div class="col-md-4 mb-1">
+                      <i class="fas fa-bicycle"></i>
+                      <h4 class="my-4">Adventure</h4>
+                      <p>
+                        An adventure is an exciting or unusual experience. It can be risky, exhilarating, bold and exuberant. It can include; sky diving, travelling or extreme sports. But that was just a list of some outdoorsy activities. However, adventure can include indulging in a thrilling movie, writing an exciting story or simply, reading an adventure book. For me, that’s the greatest venture of all, where I can let my imagination run wild and let the book lead me into a world of hazards, endangerment and uncertainty. Therefore if you classify yourself as a bohemian, wanderer, risk-taking adventurer, I dare you to go ahead and read these top ten adventure books of all time.
+                      </p>
+                  </div>
+              </div>
+            </section>
+        </div>
+    </main>
+    
+    <footer class="page-footer font-small blue pt-4">
+    <div class="footer-copyright text-center py-3">© 2019 Copyright:
+      <a href="#"> WebLibrary.com</a>
+    </div>
+    </footer>
 
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
