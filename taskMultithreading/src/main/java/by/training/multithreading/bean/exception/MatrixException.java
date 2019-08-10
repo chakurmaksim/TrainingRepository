@@ -41,7 +41,7 @@ public class MatrixException extends Exception {
      *
      * @param message error message
      */
-    public MatrixException(String message) {
+    public MatrixException(final String message) {
         super(message);
     }
 
@@ -51,7 +51,7 @@ public class MatrixException extends Exception {
      * @param message error message
      * @param cause   Throwable instance
      */
-    public MatrixException(String message, Throwable cause) {
+    public MatrixException(final String message, final Throwable cause) {
         super(message, cause);
     }
 

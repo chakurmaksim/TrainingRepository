@@ -51,7 +51,7 @@ public enum MatrixHolder implements MatrixDao {
     public int getRowsCounter() throws MatrixException {
         Matrix matrix = matrixOpt.orElseThrow(() ->
                 new MatrixException(getNullableError()));
-        return rowsCounter.get() < matrix.getVerticalSize() ?
-                rowsCounter.getAndIncrement() : -1;
+        return rowsCounter.get() < matrix.getVerticalSize()
+                ? rowsCounter.getAndIncrement() : -1;
     }
 }

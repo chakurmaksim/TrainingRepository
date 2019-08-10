@@ -6,18 +6,20 @@ import org.apache.logging.log4j.Logger;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.locks.ReentrantLock;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static java.nio.file.StandardOpenOption.CREATE_NEW;
+import static java.nio.file.StandardOpenOption.CREATE;
 import static java.nio.file.StandardOpenOption.WRITE;
 
 public final class FileWriteReader {
-    private static FileWriteReader SINGLE_INSTANCE;
+    /**
+     * Single instance of the FileWriteReader object.
+     */
+    private static FileWriteReader singleInstance;
     /**
      * single instance of the ReentrantLock object.
      */
@@ -36,11 +38,12 @@ public final class FileWriteReader {
     private static Logger logger = LogManager.getLogger(FileWriteReader.class);
 
     /**
-     * Method for reading next line from the file.
+     * Method for reading all lines from the file.
      *
-     * @return object of class optional which contains String object
+     * @param fileName file name
+     * @return list of strings
      */
-    public List<String> readAllLines(String fileName) {
+    public List<String> readAllLines(final String fileName) {
         List<String> list = new ArrayList<>();
         try (Stream<String> stream = Files.lines(Paths.get(fileName))) {
             list = stream.filter(line -> !line.trim().equals("")).
@@ -51,9 +54,15 @@ public final class FileWriteReader {
         return list;
     }
 
-    public void writeAllLines(final String fileName, List<String> content) {
+    /**
+     * Method for writing list of strings to the file.
+     * @param fileName file name
+     * @param content list of strings
+     */
+    public void writeAllLines(final String fileName,
+                              final List<String> content) {
         try {
-            Files.write(Paths.get(fileName), content, WRITE);
+            Files.write(Paths.get(fileName), content, CREATE, WRITE);
         } catch (IOException e) {
             logger.error(e.toString());
         }
@@ -65,16 +74,16 @@ public final class FileWriteReader {
      * @return single instance of the FileWriteReader object.
      */
     public static FileWriteReader getSingleInstance() {
-        if (SINGLE_INSTANCE == null) {
+        if (singleInstance == null) {
             try {
                 REENTRANT_LOCK.lock();
-                if (SINGLE_INSTANCE == null) {
-                    SINGLE_INSTANCE = new FileWriteReader();
+                if (singleInstance == null) {
+                    singleInstance = new FileWriteReader();
                 }
             } finally {
                 REENTRANT_LOCK.unlock();
             }
         }
-        return SINGLE_INSTANCE;
+        return singleInstance;
     }
 }

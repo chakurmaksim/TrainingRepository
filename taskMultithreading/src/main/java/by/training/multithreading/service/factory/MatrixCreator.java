@@ -51,7 +51,7 @@ public final class MatrixCreator {
     }
 
     /**
-     * Method to create new random Matrix instance
+     * Method to create new random Matrix instance.
      *
      * @param row    number of rows in an array
      * @param column number of columns in an array
@@ -63,8 +63,8 @@ public final class MatrixCreator {
     public Matrix createRandomMatrix(
             final int row,
             final int column,
-            int start,
-            int end) throws MatrixException {
+            final int start,
+            final int end) throws MatrixException {
         if (validator.checkRange(row, column)) {
             return fillRandomValues(new Matrix(row, column), start, end);
         } else {
@@ -125,7 +125,8 @@ public final class MatrixCreator {
         }
         String matrixTitle = list.get(0).trim();
         Matrix matrix;
-        if (matrixTitle.startsWith("{\"Matrix\"")) {
+        if (matrixTitle.startsWith("{\"Matrix\"")
+                && matrixTitle.endsWith("}")) {
             int[] matrixSize = parser.parseMatrixSize(matrixTitle);
             matrix = createResultMatrix(matrixSize[0], matrixSize[1]);
             list.remove(0);

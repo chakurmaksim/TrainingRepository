@@ -7,6 +7,9 @@ import java.util.List;
 
 import static by.training.multithreading.bean.exception.MatrixException.getFileMatrixContentError;
 
+/**
+ * The class to parse the matrix from the passed string.
+ */
 public class MatrixParser {
 
     /**
@@ -17,7 +20,8 @@ public class MatrixParser {
      * matrix columns respectively
      * @throws MatrixException when can not be parsed to an array
      */
-    public int[] parseMatrixSize(String matrixTitle) throws MatrixException {
+    public int[] parseMatrixSize(final String matrixTitle)
+            throws MatrixException {
         int[] matrixSize = new int[2];
         try {
             String[] parts = matrixTitle.split(":");
@@ -45,7 +49,7 @@ public class MatrixParser {
      * @return array of values
      * @throws MatrixException when raw string can not be parsed in to numbers
      */
-    public int[] parseMatrixValues(String rawString, int size)
+    public int[] parseMatrixValues(final String rawString, final int size)
             throws MatrixException {
         int[] matrixValues = new int[size];
         String[] parts = rawString.split(" ");

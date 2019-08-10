@@ -15,9 +15,17 @@ public final class MatrixValidator implements Cloneable, Serializable {
      */
     private static final long SERIAL_VERSION_UID;
     /**
+     * Minimum matrix size.
+     */
+    private static final int MIN_MATRIX_SIZE = 8;
+    /**
+     * Maximum matrix size.
+     */
+    private static final int MAX_MATRIX_SIZE = 12;
+    /**
      * Single instance of the MatrixValidator object.
      */
-    private static MatrixValidator SINGLE_INSTANCE;
+    private static MatrixValidator singleInstance;
     /**
      * single instance of the ReentrantLock object.
      */
@@ -35,14 +43,14 @@ public final class MatrixValidator implements Cloneable, Serializable {
      * @return single instance of the MatrixValidator object.
      */
     public static MatrixValidator getMatrixValidator() {
-        if (SINGLE_INSTANCE == null) {
+        if (singleInstance == null) {
             REENTRANT_LOCK.lock();
-            if (SINGLE_INSTANCE == null) {
-                SINGLE_INSTANCE = new MatrixValidator();
+            if (singleInstance == null) {
+                singleInstance = new MatrixValidator();
             }
             REENTRANT_LOCK.unlock();
         }
-        return SINGLE_INSTANCE;
+        return singleInstance;
     }
 
     /**
@@ -53,11 +61,11 @@ public final class MatrixValidator implements Cloneable, Serializable {
      */
     @Override
     protected Object clone() throws CloneNotSupportedException {
-        return SINGLE_INSTANCE;
+        return singleInstance;
     }
 
     protected Object readResolve() {
-        return SINGLE_INSTANCE;
+        return singleInstance;
     }
 
     /**
@@ -68,11 +76,10 @@ public final class MatrixValidator implements Cloneable, Serializable {
      * @return true if size of the matrix corresponds to the task
      */
     public boolean checkRange(final int row, final int column) {
-        if (row >= 4 && column == row) {
+        if (row >= MIN_MATRIX_SIZE && row <= MAX_MATRIX_SIZE && column == row) {
             return true;
-        } else {
-            return false;
         }
+        return false;
     }
 
     /**
@@ -83,11 +90,17 @@ public final class MatrixValidator implements Cloneable, Serializable {
      * @return true if horizontal length of the first double-dimensional array
      * equals vertical length of the second double-dimensional array.
      */
-    public boolean couldMultiply(Matrix first, Matrix second) {
+    public boolean couldMultiply(final Matrix first, final Matrix second) {
         return first.getHorizontalSize() == second.getVerticalSize();
     }
 
-    public boolean validateMatrixDiagonal(Matrix matrix) {
+    /**
+     * Check existing zeros in the main diagonal of the matrix.
+     *
+     * @param matrix object
+     * @return true if the main diagonal of the matrix does not contain zeros
+     */
+    public boolean validateMatrixDiagonal(final Matrix matrix) {
         for (int i = 0; i < matrix.getVerticalSize(); i++) {
             if (matrix.getElement(i, i) == 0) {
                 return false;

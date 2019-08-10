@@ -1,7 +1,7 @@
 package by.training.multithreading.bean.entity;
 
 import by.training.multithreading.bean.state.MatrixState;
-import by.training.multithreading.bean.state.NewlyCreatedState;
+import by.training.multithreading.bean.state.CreatedState;
 
 import java.util.Arrays;
 
@@ -13,6 +13,9 @@ public class Matrix implements Cloneable {
      * Two dimensional array.
      */
     private int[][] twoDimArray;
+    /**
+     * Matrix state.
+     */
     private MatrixState state;
 
     /**
@@ -23,7 +26,7 @@ public class Matrix implements Cloneable {
      */
     public Matrix(final int row, final int column) {
         twoDimArray = new int[row][column];
-        state = new NewlyCreatedState();
+        state = new CreatedState();
     }
 
     /**
@@ -66,20 +69,43 @@ public class Matrix implements Cloneable {
         twoDimArray[rowNum][colNum] = val;
     }
 
+    /**
+     * Get method.
+     *
+     * @return matrix state
+     */
     public MatrixState getState() {
         return state;
     }
 
+    /**
+     * Set method.
+     *
+     * @param newState matrix state
+     */
     public void setState(final MatrixState newState) {
         state = newState;
     }
 
-    public void completeState() {
-        state.nextState(this);
+    /**
+     * Set new state.
+     */
+    public void nextState() {
+        state.next(this);
     }
 
-    public void startState() {
-        state.previousState(this);
+    /**
+     * Set previous state.
+     */
+    public void previousState() {
+        state.prev(this);
+    }
+
+    /**
+     * Print current status.
+     */
+    public void printStatus() {
+        state.printStatus(this);
     }
 
     /**
@@ -100,14 +126,29 @@ public class Matrix implements Cloneable {
         return clone;
     }
 
+    /**
+     * Overridden equals method.
+     *
+     * @param newO instance of a Matrix class
+     * @return true true if this and another object are equals
+     */
     @Override
     public boolean equals(final Object newO) {
-        if (this == newO) return true;
-        if (newO == null || getClass() != newO.getClass()) return false;
+        if (this == newO) {
+            return true;
+        }
+        if (newO == null || getClass() != newO.getClass()) {
+            return false;
+        }
         Matrix matrix = (Matrix) newO;
         return Arrays.equals(twoDimArray, matrix.twoDimArray);
     }
 
+    /**
+     * Overridden hashcode method.
+     *
+     * @return int number
+     */
     @Override
     public int hashCode() {
         return Arrays.hashCode(twoDimArray);

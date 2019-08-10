@@ -1,60 +1,108 @@
 package by.training.multithreading.service.action;
 
 import by.training.multithreading.bean.entity.Matrix;
+import by.training.multithreading.bean.exception.CustomThreadException;
 import by.training.multithreading.bean.exception.MatrixException;
 import by.training.multithreading.dao.filereader.FileWriteReader;
 import by.training.multithreading.dao.repository.MatrixHolder;
-import by.training.multithreading.service.executor.MatrixFillUsedAtomicInt;
-import by.training.multithreading.service.executor.MatrixFilling;
 import by.training.multithreading.service.executor.MatrixMultiplier;
 import by.training.multithreading.service.factory.MatrixCreator;
+import by.training.multithreading.service.factory.ThreadCreator;
 import by.training.multithreading.service.validator.MatrixValidator;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.locks.ReentrantLock;
 
 public class MatrixService {
+    /**
+     * The initial values ​​to fill the  main diagonal.
+     */
     private static final int MAIN_DIAGONAL_VALUE = 0;
-    private MatrixCreator creator;
-    private MatrixValidator validator;
-    private MatrixHolder holder;
+    /**
+     * Time to pause thread execution.
+     */
+    private static final int TIME_AWAIT = 5;
+    /**
+     * Events logger.
+     */
+    private static Logger logger = LogManager.getLogger(MatrixService.class);
+    /**
+     * Matrix creator.
+     */
+    private MatrixCreator matrixCreator;
+    /**
+     * Thread creator.
+     */
+    private ThreadCreator threadCreator;
+    /**
+     * Matrix validator.
+     */
+    private MatrixValidator matrixValidator;
+    /**
+     * Matrix storage.
+     */
+    private MatrixHolder matrixHolder;
     /**
      * Files reader repository.
      */
     private FileWriteReader fileReader;
 
+    /**
+     * Matrix creator, thread creator, matrix holder and validator, file reader
+     * variables are initialized in this constructor.
+     */
     public MatrixService() {
-        creator = MatrixCreator.getMatrixCreator();
-        validator = MatrixValidator.getMatrixValidator();
-        holder = MatrixHolder.SINGLE_INSTANCE;
+        matrixCreator = MatrixCreator.getMatrixCreator();
+        threadCreator = ThreadCreator.getThreadCreator();
+        matrixValidator = MatrixValidator.getMatrixValidator();
+        matrixHolder = MatrixHolder.SINGLE_INSTANCE;
         fileReader = FileWriteReader.getSingleInstance();
     }
 
+    /**
+     * Multiplying two matrices in one thread.
+     *
+     * @param first  matrix object
+     * @param second matrix object
+     * @return result matrix object
+     * @throws MatrixException if matrices can not be multiplied
+     */
     public Matrix multiplyTwoMatrixConsistently(
             final Matrix first,
             final Matrix second)
             throws MatrixException {
-        Matrix result = creator.createResultMatrix(first.getVerticalSize(),
+        Matrix res = matrixCreator.createResultMatrix(first.getVerticalSize(),
                 second.getHorizontalSize());
-        if (validator.couldMultiply(first, second)) {
-            MatrixMultiplier.multiplySingleTh(first, second, result);
-        } else {
+        if (!matrixValidator.couldMultiply(first, second)) {
             throw new MatrixException(MatrixException.getIncompatibleError());
         }
-        return result;
+        MatrixMultiplier.multiplySingleThreaded(first, second, res);
+        return res;
     }
 
+    /**
+     * Multiplying two matrices in multithreading.
+     *
+     * @param first      matrix object
+     * @param second     matrix object
+     * @param numThreads thread number
+     * @return result matrix object
+     * @throws MatrixException if matrices can not be multiplied
+     */
     public Matrix multiplyTwoMatrixConcurrently(
             final Matrix first,
             final Matrix second,
             final int numThreads)
             throws MatrixException {
-        Matrix result = creator.createResultMatrix(first.getVerticalSize(),
-                second.getHorizontalSize());
-        if (validator.couldMultiply(first, second)) {
+        Matrix result = matrixCreator.createResultMatrix(
+                first.getVerticalSize(), second.getHorizontalSize());
+        if (matrixValidator.couldMultiply(first, second)) {
             ExecutorService executor = Executors.newFixedThreadPool(numThreads);
             int mid = Math.round((float) first.getVerticalSize() / numThreads);
             int startInd = 0;
@@ -74,9 +122,12 @@ public class MatrixService {
             executor.shutdown();
             while (!executor.isTerminated()) {
                 try {
-                    executor.awaitTermination(5, TimeUnit.MILLISECONDS);
-                } catch (InterruptedException newE) {
-                    newE.printStackTrace();
+                    executor.awaitTermination(TIME_AWAIT,
+                            TimeUnit.MILLISECONDS);
+                } catch (InterruptedException e) {
+                    String message = String.format("%s %s", e.toString(),
+                            Thread.currentThread().toString());
+                    logger.error(message);
                 }
             }
         } else {
@@ -85,73 +136,119 @@ public class MatrixService {
         return result;
     }
 
+    /**
+     * Create two random matrices.
+     *
+     * @param row    number of matrix rows
+     * @param column number of matrix columns
+     * @param start  minimum number for creating matrix values
+     * @param end    maximum number for creating matrix values
+     * @return array that contains two matrices
+     * @throws MatrixException if matrices can not be created
+     */
     public Matrix[] createTwoRandomMatrix(
             final int row,
             final int column,
             final int start,
             final int end) throws MatrixException {
         Matrix[] matrices = new Matrix[2];
-        matrices[0] = creator.createRandomMatrix(row, column, start, end);
-        matrices[1] = creator.createRandomMatrix(row, column, start, end);
+        matrices[0] = matrixCreator.createRandomMatrix(row, column, start, end);
+        matrices[1] = matrixCreator.createRandomMatrix(row, column, start, end);
         return matrices;
     }
 
-    public Matrix fillMatrixDiagonalConcurrently(String matrixFileName)
-            throws MatrixException, CloneNotSupportedException {
-        putMatrixToMatrixHolder(deliverMatrixFromFile(matrixFileName));
-        ReentrantLock locker = new ReentrantLock(true);
-        ExecutorService executor = Executors.newFixedThreadPool(4);
-        for (int i = 1; i <= 4; i++) {
-            executor.execute(new MatrixFilling(i, holder, locker));
+    /**
+     * Fill matrix main diagonal used multi-threads.
+     *
+     * @param rawMatrixFileName    raw matrix file name
+     * @param threadsFileName      threads file name
+     * @param resultMatrixFileName result matrix file name
+     * @return Matrix object
+     * @throws MatrixException            when matrix can not be created
+     * @throws CustomThreadException      when threads can not be created
+     * @throws CloneNotSupportedException when matrix can not be cloned
+     */
+    public Matrix fillMatrixDiagonalConcurrently(
+            final String rawMatrixFileName, final String threadsFileName,
+            final String resultMatrixFileName) throws MatrixException,
+            CustomThreadException, CloneNotSupportedException {
+        putRawMatrixToMatrixHolder(deliverMatrixFromFile(rawMatrixFileName));
+        List<Thread> threads = deliverThreadsForFillConcurrently(
+                threadsFileName);
+        startThreads(threads);
+        Matrix completedMatrix = matrixHolder.read();
+        if (matrixValidator.validateMatrixDiagonal(completedMatrix)) {
+            completedMatrix.nextState();
+            fileReader.writeAllLines(resultMatrixFileName,
+                    new ArrayList<>(Arrays.asList(completedMatrix.toString())));
         }
-        executor.shutdown();
-        while (!executor.isTerminated()) {
-            try {
-                executor.awaitTermination(20, TimeUnit.MILLISECONDS);
-            } catch (InterruptedException newE) {
-                newE.printStackTrace();
-            }
-        }
-        return holder.read();
+        return completedMatrix;
     }
 
-    public void fillMatrixDiagonalUsedAtomicInt() {
-        try {
-            Matrix matrix = creator.createResultMatrix(12, 12);
-            holder.add(matrix);
-            ReentrantLock locker = new ReentrantLock(true);
-            ExecutorService executor = Executors.newFixedThreadPool(4);
-            for (int i = 1; i <= 4; i++) {
-                executor.execute(new MatrixFillUsedAtomicInt(i, holder, locker));
-            }
-            executor.shutdown();
-            while (!executor.isTerminated()) {
-                try {
-                    executor.awaitTermination(20, TimeUnit.MILLISECONDS);
-                } catch (InterruptedException newE) {
-                    newE.printStackTrace();
-                }
-            }
-            if (validator.validateMatrixDiagonal(matrix)) {
-                matrix.completeState();
-                System.out.println("Матрица заполнена");
-            }
-        } catch (MatrixException newE) {
-            newE.printStackTrace();
+    /**
+     * Fill matrix main diagonal used multi-threads and atomic integer variable.
+     *
+     * @param rawMatrixFileName    raw matrix file name
+     * @param threadsFileName      threads file name
+     * @param resultMatrixFileName result matrix file name
+     * @return Matrix object
+     * @throws MatrixException            when matrix can not be created
+     * @throws CustomThreadException      when threads can not be created
+     * @throws CloneNotSupportedException when matrix can not be cloned
+     */
+    public Matrix fillMatrixDiagonalUsedAtomicInt(
+            final String rawMatrixFileName, final String threadsFileName,
+            final String resultMatrixFileName) throws MatrixException,
+            CustomThreadException, CloneNotSupportedException {
+        putRawMatrixToMatrixHolder(deliverMatrixFromFile(rawMatrixFileName));
+        List<Thread> threads = deliverThreadsForUsedAtomic(
+                threadsFileName);
+        startThreads(threads);
+        Matrix completedMatrix = matrixHolder.read();
+        if (matrixValidator.validateMatrixDiagonal(completedMatrix)) {
+            completedMatrix.nextState();
+            fileReader.writeAllLines(resultMatrixFileName,
+                    new ArrayList<>(Arrays.asList(completedMatrix.toString())));
         }
+        return completedMatrix;
     }
 
     private Matrix deliverMatrixFromFile(final String fileName)
             throws MatrixException {
-        List<String> list = fileReader.readAllLines(fileName);
-        // list.forEach(System.out::println);
-        return creator.createMatrixFromString(list);
+        List<String> rawList = fileReader.readAllLines(fileName);
+        return matrixCreator.createMatrixFromString(rawList);
     }
 
-    private void putMatrixToMatrixHolder(final Matrix matrix) {
+    private void putRawMatrixToMatrixHolder(final Matrix matrix) {
         for (int i = 0; i < matrix.getVerticalSize(); i++) {
             matrix.setElement(i, i, MAIN_DIAGONAL_VALUE);
         }
-        holder.add(matrix);
+        matrix.nextState();
+        matrixHolder.add(matrix);
+    }
+
+    private List<Thread> deliverThreadsForFillConcurrently(
+            final String fileName) throws CustomThreadException {
+        List<String> rawList = fileReader.readAllLines(fileName);
+        return threadCreator.createThreadsForFillConcurrently(rawList);
+    }
+
+    private List<Thread> deliverThreadsForUsedAtomic(final String fileName)
+            throws CustomThreadException {
+        List<String> rawList = fileReader.readAllLines(fileName);
+        return threadCreator.createThreadsForFillUsedAtomic(rawList);
+    }
+
+    private void startThreads(final List<Thread> threads) {
+        for (int i = 0; i < threads.size(); i++) {
+            threads.get(i).start();
+            if (i == threads.size() - 1) {
+                try {
+                    threads.get(i).join();
+                } catch (InterruptedException e) {
+                    logger.error(e.toString());
+                }
+            }
+        }
     }
 }
