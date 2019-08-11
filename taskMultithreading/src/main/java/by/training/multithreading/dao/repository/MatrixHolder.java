@@ -9,9 +9,18 @@ import java.util.concurrent.atomic.AtomicInteger;
 import static by.training.multithreading.bean.exception.MatrixException.getNullableError;
 
 public enum MatrixHolder implements MatrixDao {
+    /**
+     * single instance of the MatrixHolder.
+     */
     SINGLE_INSTANCE;
 
+    /**
+     * Matrix object is wrapped to Optional instance.
+     */
     private Optional<Matrix> matrixOpt = Optional.empty();
+    /**
+     * matrix rows counter.
+     */
     private AtomicInteger rowsCounter;
 
     @Override
@@ -48,6 +57,12 @@ public enum MatrixHolder implements MatrixDao {
         }
     }
 
+    /**
+     * Get atomic rows counter.
+     *
+     * @return number of the matrix row
+     * @throws MatrixException if matrix object is null
+     */
     public int getRowsCounter() throws MatrixException {
         Matrix matrix = matrixOpt.orElseThrow(() ->
                 new MatrixException(getNullableError()));

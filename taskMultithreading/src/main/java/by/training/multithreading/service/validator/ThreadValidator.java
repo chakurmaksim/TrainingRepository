@@ -105,7 +105,7 @@ public final class ThreadValidator implements Cloneable, Serializable {
      */
     public boolean checkSameNumbers(final List<Integer> uniqueNums) {
         Set<Integer> setNumbers = new HashSet<>(uniqueNums);
-        if (uniqueNums.size() == setNumbers.size()) {
+        if (uniqueNums.size() == setNumbers.size() && !uniqueNums.contains(0)) {
             return true;
         }
         return false;

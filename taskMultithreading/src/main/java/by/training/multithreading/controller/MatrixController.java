@@ -142,11 +142,9 @@ public class MatrixController {
         try {
             Matrix[] matrices = service.createTwoRandomMatrix(
                     row, column, start, end);
-            System.out.print(matrices[0] + " * " + matrices[1] + " = ");
             Matrix result = service.multiplyTwoMatrixConcurrently(
                     matrices[0], matrices[1], numThreads);
             marixStr = result.toString();
-            System.out.print(marixStr);
         } catch (MatrixException e) {
             logger.error(e.getMessage());
         }

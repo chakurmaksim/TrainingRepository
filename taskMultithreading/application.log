@@ -6,3 +6,9 @@
 2019-08-10 00:47:06 [ERROR] Amount of the threads does not match the task: actual 3
 2019-08-10 00:47:20 [ERROR] File with the threads contains corrupted data: is empty
 2019-08-10 00:47:34 [ERROR] File with the threads contains corrupted data: threads have incorrect priority numbers: [5, 5, 11, 5]
+2019-08-11 19:24:19 [ERROR] File with the threads contains corrupted data: threads have duplicate numbers: [0, 22, 33, 44]
+2019-08-11 19:24:19 [ERROR] File with the threads contains corrupted data: threads have duplicate numbers: [0, 22, 33, 44]
+2019-08-11 19:27:24 [ERROR] Size of the matrix does not match the task
+2019-08-11 19:27:24 [ERROR] Size of the matrix does not match the task
+2019-08-11 19:54:56 [ERROR] File with the matrix contains corrupted data: matrix size can not be converted to a number
+2019-08-11 19:54:56 [ERROR] File with the matrix contains corrupted data: matrix size can not be converted to a number

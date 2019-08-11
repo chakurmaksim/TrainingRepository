@@ -33,6 +33,13 @@ public class MatrixCreatorTest {
         }
     }
 
+    @AfterMethod
+    public void tearDown() {
+        creator = null;
+        initialList = null;
+        expected = null;
+    }
+
     @DataProvider(name = "negativeDataForCreateMatrixFromString")
     public Object[] createNegativeDataFor_CreateMatrixFromString() {
         List<String> baseList = new ArrayList<>();
@@ -49,13 +56,6 @@ public class MatrixCreatorTest {
         List<String> l4 = new ArrayList<>(baseList);
         l4.set(1, "1 1 1 number 1 1 1 1");
         return new Object[]{l1, l2, l3, l4};
-    }
-
-    @AfterMethod
-    public void tearDown() {
-        creator = null;
-        initialList = null;
-        expected = null;
     }
 
     @Test(description = "Positive scenario of creating matrix from list of strings")

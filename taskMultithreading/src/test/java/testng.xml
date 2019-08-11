@@ -1,0 +1,29 @@
+<suite name="ChefApplicationTest" verbose="1">
+    <test name="MatrixMultiplyingTest">
+        <classes>
+            <class name="by.training.multithreading.service.action.MatrixServiceTest"/>
+        </classes>
+    </test>
+
+    <test name="CreatorsTest">
+        <classes>
+            <class name="by.training.multithreading.service.factory.MatrixCreatorTest"/>
+            <class name="by.training.multithreading.service.factory.ThreadCreatorTest"/>
+        </classes>
+    </test>
+
+    <test name="ParsersTest">
+        <classes>
+            <class name="by.training.multithreading.service.parser.MatrixParserTest"/>
+            <class name="by.training.multithreading.service.parser.ThreadParserTest"/>
+        </classes>
+    </test>
+
+    <test name="ValidatorsTest">
+        <classes>
+            <class name="by.training.multithreading.service.validator.MatrixValidatorTest"/>
+            <class name="by.training.multithreading.service.validator.ThreadValidatorTest"/>
+        </classes>
+    </test>
+</suite>
+

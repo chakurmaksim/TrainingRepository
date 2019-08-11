@@ -39,9 +39,9 @@ public class MatrixFillConcurrently implements Runnable {
     /**
      * To initialize unique number, matrixHolder and locker variables.
      *
-     * @param newThreadNum unique thread number
+     * @param newThreadNum   unique thread number
      * @param commonResource matrix keeper
-     * @param newLocker locker
+     * @param newLocker      locker
      */
     public MatrixFillConcurrently(
             final int newThreadNum,
@@ -82,5 +82,14 @@ public class MatrixFillConcurrently implements Runnable {
                 locker.unlock();
             }
         }
+    }
+
+    /**
+     * Get method.
+     *
+     * @return unique number of the thread.
+     */
+    public int getThreadNum() {
+        return threadNum;
     }
 }

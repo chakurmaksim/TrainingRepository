@@ -1,6 +1,5 @@
 package by.training.multithreading.main;
 
-import by.training.multithreading.bean.entity.Matrix;
 import by.training.multithreading.controller.MatrixController;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -9,11 +8,11 @@ public final class Main {
     /**
      * Number of matrix rows and columns.
      */
-    private static final int ROW_COL_NUM = 8;
+    private static final int ROW_COL_NUM = 12;
     /**
      * Maximum number for creating matrix values.
      */
-    private static final int MAX_NUM = 2;
+    private static final int MAX_NUM = 10;
     /**
      * Number of threads.
      */
@@ -42,7 +41,7 @@ public final class Main {
                 ROW_COL_NUM, ROW_COL_NUM, 1, MAX_NUM, THREAD_NUM);
         timeEnd = System.currentTimeMillis();
         String timeMulti = String.format("Time spent on creating and "
-                        + "multiplying two matrices in multithreading,"
+                        + "multiplying two matrices in multithreading, "
                 + "millis: %d", (timeEnd - timeStart));
         logger.info(timeMulti);
         logger.info(controller.fillMainDiagonalConcurrently());
