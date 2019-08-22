@@ -4,7 +4,7 @@ import by.training.task1.service.specification.Specification;
 
 public interface TextRepository<T> {
     /**
-     * Get a copy of the item
+     * Get a copy of the item.
      *
      * @return item.
      */

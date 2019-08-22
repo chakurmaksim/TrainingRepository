@@ -4,7 +4,6 @@ import by.training.task1.service.specification.SortSpecification;
 import by.training.task1.service.specification.Specification;
 import by.training.taskComposite.bean.Paragraph;
 import by.training.taskComposite.bean.Text;
-import by.training.taskComposite.bean.TextComponent;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -43,18 +42,15 @@ public enum TextHandler implements TextRepository<Text> {
 
     @Override
     public String query(final Specification specification) {
-        Text copy = null;
         if (text != null && specification instanceof SortSpecification) {
-            copy = new Text();
             List<Paragraph> components = new LinkedList<>();
             text.getTextComponentStream().forEach(
                     x -> components.add((Paragraph) x));
+            components.stream().forEach(p -> text.remove(p));
             ((SortSpecification) specification).
                     sortSpecifiedComparator(components);
-            for (TextComponent component : components) {
-                copy.add(component);
-            }
+            components.stream().forEach(p -> text.add(p));
         }
-        return copy != null ? copy.concatenate() : "";
+        return text != null ? text.concatenate() : "";
     }
 }

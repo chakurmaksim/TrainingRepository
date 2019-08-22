@@ -27,13 +27,17 @@ public class SymbolParser extends AbstractDataParser {
         if (textComponent instanceof Word) {
             Word word = (Word) textComponent;
             for (String symbolStr : symbolsArr) {
-                word.add(new Symbol(symbolStr.toCharArray()[0]));
+                if (!symbolStr.equals("\n")) {
+                    word.add(new Symbol(symbolStr.toCharArray()[0]));
+                }
             }
         }
         if (textComponent instanceof Punctuation) {
             Punctuation punctuationMark = (Punctuation) textComponent;
             for (String symbolStr : symbolsArr) {
-                punctuationMark.add(new Symbol(symbolStr.toCharArray()[0]));
+                if (!symbolStr.equals("\n")) {
+                    punctuationMark.add(new Symbol(symbolStr.toCharArray()[0]));
+                }
             }
         }
     }

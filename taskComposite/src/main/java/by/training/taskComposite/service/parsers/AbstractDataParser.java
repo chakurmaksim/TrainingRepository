@@ -29,8 +29,15 @@ public abstract class AbstractDataParser {
      * @param component object of the TextComponent.
      * @param part      of a string
      */
-    public abstract void parse(final TextComponent component, final String part);
+    public abstract void parse(TextComponent component, String part);
 
+    /**
+     * Method invokes next parse method of a TextComponent object
+     * that is a successor of this.
+     *
+     * @param component TextComponent object
+     * @param part      part of a text the type of String
+     */
     public void chain(final TextComponent component, final String part) {
         successor.parse(component, part);
     }

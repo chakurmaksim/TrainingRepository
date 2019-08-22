@@ -4,9 +4,11 @@ import by.training.task1.dao.filereader.FileWriteReader;
 import by.training.task1.service.configuration.ApplicationProperties;
 import by.training.taskComposite.bean.Text;
 import by.training.taskComposite.dao.TextHandler;
-import by.training.taskComposite.service.parsers.TextParser;
-import by.training.taskComposite.service.specification.SortParagraphs;
+import by.training.taskComposite.service.parsers.ParagraphParser;
+import by.training.taskComposite.service.specification.SortLexemesBySymbols;
+import by.training.taskComposite.service.specification.SortParagraphsBySentencesAmount;
 import by.training.taskComposite.service.specification.SortSentencesByWordsAmount;
+import by.training.taskComposite.service.specification.SortWordsByLength;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -53,7 +55,9 @@ public class Library {
      */
     public String parseAndRestoreTextFromFile() {
         deliverTextFromFile();
-        return textHandler.read();
+        String res = textHandler.read();
+        saveResult(res);
+        return res;
     }
 
     /**
@@ -62,7 +66,20 @@ public class Library {
      * @return sorted strings of the text
      */
     public String sortParagraphsBySentencesAmount() {
-        return textHandler.query(new SortParagraphs());
+        String res = textHandler.query(new SortParagraphsBySentencesAmount());
+        saveResult(res);
+        return res;
+    }
+
+    /**
+     * Method to sort words in a sentence by words length.
+     *
+     * @return sorted strings of the text
+     */
+    public String sortWordsByLength() {
+        String res = textHandler.query(new SortWordsByLength());
+        saveResult(res);
+        return res;
     }
 
     /**
@@ -71,7 +88,21 @@ public class Library {
      * @return sorted strings of the text
      */
     public String sortSentencesByWordsAmount() {
-        return textHandler.query(new SortSentencesByWordsAmount());
+        String res = textHandler.query(new SortSentencesByWordsAmount());
+        saveResult(res);
+        return res;
+    }
+
+    /**
+     * Method to sort lexemes by given symbol.
+     *
+     * @param symbol char
+     * @return sorted string of the text
+     */
+    public String sortLexemesByGivenSymbol(final char symbol) {
+        String res = textHandler.query(new SortLexemesBySymbols(symbol));
+        saveResult(res);
+        return res;
     }
 
     private void deliverTextFromFile() {
@@ -89,11 +120,17 @@ public class Library {
         createText(textList);
     }
 
-    private void createText(List<String> textList) {
+    private void createText(final List<String> textList) {
         String initialText = textList.stream().collect(
-                Collectors.joining("\n"));
+                Collectors.joining("\n "));
         Text text = new Text();
-        new TextParser().parse(text, initialText);
+        new ParagraphParser().parse(text, initialText);
         textHandler.add(text);
+    }
+
+    private void saveResult(final String result) {
+        fileReader.openFileWriter(outputFileName, false);
+        fileReader.writeNextLine(result);
+        fileReader.closeFileWriter();
     }
 }

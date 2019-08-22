@@ -49,7 +49,7 @@ public abstract class TextComposite implements TextComponent {
      * @param index number of position
      * @return text component
      */
-    public Object getChild(final int index) {
+    public TextComponent getChild(final int index) {
         return textComponents.get(index);
     }
 

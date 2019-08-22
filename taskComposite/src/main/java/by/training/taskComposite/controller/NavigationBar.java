@@ -1,5 +1,6 @@
 package by.training.taskComposite.controller;
 
+import by.training.taskComposite.service.action.ActionChooser;
 import by.training.taskComposite.service.action.Library;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -7,38 +8,21 @@ import org.apache.logging.log4j.Logger;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.Locale;
-import java.util.ResourceBundle;
+import java.util.HashMap;
 
 public class NavigationBar {
     /**
-     * Final variable with the path to the properties file.
+     * Given symbol for sorting lexemes in a text.
      */
-    private static final String RESOURCE_FILE_NAME;
-    /**
-     * Logger to output data into the console.
-     */
-    private Logger rootLogger = LogManager.getRootLogger();
+    private static final char GIVEN_SYMBOL = 'a';
     /**
      * Logger to output data into the log file.
      */
     private Logger errorLogger = LogManager.getLogger();
     /**
-     * Default language is English.
+     * ActionChooser variable.
      */
-    private String language = "en";
-    /**
-     * Default country.
-     */
-    private String country = "EN";
-    /**
-     * Declaration of the Locale variable.
-     */
-    private Locale locale;
-    /**
-     * Declaration of the ResourceBundle variable.
-     */
-    private ResourceBundle bundle;
+    private ActionChooser chooser;
     /**
      * Library variable.
      */
@@ -47,115 +31,91 @@ public class NavigationBar {
      * Declaration of the console reader variable.
      */
     private BufferedReader consoleReader;
-
-    static {
-        RESOURCE_FILE_NAME = "text";
-    }
+    /**
+     * Declaration of the console printer variable.
+     */
+    private ConsolePrinter consolePrinter;
 
     /**
      * Instantiating locale, bundle, library and console reader variables.
      */
     public NavigationBar() {
-        locale = new Locale(language, country);
-        bundle = ResourceBundle.getBundle(RESOURCE_FILE_NAME, locale);
+        chooser = new ActionChooser();
         library = new Library();
         consoleReader = new BufferedReader(new InputStreamReader(System.in));
+        consolePrinter = new ConsolePrinter();
     }
 
     /**
      * Program navigation.
      */
     public void startPage() {
-        String page = String.format("1 - %s; \n2 - %s; \n3 - %s.",
-                bundle.getString("language.choose"),
-                bundle.getString("action.textFromFile"),
-                bundle.getString("exit"));
-        rootLogger.info(page);
-        int i = 0;
+        HashMap<Integer, Command> commandMap = new HashMap<>();
+        int commandCount = 1;
+        commandMap.put(commandCount, new OfferLanguageCommand(
+                this, chooser, consolePrinter));
+        commandMap.put(++commandCount, new ParseTextCommand(this,
+                library, consolePrinter));
+        commandMap.put(++commandCount, new CommandExit(
+                consoleReader, errorLogger));
+        consolePrinter.printToconsole(chooser.offerStartAction());
+        int userInput = 0;
         try {
-            i = Integer.parseInt(consoleReader.readLine());
-            switch (i) {
-                case 1:
-                    chooseLanguage();
-                    break;
-                case 2:
-                    readTextFromFile();
-                    break;
-                case 3:
-                    consoleReader.close();
-                    return;
+            userInput = Integer.parseInt(consoleReader.readLine());
+            Command command = commandMap.get(userInput);
+            if (command != null) {
+                command.execute();
+            } else {
+                startPage();
             }
         } catch (NumberFormatException | IOException e) {
             errorLogger.error(e.toString());
         }
     }
 
-    private void continuePage() {
-        String page = String.format("1 - %s; \n2 - %s; \n3 - %s.",
-                bundle.getString("action.sortBySentencesAmount"),
-                bundle.getString("action.sortByWordsAmount"),
-                bundle.getString("exit"));
-        rootLogger.info(page);
-        int i = 0;
+    /**
+     * Method invokes sorting actions and is called after start page.
+     */
+    void continuePage() {
+        HashMap<Integer, Command> commandMap = new HashMap<>();
+        int commandCount = 1;
+        commandMap.put(commandCount, new SortParagraphsCommand(
+                this, library, consolePrinter));
+        commandMap.put(++commandCount, new SortWordsCommand(
+                this, library, consolePrinter));
+        commandMap.put(++commandCount, new SortSentencesCommand(
+                this, library, consolePrinter));
+        commandMap.put(++commandCount, new SortLexemesCommand(
+                this, library, consolePrinter, GIVEN_SYMBOL));
+        commandMap.put(++commandCount, new CommandExit(
+                consoleReader, errorLogger));
+        consolePrinter.printToconsole(chooser.offerSortAction());
+        int userInput = 0;
         try {
-            i = Integer.parseInt(consoleReader.readLine());
-            switch (i) {
-                case 1:
-                    sortParagraphs();
-                    break;
-                case 2:
-                    sortSentences();
-                    break;
-                case 3:
-                    consoleReader.close();
-                    return;
+            userInput = Integer.parseInt(consoleReader.readLine());
+            Command command = commandMap.get(userInput);
+            if (command != null) {
+                command.execute();
+            } else {
+                continuePage();
             }
         } catch (NumberFormatException | IOException e) {
             errorLogger.error(e.toString());
         }
     }
 
-    private void chooseLanguage() {
-        String choosing = String.format("1 - %s; 2 - %s; 3 - %s: ",
-                bundle.getString("language.english"),
-                bundle.getString("language.deutsch"),
-                bundle.getString("language.russian"));
-        rootLogger.info(choosing);
-        int i = 0;
+    /**
+     * Method invokes choosing language of the navigation menu.
+     */
+    void chooseLanguage() {
+        int userInput = 0;
         try {
-            i = Integer.parseInt(consoleReader.readLine());
-            switch (i) {
-                case 1:
-                    country = "EN";
-                    language = "en";
-                    break;
-                case 2:
-                    country = "DE";
-                    language = "de";
-                    break;
-                case 3:
-                    country = "RU";
-                    language = "ru";
-                    break;
-            }
-            locale = new Locale(language, country);
-            bundle = ResourceBundle.getBundle(RESOURCE_FILE_NAME, locale);
-            startPage();
+            userInput = Integer.parseInt(consoleReader.readLine());
+            ChooseLanguageCommand command = new ChooseLanguageCommand(
+                    this, chooser, userInput);
+            command.execute();
         } catch (NumberFormatException | IOException e) {
             errorLogger.error(e.toString());
         }
-    }
-
-    private void readTextFromFile() {
-        rootLogger.info(library.parseAndRestoreTextFromFile());
-        continuePage();
-    }
-
-    private void sortParagraphs() {
-        rootLogger.info(library.sortParagraphsBySentencesAmount());
-    }
-
-    private void sortSentences() {
-        rootLogger.info(library.sortSentencesByWordsAmount());
     }
 }

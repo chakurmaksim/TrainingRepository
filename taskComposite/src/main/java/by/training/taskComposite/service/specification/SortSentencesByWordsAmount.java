@@ -6,25 +6,28 @@ import by.training.taskComposite.bean.Sentence;
 
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.LinkedList;
 import java.util.List;
+import java.util.LinkedList;
 
-public class SortSentencesByWordsAmount implements SortSpecification<Paragraph> {
+
+public class SortSentencesByWordsAmount
+        implements SortSpecification<Paragraph> {
+    /**
+     * Method to sort sentences by words amount.
+     *
+     * @param paragraphs list of components
+     */
     @Override
-    public void sortSpecifiedComparator(final List<Paragraph> newList) {
-        for (Paragraph paragraph : newList) {
+    public void sortSpecifiedComparator(final List<Paragraph> paragraphs) {
+        for (Paragraph paragraph : paragraphs) {
             List<Sentence> sentences = new LinkedList<>();
             paragraph.getTextComponentStream().forEach(
-                    x -> sentences.add((Sentence) x));
-            sentences.stream().forEach(x -> paragraph.remove(x));
-            sortSentenceByWord(sentences);
-            sentences.stream().forEach(x -> paragraph.add(x));
+                    s -> sentences.add((Sentence) s));
+            sentences.stream().forEach(s -> paragraph.remove(s));
+            Comparator<Sentence> comparator = (s1, s2) ->
+                    s1.getComponentsListSize() - s2.getComponentsListSize();
+            Collections.sort(sentences, comparator);
+            sentences.stream().forEach(s -> paragraph.add(s));
         }
-    }
-
-    private void sortSentenceByWord(final List<Sentence> sentences) {
-        Comparator<Sentence> comparator = (s1, s2) -> s1.getComponentsListSize()
-                - s2.getComponentsListSize();
-        Collections.sort(sentences, comparator);
     }
 }

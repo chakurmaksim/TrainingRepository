@@ -1,6 +1,9 @@
 package by.training.taskComposite.service.parsers;
 
-import by.training.taskComposite.bean.*;
+import by.training.taskComposite.bean.Lexeme;
+import by.training.taskComposite.bean.Punctuation;
+import by.training.taskComposite.bean.TextComponent;
+import by.training.taskComposite.bean.Word;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -21,7 +24,7 @@ public class WordParser extends AbstractDataParser {
     private Pattern pattern;
 
     static {
-        REGEX = "[,:;'\"!\\.\\?-]";
+        REGEX = "[,:;!\\.\\?]";
     }
 
     /**
@@ -53,39 +56,38 @@ public class WordParser extends AbstractDataParser {
                 chain(word, part);
                 return;
             }
-            int previousInd = 0;
+            int prevWordInd = 0;
             for (int i = 0; i < punctuationIndexes.size(); i++) {
                 int punctuationInd = punctuationIndexes.get(i);
-                if (part.substring(previousInd, punctuationInd).isEmpty()) {
-                    previousInd = punctuationInd + 1;
-                    if (i == punctuationIndexes.size() - 1) {
-                        if (!part.substring(previousInd).isEmpty()) {
-                            addMidPunctuation(lexeme, part, punctuationInd);
-                            addLastWord(lexeme, part, previousInd);
-                        } else {
-                            addLastPunctuation(lexeme, part, punctuationInd);
-                        }
-                    } else {
-                        addMidPunctuation(lexeme, part, punctuationInd);
-                    }
+                if (part.substring(prevWordInd, punctuationInd).isEmpty()) {
+                    prevWordInd = addComponents(i, punctuationIndexes.size(),
+                            punctuationInd, part, lexeme);
                 } else {
                     Word word = new Word();
                     lexeme.add(word);
-                    chain(word, part.substring(previousInd, punctuationInd));
-                    previousInd = punctuationInd + 1;
-                    if (i == punctuationIndexes.size() - 1) {
-                        if (!part.substring(previousInd).isEmpty()) {
-                            addMidPunctuation(lexeme, part, punctuationInd);
-                            addLastWord(lexeme, part, previousInd);
-                        } else {
-                            addLastPunctuation(lexeme, part, punctuationInd);
-                        }
-                    } else {
-                        addMidPunctuation(lexeme, part, punctuationInd);
-                    }
+                    chain(word, part.substring(prevWordInd, punctuationInd));
+                    prevWordInd = addComponents(i, punctuationIndexes.size(),
+                            punctuationInd, part, lexeme);
                 }
             }
         }
+    }
+
+    private int addComponents(
+            final int pos, final int listSize, final int punctuationInd,
+            final String part, final Lexeme lexeme) {
+        int prevWordInd = punctuationInd + 1;
+        if (pos == listSize - 1) {
+            if (!part.substring(prevWordInd).isEmpty()) {
+                addMidPunctuation(lexeme, part, punctuationInd);
+                addLastWord(lexeme, part, prevWordInd);
+            } else {
+                addLastPunctuation(lexeme, part, punctuationInd);
+            }
+        } else {
+            addMidPunctuation(lexeme, part, punctuationInd);
+        }
+        return prevWordInd;
     }
 
     private void addLastWord(

@@ -7,12 +7,18 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-public class SortParagraphs implements SortSpecification<Paragraph> {
+public class SortParagraphsBySentencesAmount
+        implements SortSpecification<Paragraph> {
 
+    /**
+     * Sort paragraphs by sentence amount.
+     *
+     * @param paragraphs list of components
+     */
     @Override
-    public void sortSpecifiedComparator(final List<Paragraph> newList) {
+    public void sortSpecifiedComparator(final List<Paragraph> paragraphs) {
         Comparator<Paragraph> comparator = (s1, s2) ->
                 s1.getComponentsListSize() - s2.getComponentsListSize();
-        Collections.sort(newList, comparator);
+        Collections.sort(paragraphs, comparator);
     }
 }

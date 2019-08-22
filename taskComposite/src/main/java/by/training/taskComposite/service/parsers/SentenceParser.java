@@ -20,7 +20,7 @@ public class SentenceParser extends AbstractDataParser {
     private Pattern pattern;
 
     static {
-        REGEX = "\\.{1,3}|\\?!|\\?|!{1,2}";
+        REGEX = "\\.{1,3}|\\?!|\\?|!";
     }
 
     /**
