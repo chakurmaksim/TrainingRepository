@@ -12,24 +12,21 @@ import java.util.List;
 
 import static org.testng.Assert.assertEquals;
 
-public class SortWordsByLengthTest {
-    SortWordsByLength sort;
+public class SortParagraphsBySentencesAmountTest {
+    SortParagraphsBySentencesAmount sort;
     List<Paragraph> paragraphs;
     String expected;
 
     @BeforeMethod
     public void setUp() {
-        sort = new SortWordsByLength();
+        sort = new SortParagraphsBySentencesAmount();
         paragraphs = new LinkedList<>();
-        String initial = "   Now in some circumstances, designers may use squares\n "
-                + "and rectangles to help you visualize what should and could be\n "
-                + "in a specific location.";
-        expected = "a in to be in Now may use and you and some help what could " +
-                "should squares specific location. designers visualize rectangles circumstances,";
+        String initial1 = "   Depend on circumstances. Bye...\n   Hello world!";
         Text text = new Text();
         ParagraphParser parser = new ParagraphParser();
-        parser.parse(text, initial);
+        parser.parse(text, initial1);
         text.getTextComponentStream().forEach(p -> paragraphs.add((Paragraph) p));
+        expected = "\tHello world!\r\n\tDepend on circumstances. Bye...";
     }
 
     @AfterMethod
@@ -41,8 +38,10 @@ public class SortWordsByLengthTest {
 
     @Test(description = "Positive scenario of sorting text components")
     public void testSortSpecifiedComparator() {
+        Text text = new Text();
         sort.sortSpecifiedComparator(paragraphs);
-        String actual = paragraphs.get(0).concatenate();
+        paragraphs.stream().forEach(p -> text.add(p));
+        String actual = text.concatenate();
         assertEquals(actual, expected);
     }
 }

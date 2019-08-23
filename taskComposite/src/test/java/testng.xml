@@ -1,0 +1,26 @@
+<suite name="ChefApplicationTest" verbose="1" >
+
+    <test name="BeansTest">
+        <classes>
+            <class name="by.training.taskComposite.bean.LexemeTest"/>
+            <class name="by.training.taskComposite.bean.SentenceTest"/>
+            <class name="by.training.taskComposite.bean.WordTest"/>
+        </classes>
+    </test>
+
+    <test name="ParsersTest">
+        <packages>
+            <package name="by.training.taskComposite.service.parsers.*"/>
+        </packages>
+    </test>
+
+    <test name="SortTest">
+        <classes>
+            <class name="by.training.taskComposite.service.specification.SortParagraphsBySentencesAmountTest"/>
+            <class name="by.training.taskComposite.service.specification.SortSentencesByWordsAmountTest"/>
+            <class name="by.training.taskComposite.service.specification.SortWordsByLengthTest"/>
+        </classes>
+    </test>
+
+</suite>
+

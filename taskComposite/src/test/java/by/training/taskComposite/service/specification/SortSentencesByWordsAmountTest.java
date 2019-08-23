@@ -21,7 +21,6 @@ public class SortSentencesByWordsAmountTest {
     public void setUp() {
         sort = new SortSentencesByWordsAmount();
         paragraphs = new LinkedList<>();
-        Paragraph paragraph = new Paragraph();
         String initial = "   Proceed how any engaged visitor. How is life? " +
                 "He is going to... Hello!";
         expected = "Hello! How is life? He is going to... Proceed how any engaged visitor.";
