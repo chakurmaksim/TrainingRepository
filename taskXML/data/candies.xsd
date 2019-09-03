@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema"
+        targetNamespace="http://www.training.by/candies"
+        xmlns:tns="http://www.training.by/candies"
+        elementFormDefault="qualified">
+    <element name="candies">
+        <complexType>
+            <sequence>
+                <element name="candy" type="tns:Candy" minOccurs="16"
+                         maxOccurs="16"/>
+            </sequence>
+        </complexType>
+    </element>
+    
+    <complexType name="Candy">
+        <sequence>
+            <element name="candyName" type="normalizedString"/>
+            <element ref="tns:candyType"/>
+            <element name="composition" type="string"/>
+            <element name="manufactureDate" type="date"/>
+            <element name="shelfLife">
+                <complexType>
+                    <simpleContent>
+                        <extension base="positiveInteger">
+                            <attribute name="measure" use="optional"
+                                       default="months">
+                                <simpleType>
+                                    <restriction base="normalizedString">
+                                        <pattern value="months|years"/>
+                                    </restriction>
+                                </simpleType>
+                            </attribute>
+                        </extension>
+                    </simpleContent>
+                </complexType>
+            </element>
+            <element name="producer" type="tns:Producer"/>
+            <element name="nutritionalValue" type="tns:NutritionalValue"/>
+        </sequence>
+        <attribute name="barcode" use="required">
+            <simpleType>
+                <restriction base="ID">
+                    <pattern value="(Code-)[0-9]{13}"/>
+                </restriction>
+            </simpleType>
+        </attribute>
+    </complexType>
+
+    <element name="candyType" type="tns:CandyType" abstract="true"/>
+    <element name="caramel" type="tns:Caramel" substitutionGroup="tns:candyType"/>
+    <element name="chocolate" type="tns:Chocolate" substitutionGroup="tns:candyType"/>
+    <element name="iris" type="tns:Iris" substitutionGroup="tns:candyType"/>
+
+    <complexType name="CandyType">
+        <attribute name="isWrapped" type="boolean" use="required"/>
+        <attribute name="isGlazed" type="boolean" use="optional" default="false"/>
+    </complexType>
+    
+    <complexType name="Iris">
+        <complexContent>
+            <extension base="tns:CandyType">
+               <all>
+                   <element name="productionMethod">
+                       <simpleType>
+                           <restriction base="token">
+                               <enumeration value="Литой"/>
+                               <enumeration value="Тираженный"/>
+                           </restriction>
+                       </simpleType>
+                   </element>
+                   <element name="structure">
+                       <simpleType>
+                           <restriction base="token">
+                               <enumeration value="Полутвердый"/>
+                               <enumeration value="Мягкий"/>
+                               <enumeration value="Тягучий"/>
+                           </restriction>
+                       </simpleType>
+                   </element>
+               </all>
+            </extension>
+        </complexContent>
+    </complexType>
+
+    <complexType name="Caramel">
+        <complexContent>
+            <extension base="tns:CandyType">
+                <all>
+                    <element name="grade">
+                        <simpleType>
+                            <restriction base="string">
+                                <enumeration value="Леденцовая карамель"/>
+                                <enumeration value="Карамель с начинкой"/>
+                            </restriction>
+                        </simpleType>
+                    </element>
+                    <element name="processingMethod">
+                        <simpleType>
+                            <restriction base="string">
+                                <enumeration value="Карамель с нетянутой оболочкой – стеклообразная"/>
+                                <enumeration value="Карамель с тянутой оболочкой – непрозрачная"/>
+                                <enumeration value="Карамель с жилками, полосками"/>
+                            </restriction>
+                        </simpleType>
+                    </element>
+                </all>
+            </extension>
+        </complexContent>
+    </complexType>
+
+    <complexType name="Chocolate">
+        <complexContent>
+            <extension base="tns:CandyType">
+                <all>
+                    <element name="glaze">
+                        <simpleType>
+                            <restriction base="token">
+                                <enumeration value="Глазурь шоколадная"/>
+                                <enumeration value="Глазурь жировая"/>
+                            </restriction>
+                        </simpleType>
+                    </element>
+                    <element name="body">
+                        <simpleType>
+                            <restriction base="normalizedString">
+                                <enumeration value="C помадным корпусом"/>
+                                <enumeration value="С ликерным корпусом"/>
+                                <enumeration value="С желейной начинкой"/>
+                                <enumeration value="С ореховой начинкой"/>
+                                <enumeration value="Со сбивным корпусом"/>
+                                <enumeration value="С кремовым корпусом"/>
+                                <enumeration value="С комбинированой начинкой"/>
+                                <enumeration value="С ликерным корпусом"/>
+                                <enumeration value="С начинкой между слоями вафель"/>
+                                <enumeration value="Из заспиртованных фруктов"/>
+                            </restriction>
+                        </simpleType>
+                    </element>
+                </all>
+            </extension>
+        </complexContent>
+    </complexType>
+
+    <complexType name="Producer">
+        <sequence>
+            <element name="producerName" type="normalizedString"/>
+            <element name="address" type="tns:Address"/>
+        </sequence>
+    </complexType>
+
+    <complexType name="Address">
+        <sequence>
+            <element name="country" type="token"/>
+            <element name="postcode">
+                <simpleType>
+                    <restriction base="positiveInteger">
+                        <pattern value="[0-9]{4,6}"/>
+                    </restriction>
+                </simpleType>
+            </element>
+            <element name="region" type="normalizedString" minOccurs="0"/>
+            <element name="district" type="normalizedString" minOccurs="0"/>
+            <choice>
+                <element name="city" type="token"/>
+                <element name="village" type="token"/>
+            </choice>
+            <element name="street" type="token" minOccurs="0"/>
+            <element name="building">
+                <simpleType>
+                    <restriction base="positiveInteger">
+                        <minInclusive value="1"/>
+                        <maxInclusive value="1000"/>
+                    </restriction>
+                </simpleType>
+            </element>
+            <element name="corps" type="token" minOccurs="0"/>
+        </sequence>
+    </complexType>
+
+    <complexType name="NutritionalValue">
+        <all>
+            <element name="proteins" type="float"/>
+            <element name="fats" type="float"/>
+            <element name="carbohydrates" type="float"/>
+            <element name="energy" type="positiveInteger"/>
+        </all>
+    </complexType>
+    
+</schema>
