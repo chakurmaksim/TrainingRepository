@@ -35,18 +35,20 @@ public final class CandiesBuilderFactory {
     /**
      * Factory method to create the certain candies builder.
      *
-     * @param typeParser string of the type parser.
+     * @param typeParser string of the type parser
+     * @param xsdFileName full path to the xsd file
+     * @param xmlFileName full path to the xml file
      * @return candies builder
      */
-    public CandiesAbstractBuilder createBuilder(final String typeParser) {
+    public CandiesAbstractBuilder createBuilder(
+            final String typeParser, final String xsdFileName,
+            final String xmlFileName) {
         TypeParser type = TypeParser.valueOf(typeParser.toUpperCase());
         switch (type) {
             case DOM:
-                return new CandiesDomBuilder();
-            case STAX:
-                return null;
+                return new CandiesDomBuilder(xsdFileName, xmlFileName);
             case SAX:
-                return new CandiesSAXBuilder();
+                return new CandiesSAXBuilder(xsdFileName, xmlFileName);
             default:
                 throw new EnumConstantNotPresentException(
                         type.getDeclaringClass(), type.name());

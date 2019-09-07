@@ -42,14 +42,24 @@ public class CandiesDomBuilder extends CandiesAbstractBuilder {
      */
     private EnumSet<ProducerEnum> addressEnumSet;
     /**
+     * XML file name.
+     */
+    private String xmlFileName;
+    /**
      * String representation of the producer address.
      */
     private List<String> addressList;
 
     /**
      * Constructor to instantiate variables.
+     *
+     * @param xsdFileName    full path to xsd file
+     * @param newXmlFileName full path to xml file
      */
-    public CandiesDomBuilder() {
+    public CandiesDomBuilder(
+            final String xsdFileName, final String newXmlFileName) {
+        super(xsdFileName);
+        this.xmlFileName = newXmlFileName;
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         factory.setNamespaceAware(true);
         factory.setValidating(false);
@@ -76,7 +86,7 @@ public class CandiesDomBuilder extends CandiesAbstractBuilder {
     public void buildSetCandies() {
         Document document;
         try {
-            document = builder.parse(getXmlFileName());
+            document = builder.parse(xmlFileName);
             Element root = document.getDocumentElement();
             NodeList candiesList = root.getElementsByTagName(
                     CandyEnum.CANDY.getValue());
@@ -110,6 +120,8 @@ public class CandiesDomBuilder extends CandiesAbstractBuilder {
         } catch (EnumConstantNotPresentException | NumberFormatException e) {
             getLogger().error(e.toString());
         } catch (ArrayIndexOutOfBoundsException | IllegalArgumentException e) {
+            getLogger().error(e.toString());
+        } catch (NullPointerException e) {
             getLogger().error(e.toString());
         }
         return candy;
@@ -278,14 +290,10 @@ public class CandiesDomBuilder extends CandiesAbstractBuilder {
                                     ProducerEnum.COUNTRY.getValue()));
                             break;
                         case POSTCODE:
-                            try {
-                                int postcode = Integer.valueOf(
-                                        readElementTextContent(producerElement,
-                                        ProducerEnum.POSTCODE.getValue()));
-                                address.setPostcode(postcode);
-                            } catch (NumberFormatException e) {
-                                getLogger().error(e.toString());
-                            }
+                            int postcode = Integer.valueOf(
+                                    readElementTextContent(producerElement,
+                                            ProducerEnum.POSTCODE.getValue()));
+                            address.setPostcode(postcode);
                             break;
                         case REGION:
                             address.setRegion(readElementTextContent(
@@ -313,15 +321,11 @@ public class CandiesDomBuilder extends CandiesAbstractBuilder {
                                     ProducerEnum.STREET.getValue()));
                             break;
                         case BUILDING:
-                            try {
-                                int building = Integer.valueOf(
-                                        readElementTextContent(producerElement,
-                                                ProducerEnum.BUILDING.
-                                                        getValue()));
-                                address.setBuilding(building);
-                            } catch (NumberFormatException e) {
-                                getLogger().error(e.toString());
-                            }
+                            int building = Integer.valueOf(
+                                    readElementTextContent(producerElement,
+                                            ProducerEnum.BUILDING.
+                                                    getValue()));
+                            address.setBuilding(building);
                             break;
                         case CORPS:
                             address.setCorps(readElementTextContent(

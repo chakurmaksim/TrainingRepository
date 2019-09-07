@@ -145,11 +145,11 @@ public class Candy<T extends CandyType> {
          */
         @Override
         public String toString() {
-            return "NutritionValue{"
-                    + "proteins=" + proteins + "g"
-                    + ", fats=" + fats + "g"
-                    + ", carbohydrates=" + carbohydrates + "g"
-                    + ", energy=" + energy + "kcal"
+            return "Энергетическая ценность{"
+                    + "белки=" + proteins + "г"
+                    + ", жиры=" + fats + "г"
+                    + ", углеводы=" + carbohydrates + "г"
+                    + ", калорийность=" + energy + "Ккал"
                     + '}';
         }
     }
@@ -353,16 +353,16 @@ public class Candy<T extends CandyType> {
      */
     @Override
     public String toString() {
-        return "\nCandy{"
-                + "name='" + name + '\''
-                + ", barcode=" + barcode
-                + ", candieType=" + candieType
-                + ",\ncomposition='" + composition + '\''
-                + ",\ndate=" + date
-                + ", shelfLife=" + shelfLife
+        return "\nКонфета{"
+                + "наименование='" + name + '\''
+                + ", штрихкод=" + barcode
+                + ", вид конфеты=" + candieType
+                + ",\nсостав='" + composition + '\''
+                + ",\nдата изготовления=" + date
+                + ", срок годности=" + shelfLife
                 + expirationMeasure.getMeasure()
-                + ",\nproducer=" + producer
-                + ",\nnutritionValue=" + nutritionValue
+                + ",\nизготовитель=" + producer
+                + ",\nэнергетическая ценность=" + nutritionValue
                 + '}';
     }
 }

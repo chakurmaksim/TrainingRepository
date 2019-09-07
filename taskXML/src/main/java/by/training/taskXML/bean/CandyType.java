@@ -99,11 +99,11 @@ public abstract class CandyType {
          */
         @Override
         public String toString() {
-            return "Iris{"
-                    + "isWrapped=" + isWrapped()
-                    + ", isGlazed=" + isGlazed()
-                    + ", productionMethod='" + productionMethod + '\''
-                    + ", structure='" + structure + '\''
+            return "Ирис{"
+                    + "наличие упаковки=" + isWrapped()
+                    + ", наличие глазури=" + isGlazed()
+                    + ", способ производства='" + productionMethod + '\''
+                    + ", структура='" + structure + '\''
                     + '}';
         }
     }
@@ -162,11 +162,12 @@ public abstract class CandyType {
          */
         @Override
         public String toString() {
-            return "Caramel{"
-                    + "isWrapped=" + isWrapped()
-                    + ", isGlazed=" + isGlazed()
-                    + ", grade='" + grade + '\''
-                    + ", processingMethod='" + processingMethod + '\''
+            return "Карамель{"
+                    + "наличие упаковки=" + isWrapped()
+                    + ", наличие глазури=" + isGlazed()
+                    + ", сорт карамели='" + grade + '\''
+                    + ", способ обработки карамельной массы='"
+                    + processingMethod + '\''
                     + '}';
         }
     }
@@ -224,11 +225,11 @@ public abstract class CandyType {
          */
         @Override
         public String toString() {
-            return "Chocolate{"
-                    + "isWrapped=" + isWrapped()
-                    + ", isGlazed=" + isGlazed()
-                    + ", glaze='" + glaze + '\''
-                    + ", body='" + body + '\''
+            return "Шоколадная{"
+                    + "наличие упаковки=" + isWrapped()
+                    + ", наличие глазури=" + isGlazed()
+                    + ", вид глазури='" + glaze + '\''
+                    + ", вид корпуса(начинки)='" + body + '\''
                     + '}';
         }
     }

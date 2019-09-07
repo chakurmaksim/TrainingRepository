@@ -15,9 +15,3 @@
 2019-09-03 19:18:00 [ERROR] java.lang.ArrayIndexOutOfBoundsException: Index 1 out of bounds for length 1
 2019-09-03 19:19:48 [ERROR] java.lang.ArrayIndexOutOfBoundsException: Index 1 out of bounds for length 1
 2019-09-05 17:21:47 [ERROR] java.io.FileNotFoundException: /Users/maksim/Documents/EPAM/Projects/TrainingRepository/taskXML/data/candie.xml (No such file or directory)
-2019-09-05 18:53:37 [ERROR] org.xml.sax.SAXParseException; schema_reference.4: Failed to read schema document 'file:/data/candies.xsd', because 1) could not find the document; 2) the document could not be read; 3) the root element of the document is not <xsd:schema>.
-2019-09-05 18:53:37 [ERROR] java.io.FileNotFoundException: /data/candies.xml (No such file or directory)
-2019-09-05 18:53:53 [ERROR] org.xml.sax.SAXParseException; schema_reference.4: Failed to read schema document 'file:/Users/maksim/Documents/EPAM/Projects/TrainingRepository/taskXML/../data/candies.xsd', because 1) could not find the document; 2) the document could not be read; 3) the root element of the document is not <xsd:schema>.
-2019-09-05 18:53:53 [ERROR] java.io.FileNotFoundException: /Users/maksim/Documents/EPAM/Projects/TrainingRepository/data/candies.xml (No such file or directory)
-2019-09-07 14:13:54 [ERROR] java.lang.NumberFormatException: For input string: "2l0033"
-2019-09-07 14:18:02 [ERROR] java.lang.NullPointerException

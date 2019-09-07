@@ -16,11 +16,21 @@ public class CandiesSAXBuilder extends CandiesAbstractBuilder {
      * Default handler instance.
      */
     private CandiesHandler handler;
+    /**
+     * XML file name.
+     */
+    private String xmlFileName;
 
     /**
      * Instantiating variables.
+     *
+     * @param xsdFileName full path to xsd file
+     * @param newXmlFileName full path to xml file
      */
-    public CandiesSAXBuilder() {
+    public CandiesSAXBuilder(
+            final String xsdFileName, final String newXmlFileName) {
+        super(xsdFileName);
+        this.xmlFileName = newXmlFileName;
         handler = new CandiesHandler();
         SAXParserFactory factory = SAXParserFactory.newInstance();
         factory.setNamespaceAware(true);
@@ -38,7 +48,7 @@ public class CandiesSAXBuilder extends CandiesAbstractBuilder {
      */
     public void buildSetCandies() {
         try {
-            parser.parse(getXmlFileName(), handler);
+            parser.parse(xmlFileName, handler);
         } catch (SAXException | IOException e) {
             getLogger().error(e.toString());
         } catch (EnumConstantNotPresentException e) {

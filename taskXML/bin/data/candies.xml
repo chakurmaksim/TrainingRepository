@@ -1,0 +1,517 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<candies xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns="http://www.training.by/candies"
+         xsi:schemaLocation="http://www.training.by/candies candies.xsd">
+    <candy barcode="Code-2220069001079">
+        <candyName>Птичье молоко</candyName>
+        <chocolate isWrapped="true" isGlazed="true">
+            <glaze>Глазурь шоколадная</glaze>
+            <body>Со сбивным корпусом</body>
+        </chocolate>
+        <composition>
+            Шоколадная глазурь(сахар, какао тертое, какао-масло, эмульгатор
+            лецитин; ароматизатор, идентичный натуральному, "Ваниль"), сахар,
+            патока, масло из коровьего молока, молоко цельное сгущенное с
+            сахаром, белок яичный сухой, желеобразователь агар, регулятор
+            кислотности кислота лимонная; ароматизатор, идентичный натуральному,
+            ванилин.
+        </composition>
+        <manufactureDate>2019-08-25</manufactureDate>
+        <shelfLife measure="months">6</shelfLife>
+        <producer>
+            <producerName>СОАО "Коммунарка"</producerName>
+            <address>
+                <country>Республика Беларусь</country>
+                <postcode>220033</postcode>
+                <city>Минск</city>
+                <street>Аранская</street>
+                <building>18</building>
+            </address>
+        </producer>
+        <nutritionalValue>
+            <proteins>2.60</proteins>
+            <fats>24.40</fats>
+            <carbohydrates>55.80</carbohydrates>
+            <energy>44</energy>
+        </nutritionalValue>
+    </candy>
+    <candy barcode="Code-2220069001482">
+        <candyName>Осень</candyName>
+        <chocolate isWrapped="true" isGlazed="true">
+            <glaze>Глазурь жировая</glaze>
+            <body>C помадным корпусом</body>
+        </chocolate>
+        <composition>
+            Cахар, жировая глазурь(сахар, жир кондитерский,какао порошок),
+            молоко цельное сгущенное с сахаром, патока, какао-порошок, спирт
+            этиловый ректификованный не ниже высшей очистки, ферментный препарат
+            инвертаза.
+        </composition>
+        <manufactureDate>2019-08-29</manufactureDate>
+        <shelfLife measure="months">4</shelfLife>
+        <producer>
+            <producerName>СОАО "Коммунарка"</producerName>
+            <address>
+                <country>Республика Беларусь</country>
+                <postcode>220033</postcode>
+                <city>Минск</city>
+                <street>Аранская</street>
+                <building>18</building>
+            </address>
+        </producer>
+        <nutritionalValue>
+            <proteins>4.40</proteins>
+            <fats>13.50</fats>
+            <carbohydrates>71.10</carbohydrates>
+            <energy>413</energy>
+        </nutritionalValue>
+    </candy>
+    <candy barcode="Code-4607134380501">
+        <candyName>Миндаль в молочной шоколадной глазури</candyName>
+        <chocolate isWrapped="true" isGlazed="true">
+            <glaze>Глазурь шоколадная</glaze>
+            <body>С ореховой начинкой</body>
+        </chocolate>
+        <composition>
+            Молочная шоколадная глазурь (сахар, эквивалент какао масла, какао
+            тертое, какао порошок, молоко сухое обезжиренное, эмульгатор-лецитин,
+            ароматизатор идентичный натуральному ванильный), ядро ореха миндаля
+            цельное жареное, глазирователь "Квик"
+        </composition>
+        <manufactureDate>2019-08-29</manufactureDate>
+        <shelfLife measure="months">6</shelfLife>
+        <producer>
+            <producerName>ООО "Сладкий Орешек"</producerName>
+            <address>
+                <country>Россия</country>
+                <postcode>141554</postcode>
+                <region>Московская область</region>
+                <district>Солнечногорский район</district>
+                <village>Мелечкино</village>
+                <building>123</building>
+            </address>
+        </producer>
+        <nutritionalValue>
+            <proteins>9.30</proteins>
+            <fats>44.70</fats>
+            <carbohydrates>42.50</carbohydrates>
+            <energy>560</energy>
+        </nutritionalValue>
+    </candy>
+    <candy barcode="Code-4607134380990">
+        <candyName>Марсианка</candyName>
+        <chocolate isWrapped="true" isGlazed="true">
+            <glaze>Глазурь жировая</glaze>
+            <body>С кремовым корпусом</body>
+        </chocolate>
+        <composition>
+            Заменитель какао масла, какао порошок, сахар, сухое обезжиренное
+            молоко, рис воздушный, ванилин, лецитин, ароматизатор идентичный
+            натуральному, глазирователь квик.
+        </composition>
+        <manufactureDate>2019-08-29</manufactureDate>
+        <shelfLife measure="months">6</shelfLife>
+        <producer>
+            <producerName>ООО "Сладкий Орешек"</producerName>
+            <address>
+                <country>Россия</country>
+                <postcode>141554</postcode>
+                <region>Московская область</region>
+                <district>Солнечногорский район</district>
+                <village>Мелечкино</village>
+                <building>123</building>
+            </address>
+        </producer>
+        <nutritionalValue>
+            <proteins>2.50</proteins>
+            <fats>14.20</fats>
+            <carbohydrates>63.80</carbohydrates>
+            <energy>375</energy>
+        </nutritionalValue>
+    </candy>
+    <candy barcode="Code-2220069001383">
+        <candyName>Рябиновая роща</candyName>
+        <chocolate isWrapped="true" isGlazed="true">
+            <glaze>Глазурь шоколадная</glaze>
+            <body>С желейной начинкой</body>
+        </chocolate>
+        <composition>
+            Cахар, пюре яблочное, шоколадная глазурь(сахар, какао тертое,
+            какао-масло, эмульгатор лецитин; ароматизатор, идентичный
+            натуральному,"Ваниль"), пюре черноплодной рябины, желеобразователь
+            пектин, регулятор кислотности кислота лимонная; ароматизатор,
+            идентичный натуральному "Барбарис".
+        </composition>
+        <manufactureDate>2019-08-29</manufactureDate>
+        <shelfLife measure="months">5</shelfLife>
+        <producer>
+            <producerName>СОАО "Коммунарка"</producerName>
+            <address>
+                <country>Республика Беларусь</country>
+                <postcode>220033</postcode>
+                <city>Минск</city>
+                <street>Аранская</street>
+                <building>18</building>
+            </address>
+        </producer>
+        <nutritionalValue>
+            <proteins>1.20</proteins>
+            <fats>8.80</fats>
+            <carbohydrates>74.90</carbohydrates>
+            <energy>358</energy>
+        </nutritionalValue>
+    </candy>
+
+    <candy barcode="Code-4605516004656">
+        <candyName>Сорока Белобока</candyName>
+        <caramel isWrapped="true" isGlazed="false">
+            <grade>Карамель с начинкой</grade>
+            <processingMethod>Карамель с тянутой оболочкой – непрозрачная</processingMethod>
+        </caramel>
+        <composition>
+            Сахар, патока, ядро подсолнечника тертое, вода питьевая, продукт
+            экструдированных круп ржаной, ароматизатор «Ванильный», красители:
+            Е150с, Е120; антиокислитель аскорбиновая кислота. Возможно наличие
+            незначительного количества арахиса, продуктов переработки молока.
+        </composition>
+        <manufactureDate>2019-08-25</manufactureDate>
+        <shelfLife measure="months">9</shelfLife>
+        <producer>
+            <producerName>ОАО «Воронежская кондитерская фабрика»</producerName>
+            <address>
+                <country>Россия</country>
+                <postcode>394030</postcode>
+                <city>Воронеж</city>
+                <street>Кольцовская</street>
+                <building>40</building>
+            </address>
+        </producer>
+        <nutritionalValue>
+            <proteins>3.50</proteins>
+            <fats>3.50</fats>
+            <carbohydrates>84.00</carbohydrates>
+            <energy>420</energy>
+        </nutritionalValue>
+    </candy>
+    <candy barcode="Code-2220118003269">
+        <candyName>Фрукты-ягодки</candyName>
+        <caramel isWrapped="true" isGlazed="false">
+            <grade>Леденцовая карамель</grade>
+            <processingMethod>Карамель с нетянутой оболочкой – стеклообразная</processingMethod>
+        </caramel>
+        <composition>
+            Сахар, патока, вода питьевая, регулятор кислотности – лимонная
+            кислота, растительный экстракт «Яблоко», ароматизаторы: «Лимон»,
+            натуральные «Апельсин», «Вишня», красители Е120, Е100, Е160с, Е141.
+        </composition>
+        <manufactureDate>2019-08-29</manufactureDate>
+        <shelfLife measure="months">15</shelfLife>
+        <producer>
+            <producerName>ООО «Объединенные кондитеры»</producerName>
+            <address>
+                <country>Россия</country>
+                <postcode>115184</postcode>
+                <city>Москва</city>
+                <street>2-ой Новокузнецкий пер., 13/15</street>
+                <building>1</building>
+            </address>
+        </producer>
+        <nutritionalValue>
+            <proteins>0.00</proteins>
+            <fats>0.00</fats>
+            <carbohydrates>96.00</carbohydrates>
+            <energy>380</energy>
+        </nutritionalValue>
+    </candy>
+    <candy barcode="Code-2220069001604">
+        <candyName>Молочная</candyName>
+        <caramel isWrapped="true" isGlazed="false">
+            <grade>Карамель с начинкой</grade>
+            <processingMethod>Карамель с тянутой оболочкой – непрозрачная</processingMethod>
+        </caramel>
+        <composition>
+            Сахар, патока,молоко цельное сгущенное с сахаром, концентратквасного
+            сусла, маргарин; ароматизатор, идентичный натуральному, "Ром".
+        </composition>
+        <manufactureDate>2019-08-29</manufactureDate>
+        <shelfLife measure="months">6</shelfLife>
+        <producer>
+            <producerName>СОАО "Коммунарка"</producerName>
+            <address>
+                <country>Республика Беларусь</country>
+                <postcode>220033</postcode>
+                <city>Минск</city>
+                <street>Аранская</street>
+                <building>18</building>
+            </address>
+        </producer>
+        <nutritionalValue>
+            <proteins>1.00</proteins>
+            <fats>2.40</fats>
+            <carbohydrates>91.00</carbohydrates>
+            <energy>583</energy>
+        </nutritionalValue>
+    </candy>
+    <candy barcode="Code-4607006103016">
+        <candyName>Карамель леденцовая вкус барбариса</candyName>
+        <caramel isWrapped="true" isGlazed="false">
+            <grade>Леденцовая карамель</grade>
+            <processingMethod>Карамель с тянутой оболочкой – непрозрачная</processingMethod>
+        </caramel>
+        <composition>
+            Сахар, патока, продукт молокосодержащий сгущенный с сахаром
+            «Сгущенка с сахаром», ароматизатор «Ванильно-сливочный», идентичный
+            натуральному.
+        </composition>
+        <manufactureDate>2019-08-29</manufactureDate>
+        <shelfLife measure="months">6</shelfLife>
+        <producer>
+            <producerName>ООО "Кондитерская фабрика "СлаСти"</producerName>
+            <address>
+                <country>Россия</country>
+                <postcode>445035</postcode>
+                <region>Самарская область</region>
+                <city>Тольяти</city>
+                <street>Голосова</street>
+                <building>16</building>
+                <corps>A</corps>
+            </address>
+        </producer>
+        <nutritionalValue>
+            <proteins>0.00</proteins>
+            <fats>0.10</fats>
+            <carbohydrates>97.10</carbohydrates>
+            <energy>374</energy>
+        </nutritionalValue>
+    </candy>
+    <candy barcode="Code-4810067020752">
+        <candyName>Карамель леденцовая "Спартак" Дюшес</candyName>
+        <caramel isWrapped="true" isGlazed="false">
+            <grade>Леденцовая карамель</grade>
+            <processingMethod>Карамель с нетянутой оболочкой – стеклообразная</processingMethod>
+        </caramel>
+        <composition>
+            Сахар, патока, регулятор кислотности - кислота лимонная пищевая
+            (Е330), ароматизаторы идентичные натуральным "Дюшес", "Ваниль",
+            красители искусственные - тартразин (Е102), бриллиантовый синий FCF (Е133).
+        </composition>
+        <manufactureDate>2019-08-29</manufactureDate>
+        <shelfLife measure="months">12</shelfLife>
+        <producer>
+            <producerName>СП ОАО "Спартак"</producerName>
+            <address>
+                <country>Республика Беларусь</country>
+                <postcode>246000</postcode>
+                <city>Гомель</city>
+                <street>Советская</street>
+                <building>63</building>
+            </address>
+        </producer>
+        <nutritionalValue>
+            <proteins>0.00</proteins>
+            <fats>0.15</fats>
+            <carbohydrates>97.10</carbohydrates>
+            <energy>375</energy>
+        </nutritionalValue>
+    </candy>
+    <candy barcode="Code-4829898050326">
+        <candyName>Карамель леденцовая на палочке "Рокс" Макси</candyName>
+        <caramel isWrapped="true" isGlazed="false">
+            <grade>Леденцовая карамель</grade>
+            <processingMethod>Карамель с жилками, полосками</processingMethod>
+        </caramel>
+        <composition>
+            Краситель натуральный (куркумин, бета-каротин, кармин, антоциан,
+            хлорофилин), ароматизатор натуральный (апельсин, лимон, вишня,
+            малина, ваниль, яблоко) сахар белый кристаллический, патока крахмальная,
+            кислота лимонная.
+        </composition>
+        <manufactureDate>2019-08-29</manufactureDate>
+        <shelfLife measure="years">2</shelfLife>
+        <producer>
+            <producerName>ООО "Кондитерская фабрика "Меркурий"</producerName>
+            <address>
+                <country>Украина</country>
+                <postcode>20700</postcode>
+                <region>Черкасская область</region>
+                <district>Смелянский район</district>
+                <village>Балаклея</village>
+                <street>Ленина</street>
+                <building>58</building>
+                <corps>Б</corps>
+            </address>
+        </producer>
+        <nutritionalValue>
+            <proteins>0.00</proteins>
+            <fats>0.00</fats>
+            <carbohydrates>98.60</carbohydrates>
+            <energy>377</energy>
+        </nutritionalValue>
+    </candy>
+
+    <candy barcode="Code-4810411003837">
+        <candyName>Ирисо</candyName>
+        <iris isWrapped="true">
+            <productionMethod>Литой</productionMethod>
+            <structure>Полутвердый</structure>
+        </iris>
+        <composition>
+            Сахар, молоко цельное сгущенное с сахаром, патока, масло сливочное,
+            какао-порошок, ароматизатор "Кофе" идентичный натуральному.
+        </composition>
+        <manufactureDate>2019-08-25</manufactureDate>
+        <shelfLife measure="months">4</shelfLife>
+        <producer>
+            <producerName>ОАО «Красный пищевик»</producerName>
+            <address>
+                <country>Республика Беларусь</country>
+                <postcode>213805</postcode>
+                <city>Бобруйск</city>
+                <street>Бахарова</street>
+                <building>145</building>
+            </address>
+        </producer>
+        <nutritionalValue>
+            <proteins>3.20</proteins>
+            <fats>7.40</fats>
+            <carbohydrates>83.00</carbohydrates>
+            <energy>400</energy>
+        </nutritionalValue>
+    </candy>
+    <candy barcode="Code-4680006297572">
+        <candyName>Клубняшка</candyName>
+        <iris isWrapped="true">
+            <productionMethod>Литой</productionMethod>
+            <structure>Тягучий</structure>
+        </iris>
+        <composition>
+            Патока крахмальная, сахар-песок, продукт молокосодержащий сгущенный
+            с сахаром, заменитель молочного жира, эмульгаторы: рикен Е471,
+            лецитин соевый Е322, соль поваренная пищевая, желирующий агент
+            каррагинан Е407, стабилизатор цитрат натрия Е331, ароматизаторы
+            идентичные натуральным "Ваниль", "Клубника", глазирующий агент Капол,
+            краситель пищевой Е124.
+        </composition>
+        <manufactureDate>2019-08-29</manufactureDate>
+        <shelfLife measure="months">4</shelfLife>
+        <producer>
+            <producerName>ООО «Глобус»</producerName>
+            <address>
+                <country>Россия</country>
+                <postcode>433300</postcode>
+                <region>Ульяновская область</region>
+                <city>Новоульяновск</city>
+                <street>Промышленный проспект</street>
+                <building>7</building>
+                <corps>Б</corps>
+            </address>
+        </producer>
+        <nutritionalValue>
+            <proteins>1.60</proteins>
+            <fats>16.90</fats>
+            <carbohydrates>72.20</carbohydrates>
+            <energy>448</energy>
+        </nutritionalValue>
+    </candy>
+    <candy barcode="Code-4600300002412">
+        <candyName>Золотой ключик</candyName>
+        <iris isWrapped="true">
+            <productionMethod>Литой</productionMethod>
+            <structure>Тягучий</structure>
+        </iris>
+        <composition>
+            Сгущенное с сахаром молоко (цельное молоко, сахар), патока, сахар,
+            вода питьевая, заменитель молочного жира (рафинированные,
+            дезодорированные переэтерифицированные, частично гидрогенизированные
+            и фракционированные растительные масла (пальмовое, подсолнечное,
+            пальмоядровое), антиокислитель токоферолы, концентрат смеси), соль,
+            ароматизатор «Ванильный». Противопоказано при индивидуальной
+            непереносимости белка молока.
+        </composition>
+        <manufactureDate>2019-08-29</manufactureDate>
+        <shelfLife measure="months">6</shelfLife>
+        <producer>
+            <producerName>ООО «Объединенные кондитеры»</producerName>
+            <address>
+                <country>Россия</country>
+                <postcode>115184</postcode>
+                <city>Москва</city>
+                <street>2-ой Новокузнецкий пер., 13/15</street>
+                <building>1</building>
+            </address>
+        </producer>
+        <nutritionalValue>
+            <proteins>3.50</proteins>
+            <fats>3.50</fats>
+            <carbohydrates>82.00</carbohydrates>
+            <energy>395</energy>
+        </nutritionalValue>
+    </candy>
+    <candy barcode="Code-4607023944524">
+        <candyName>Мягкий ирис со сгущенкой</candyName>
+        <iris isWrapped="true">
+            <productionMethod>Литой</productionMethod>
+            <structure>Мягкий</structure>
+        </iris>
+        <composition>
+            Сахар-песок, патока крахмальная, молоко цельное сгущенное с сахаром,
+            кондитерский жир (жиры растительные рафинированные дезодорированные),
+            инвертный сироп (сахар-песок, регуляторы кислотности Е 330, сода
+            питьевая Е 500), влагоудерживающие агенты: глицерин Е 422, сорбитол
+            Е 420, эмульгаторы: лецитин Е 322, Е 471, соль поваренная пищевая,
+            загуститель -каррагинан Е 407, регулятор кислотности - цитрат натрия
+            Е 331 (iii), ароматизатор "Крем-карамель", идентичный натуральному,
+            антиокислителль Е 330.
+        </composition>
+        <manufactureDate>2019-08-29</manufactureDate>
+        <shelfLife measure="months">6</shelfLife>
+        <producer>
+            <producerName>ОАО «Ламзурь»</producerName>
+            <address>
+                <country>Россия</country>
+                <postcode>430000</postcode>
+                <city>Саранск</city>
+                <street>Рабочая</street>
+                <building>115</building>
+            </address>
+        </producer>
+        <nutritionalValue>
+            <proteins>1.60</proteins>
+            <fats>18.70</fats>
+            <carbohydrates>68.30</carbohydrates>
+            <energy>449</energy>
+        </nutritionalValue>
+    </candy>
+    <candy barcode="Code-4820007054013">
+        <candyName>Ирис тираженный полутвердый ТМ Жайвир</candyName>
+        <iris isWrapped="true">
+            <productionMethod>Тираженный</productionMethod>
+            <structure>Полутвердый</structure>
+        </iris>
+        <composition>
+            Сахар, молоко цельное сгущенное с сахаром, патока, масло пальмовое,
+            масло сливочное, идентичное натуральному, ароматизатор Ванилин.
+            Может содержать следы какао порошка, арахиса, грецких орехов.
+        </composition>
+        <manufactureDate>2019-08-29</manufactureDate>
+        <shelfLife measure="months">6</shelfLife>
+        <producer>
+            <producerName>ЧАО «Шполянский завод продтоваров»</producerName>
+            <address>
+                <country>Украина</country>
+                <postcode>20603</postcode>
+                <region>Черкасская область</region>
+                <city>Шпола</city>
+                <street>Ленина</street>
+                <building>87</building>
+            </address>
+        </producer>
+        <nutritionalValue>
+            <proteins>2.20</proteins>
+            <fats>7.70</fats>
+            <carbohydrates>87.30</carbohydrates>
+            <energy>424</energy>
+        </nutritionalValue>
+    </candy>
+
+</candies>

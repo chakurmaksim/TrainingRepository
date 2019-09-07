@@ -51,11 +51,12 @@ public abstract class CandiesAbstractBuilder {
 
     /**
      * Instantiating candies and schema instances.
+     * @param xsdFileName XML file name
      */
-    public CandiesAbstractBuilder() {
+    public CandiesAbstractBuilder(final String xsdFileName) {
         candies = new HashSet<>();
         try {
-            schema = XSD_FACTORY.newSchema(new File(XSD_FILE_NAME));
+            schema = XSD_FACTORY.newSchema(new File(xsdFileName));
         } catch (SAXException e) {
             logger.error(e.toString());
         }
@@ -71,8 +72,17 @@ public abstract class CandiesAbstractBuilder {
      *
      * @return XML file name
      */
-    protected static String getXmlFileName() {
+    public static String getXmlFileName() {
         return XML_FILE_NAME;
+    }
+
+    /**
+     * Get method.
+     *
+     * @return XSD file name
+     */
+    public static String getXsdFileName() {
+        return XSD_FILE_NAME;
     }
 
     /**

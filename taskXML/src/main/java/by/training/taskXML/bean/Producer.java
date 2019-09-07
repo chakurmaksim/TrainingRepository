@@ -203,52 +203,52 @@ public class Producer {
         @Override
         public String toString() {
             if (region == null && district == null && corps == 0) {
-                return "Address{"
-                        + "country='" + country + '\''
-                        + ", postcode=" + postcode
-                        + ", locality='" + locality + '\''
-                        + ", street='" + street + '\''
-                        + ", building=" + building
+                return "Адрес{"
+                        + "страна='" + country + '\''
+                        + ", индекс=" + postcode
+                        + ", населенный пункт='" + locality + '\''
+                        + ", улица='" + street + '\''
+                        + ", дом=" + building
                         + '}';
             } else if (district == null && corps == 0) {
-                return "Address{"
-                        + "country='" + country + '\''
-                        + ", postcode=" + postcode
-                        + ", region='" + region + '\''
-                        + ", locality='" + locality + '\''
-                        + ", street='" + street + '\''
-                        + ", building=" + building
+                return "Адрес{"
+                        + "страна='" + country + '\''
+                        + ", индекс=" + postcode
+                        + ", область='" + region + '\''
+                        + ", район='" + locality + '\''
+                        + ", улица='" + street + '\''
+                        + ", дом=" + building
                         + '}';
             } else if (district == null) {
-                return "Address{"
-                        + "country='" + country + '\''
-                        + ", postcode=" + postcode
-                        + ", region='" + region + '\''
-                        + ", locality='" + locality + '\''
-                        + ", street='" + street + '\''
-                        + ", building=" + building
-                        + ", corps=" + corps
+                return "Адрес{"
+                        + "страна='" + country + '\''
+                        + ", индекс=" + postcode
+                        + ", область='" + region + '\''
+                        + ", район='" + locality + '\''
+                        + ", улица='" + street + '\''
+                        + ", дом=" + building
+                        + ", корп.=" + corps
                         + '}';
             } else if (corps == 0) {
-                return "Address{"
-                        + "country='" + country + '\''
-                        + ", postcode=" + postcode
-                        + ", region='" + region + '\''
-                        + ", district='" + district + '\''
-                        + ", locality='" + locality + '\''
-                        + ", street='" + street + '\''
-                        + ", building=" + building
+                return "Адрес{"
+                        + "страна='" + country + '\''
+                        + ", индекс=" + postcode
+                        + ", область='" + region + '\''
+                        + ", район='" + district + '\''
+                        + ", населенный пункт='" + locality + '\''
+                        + ", улица='" + street + '\''
+                        + ", дом=" + building
                         + '}';
             }
-            return "Address{"
-                    + "country='" + country + '\''
-                    + ", postcode=" + postcode
-                    + ", region='" + region + '\''
-                    + ", district='" + district + '\''
-                    + ", locality='" + locality + '\''
-                    + ", street='" + street + '\''
-                    + ", building=" + building
-                    + ", corps=" + corps
+            return "Адрес{"
+                    + "страна='" + country + '\''
+                    + ", индекс=" + postcode
+                    + ", область='" + region + '\''
+                    + ", район='" + district + '\''
+                    + ", населенный пункт='" + locality + '\''
+                    + ", улица='" + street + '\''
+                    + ", дом=" + building
+                    + ", корп.=" + corps
                     + '}';
         }
     }
@@ -295,9 +295,9 @@ public class Producer {
      */
     @Override
     public String toString() {
-        return "Producer{"
-                + "name='" + name + '\''
-                + ", address=" + address
+        return "Изготовитель{"
+                + "наименование='" + name + '\''
+                + ", место нахождения=" + address
                 + '}';
     }
 }
