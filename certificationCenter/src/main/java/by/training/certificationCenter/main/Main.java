@@ -1,30 +1,41 @@
 package by.training.certificationCenter.main;
 
-import by.training.certificationCenter.bean.Organisation;
-import by.training.certificationCenter.service.ApplicationConfiguration;
+import by.training.certificationCenter.bean.*;
+import by.training.certificationCenter.dao.ProductDAO;
+import by.training.certificationCenter.service.configuration.Configuration;
+import by.training.certificationCenter.service.action.ClientAppsListAction;
 import com.mysql.cj.jdbc.Driver;
 
 import java.sql.*;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
 public class Main {
     public static void main(String[] args) {
-        Properties properties = ApplicationConfiguration.getProperties();
-        String url = properties.getProperty("url");
+        Properties properties = Configuration.getProperties();
+        String url = properties.getProperty("mySqlUrl");
         Connection cn = null;
         try {
             DriverManager.registerDriver(new Driver());
             cn = DriverManager.getConnection(url, properties);
-            Statement st = null;
-            try {
-                st = cn.createStatement();
-               ResultSet rs = null;
-               try {
-                   rs = st.executeQuery("SELECT * FROM organisation");
-                   List<Organisation> lst = new ArrayList<>();
-                   while (rs.next()) {
+
+            /*Specification appByUserIdSpec = new ApplicationByUserIdSpecification(4);
+            ApplicationDAO appDao = new ApplicationDAO(cn);
+            List<Application> apps = appDao.query(appByUserIdSpec);
+            for (Application entity : apps) {
+                System.out.println(entity.getId() + " " + entity.getDate_add() + " " + entity.getReg_num() + " " + entity.getStatus());
+            }*/
+            try (Statement st = cn.createStatement()) {
+                ResultSet rs = null;
+                try {
+                   /*rs = st.executeQuery("SELECT product_name, quantity_attribute_name, registration_number, organisation.name " +
+                           "FROM product JOIN quantity_attribute ON product.quantity_attribute_id = quantity_attribute.id " +
+                           "JOIN application ON product.application_id = application.id JOIN organisation " +
+                           "ON application.organisation_id = organisation.id WHERE application_id = 2");*/
+                    List<Organisation> lst = new ArrayList<>();
+                    /*while (rs.next()) {
                        int id = rs.getInt(1);
                        int unp = rs.getInt(2);
                        String name = rs.getString(3);
@@ -34,24 +45,18 @@ public class Main {
                        org.setEmail(rs.getString(6));
                        org.setAccepted(rs.getBoolean(7));
                        lst.add(org);
-                   }
-                   if (lst.size() > 0) {
-                       System.out.println(lst);
-                   } else {
-                       System.out.println("Not found");
-                   }
-               } finally {
-                   if (rs != null) {
-                       rs.close();
-                   } else {
-                       System.err.println("ошибка во время чтения из БД");
-                   }
-               }
-            } finally {
-                if (st != null) {
-                    st.close();
-                } else {
-                    System.out.println("Statement не создан");
+                    }*/
+                    if (lst.size() > 0) {
+                        System.out.println(lst);
+                    } else {
+                        //System.out.println("Not found");
+                    }
+                } finally {
+                    if (rs != null) {
+                        rs.close();
+                    } else {
+                        // System.err.println("ошибка во время чтения из БД");
+                    }
                 }
             }
         } catch (SQLException e) {

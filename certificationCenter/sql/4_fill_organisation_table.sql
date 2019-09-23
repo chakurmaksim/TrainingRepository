@@ -1,5 +1,5 @@
 INSERT INTO organisation(unp, name, address, phone, email, accept)
-VALUES(123456789, 'Общество с ограниченной ответственностью «Центр по сертификации продукции»',
+VALUES(123456789, 'Общество с ограниченной ответственностью «Центр сертификации продукции»',
        'Республика Беларусь, 220017, г.Минск, ул. Казимировская, д. 15',
        375171234567, 'info@сertification.by', true);
 INSERT INTO organisation(unp, name, address, phone, email, accept)

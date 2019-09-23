@@ -1,7 +1,6 @@
 package by.training.certificationCenter.bean;
 
-public class Organisation {
-    private final int id;
+public class Organisation extends CertificationEntity {
     private final int unp;
     private final String name;
     private String address;
@@ -12,13 +11,9 @@ public class Organisation {
     public Organisation(final int newId,
                         final int newUnp,
                         final String newName) {
-        this.id = newId;
+        super(newId);
         this.unp = newUnp;
         this.name = newName;
-    }
-
-    public int getId() {
-        return id;
     }
 
     public int getUnp() {
@@ -63,9 +58,9 @@ public class Organisation {
 
     @Override
     public String toString() {
-        return "Юридическое лицо{" +
-                "id=" + id +
-                ", УНП=" + unp
+        return "Юридическое лицо{"
+                + "id=" + id
+                + ", УНП=" + unp
                 + ", Наименование='" + name + '\''
                 + ", Место нахождения='" + address + '\''
                 + ", Телефон=" + phoneNumber

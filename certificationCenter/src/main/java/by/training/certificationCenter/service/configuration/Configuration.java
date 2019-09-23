@@ -1,4 +1,4 @@
-package by.training.certificationCenter.service;
+package by.training.certificationCenter.service.configuration;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -10,11 +10,11 @@ import java.util.Properties;
 /**
  * Configuration class.
  */
-public class ApplicationConfiguration {
+public class Configuration {
     /**
      * Events logger.
      */
-    private static Logger logger = LogManager.getLogger(ApplicationConfiguration.class);
+    private static Logger logger = LogManager.getLogger(Configuration.class);
 
     /**
      * Get method.
@@ -23,9 +23,9 @@ public class ApplicationConfiguration {
      */
     public static Properties getProperties() {
         Properties properties = new Properties();
-        try (InputStream inputStream = ApplicationConfiguration.class.
+        try (InputStream inputStream = Configuration.class.
                 getClassLoader().getResourceAsStream(
-                "application.properties")) {
+                "configuration.properties")) {
             if (inputStream == null) {
                 String msg = "File configuration \"application.configuration\" "
                         + "is not found";
