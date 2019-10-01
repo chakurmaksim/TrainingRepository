@@ -24,14 +24,12 @@ public final class UserFactory implements Cloneable, Serializable {
     }
 
     public User createUser(
-            final int id, final int orgId,
-            final String login, final String pass,
+            final int id, final int orgId, final String login,
             final String name, final String surname,
             final String patronymic, final long phone,
-            final String email, final int roleInd,
-            final boolean actual) {
-        User user = new User(id, login);
-        user.setPassword(pass);
+            final String email, final int roleInd, final boolean actual) {
+        User user = new User(id);
+        user.setLogin(login);
         user.setName(name);
         user.setSurname(surname);
         user.setPatronymic(patronymic);
@@ -42,7 +40,7 @@ public final class UserFactory implements Cloneable, Serializable {
         Role role = optRole.get();
         user.setRole(role);
         user.setActual(actual);
-        user.setOrg(new Organisation(orgId, -1,null));
+        user.setOrg(new Organisation(orgId, 0,null));
         return user;
     }
 

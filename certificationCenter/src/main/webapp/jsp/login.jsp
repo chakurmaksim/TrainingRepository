@@ -11,7 +11,8 @@
 <jsp:include page="header.jsp"/>
     <div class="container col-lg-6 col-md-8 col-sm-12">
         <div class="alert-primary reg-form">
-            <c:url value="/login.html" var="loginUrl"/>
+            <p style="color:red">${errorMessage}</p>
+            <c:url value="login.html" var="loginUrl"/>
             <form role="form" action="${loginUrl}" method="post">
                 <div class="form-group">
                     <label for="login" class="control-label col-md">Login</label>

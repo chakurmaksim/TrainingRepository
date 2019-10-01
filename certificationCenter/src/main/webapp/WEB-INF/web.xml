@@ -10,6 +10,11 @@
     <servlet>
         <servlet-name>Servlet</servlet-name>
         <servlet-class>by.training.certificationCenter.controller.CertificationServlet</servlet-class>
+        <multipart-config>
+            <max-file-size>20971520</max-file-size>
+            <max-request-size>52428800</max-request-size>
+            <file-size-threshold>10485760</file-size-threshold>
+        </multipart-config>
     </servlet>
     <servlet-mapping>
         <servlet-name>Servlet</servlet-name>
@@ -17,7 +22,7 @@
     </servlet-mapping>
     <filter>
         <filter-name>EncodingFilter</filter-name>
-        <filter-class>by.training.certificationCenter.controller.EncodingFilter</filter-class>
+        <filter-class>by.training.certificationCenter.controller.filter.EncodingFilter</filter-class>
     </filter>
     <filter-mapping>
         <filter-name>EncodingFilter</filter-name>
@@ -25,16 +30,30 @@
     </filter-mapping>
     <filter>
         <filter-name>UriFilter</filter-name>
-        <filter-class>by.training.certificationCenter.controller.UriFilter</filter-class>
+        <filter-class>by.training.certificationCenter.controller.filter.UriFilter</filter-class>
     </filter>
     <filter-mapping>
         <filter-name>UriFilter</filter-name>
+        <url-pattern>*.html</url-pattern>
+    </filter-mapping>
+    <filter>
+        <filter-name>SecurityFilter</filter-name>
+        <filter-class>by.training.certificationCenter.controller.filter.SecurityFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>SecurityFilter</filter-name>
         <url-pattern>*.html</url-pattern>
     </filter-mapping>
     <error-page>
         <error-code>404</error-code>
         <location>/jsp/error.jsp</location>
     </error-page>
+    
+    <context-param>
+        <param-name>upload.location</param-name>
+        <param-value>data/uploads</param-value>
+    </context-param>
+
 
     <resource-ref>
         <description>MySQL database connection pool</description>

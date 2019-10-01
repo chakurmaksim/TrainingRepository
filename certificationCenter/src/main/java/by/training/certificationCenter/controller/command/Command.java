@@ -8,18 +8,27 @@ import javax.servlet.http.HttpServletResponse;
 
 public abstract class Command {
     private static Logger logger = LogManager.getLogger(Command.class);
-    private String forwardPathName;
+    private String pathName;
+    private boolean isRedirect;
     /**
      * Method calls to a certain operation of business logic.
      */
-    public abstract void execute(HttpServletRequest request, HttpServletResponse response) throws CommandException;
+    public abstract void execute(HttpServletRequest request, HttpServletResponse response);
 
-    public String getForwardPathName() {
-        return forwardPathName;
+    public String getPathName() {
+        return pathName;
     }
 
-    public void setForwardPathName(String forwardPathName) {
-        this.forwardPathName = forwardPathName;
+    public void setPathName(String pathName) {
+        this.pathName = pathName;
+    }
+
+    public boolean isRedirect() {
+        return isRedirect;
+    }
+
+    public void setRedirect(boolean redirect) {
+        isRedirect = redirect;
     }
 
     public static Logger getLogger() {

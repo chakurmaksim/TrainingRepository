@@ -1,5 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <html>
 <head>
     <link rel="stylesheet" href="css/bootstrap.min.css">
@@ -10,6 +11,21 @@
 </head>
 <body>
 <jsp:include page="header.jsp"/>
+<c:set var="app" value="${application}" scope="page"/>
+<c:set var="role" value="${authorizedUser.role.roleName}"/>
+<c:if test="${not empty role and role eq 'Client'}">
+    <div class="container">
+        <ul class="list-group list-group-horizontal">
+            <li class="list-group-item active">Show application</li>
+            <li class="list-group-item">
+                <a href="edit.html?id=${app.id}">Edit application</a>
+            </li>
+            <li class="list-group-item">
+                <a href="delete.html?id=${app.id}">Delete application</a>
+            </li>
+        </ul>
+    </div>
+</c:if>
 <div id='content'>
     <div class='content'>
         <div id='show'>
@@ -19,7 +35,6 @@
             <p class='right header'>тел. +375 17 123-45-67</p>
             <p class='right header'>адрес эл. почты: info@сertification.by</p>
             <p class="center">
-                <c:set var="app" value="${application}" scope="page"/>
                 <c:choose>
                     <c:when test="${app.reg_num > 0}">
                         <c:set var="regNum" value="${app.reg_num}"/>
@@ -28,7 +43,11 @@
                         <c:set var="regNum" value=""/>
                     </c:otherwise>
                 </c:choose>
-                <b>ЗАЯВКА №<c:out value="${regNum}"/> от <c:out value="${app.date_add}"/></b>
+                <c:set var="datePattern" value="MM/dd/yyyy"/>
+                <c:set var="date" value="${app.date_add}"/>
+                <fmt:parseDate value="${date}" pattern="yyyy-MM-dd" var="parsedDate"/>
+                <fmt:formatDate value="${parsedDate}" pattern="${datePattern}" var="formattedDate"/>
+                <b>ЗАЯВКА №<c:out value="${regNum}"/> от <c:out value="${formattedDate}"/></b>
             </p>
             <p class="center">на проведение регистрации декларации о соответствии</p>
             <table>
@@ -164,21 +183,32 @@
             </table>
             <p>М.П.</p>
             <table>
+                <tbody>
                 <tr>
                     <td class="title">Ответственный исполнитель</td>
                     <td class="data">
                         <c:out value="${app.executor.surname}"/>
                         <c:out value=" ${app.executor.name}"/>
+                        <c:choose>
+                            <c:when test="${not empty app.executor.patronymic}">
+                                <c:out value=" ${app.executor.patronymic}"/>
+                            </c:when>
+                        </c:choose>
                     </td>
                     <td class="title">Телефон</td>
                     <td class="data"><c:out value="${app.executor.phone}"/></td>
+                    <td class="title">Адрес эл. почты</td>
+                    <td class="data"><c:out value="${app.executor.email}"/></td>
                 </tr>
                 <tr>
                     <td></td>
                     <td class="help">фамилия, имя, отчество</td>
                     <td></td>
                     <td></td>
+                    <td></td>
+                    <td></td>
                 </tr>
+                </tbody>
             </table>
         </div>
     </div>

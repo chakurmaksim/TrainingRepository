@@ -1,9 +1,6 @@
 package by.training.certificationCenter.controller;
 
 import by.training.certificationCenter.controller.command.Command;
-import by.training.certificationCenter.controller.command.CommandException;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -12,23 +9,25 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 public class CertificationServlet extends HttpServlet {
-    private static Logger logger = LogManager.getLogger();
+    private static final String ATTR_COMMAND = "command";
     protected void doPost(final HttpServletRequest request,
                           final HttpServletResponse response)
             throws ServletException, IOException {
-        doGet(request, response);
+        Command command = (Command) request.getAttribute(ATTR_COMMAND);
+        command.execute(request, response);
+        if (command.isRedirect()) {
+            String redirectedUri = request.getContextPath() + command.getPathName();
+            response.sendRedirect(redirectedUri);
+        } else {
+            doGet(request, response);
+        }
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String jspPage;
-        try {
-            Command command = (Command) request.getAttribute("command");
-            command.execute(request, response);
-            jspPage = command.getForwardPathName();
-            getServletContext().getRequestDispatcher(jspPage).forward(request, response);
-        } catch (CommandException e) {
-            logger.error(e.toString());
-        }
+        Command command = (Command) request.getAttribute(ATTR_COMMAND);
+        command.execute(request, response);
+        String jspPage = command.getPathName();
+        getServletContext().getRequestDispatcher(jspPage).forward(request, response);
     }
 }

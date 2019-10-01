@@ -1,25 +1,28 @@
 package by.training.certificationCenter.bean;
 
 public enum Role {
-    GUEST("Гость", 0),
-    SUPER_CLIENT("Супер клиент", 1),
-    CLIENT("Клиент",2),
-    ADMIN("Администратор",3),
-    EXPERT("Эксперт",4);
+    GUEST("Guest", 0),
+    ADMIN("Administrator",1),
+    EXPERT("Expert",2),
+    CLIENT("Client",3);
 
-    private String role;
+    private String roleName;
     private int index;
 
     Role(final String newRole, final int ind) {
-        this.role = newRole;
+        this.roleName = newRole;
         this.index = ind;
     }
 
-    public String getRole() {
-        return role;
+    public String getRoleName() {
+        return roleName;
     }
 
     public int getIndex() {
         return index;
+    }
+
+    public static Role getByIdentity(int identity) {
+        return Role.values()[identity];
     }
 }

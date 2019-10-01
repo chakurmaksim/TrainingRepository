@@ -1,13 +1,10 @@
 package by.training.certificationCenter.main;
 
 import by.training.certificationCenter.bean.*;
-import by.training.certificationCenter.dao.ProductDAO;
 import by.training.certificationCenter.service.configuration.Configuration;
-import by.training.certificationCenter.service.action.ClientAppsListAction;
 import com.mysql.cj.jdbc.Driver;
 
 import java.sql.*;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;

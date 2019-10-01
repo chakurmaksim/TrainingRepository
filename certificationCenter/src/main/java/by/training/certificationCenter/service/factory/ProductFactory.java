@@ -27,7 +27,7 @@ public class ProductFactory implements Cloneable, Serializable {
             final String quantity_attr_name) {
         Product product = new Product(id);
         QuantityAttribute attribute = new QuantityAttribute(
-                (byte) quantity_attr_id, quantity_attr_name);
+                quantity_attr_id, quantity_attr_name);
         product.setName(name);
         product.setCode(code);
         product.setProducer(producer);

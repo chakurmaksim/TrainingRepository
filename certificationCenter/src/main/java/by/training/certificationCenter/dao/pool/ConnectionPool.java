@@ -1,4 +1,4 @@
-package by.training.certificationCenter.dao;
+package by.training.certificationCenter.dao.pool;
 
 import by.training.certificationCenter.service.configuration.Configuration;
 import org.apache.logging.log4j.LogManager;
@@ -14,7 +14,7 @@ import java.util.Properties;
 
 public final class ConnectionPool {
     private static DataSource dataSource;
-    private static Logger logger = LogManager.getLogger();
+    private static Logger logger = LogManager.getLogger(ConnectionPool.class);
 
     static {
         try {
@@ -36,11 +36,8 @@ public final class ConnectionPool {
         return dataSource.getConnection();
     }
 
-    public static void close(final Connection connection) {
-        try {
-            connection.close();
-        } catch (SQLException e) {
-            logger.error(e.toString());
-        }
+    public static void close(final Connection connection)
+            throws SQLException {
+        connection.close();
     }
 }

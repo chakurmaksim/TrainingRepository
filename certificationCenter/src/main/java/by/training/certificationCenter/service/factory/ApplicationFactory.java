@@ -7,6 +7,7 @@ import by.training.certificationCenter.bean.User;
 
 import java.io.Serializable;
 import java.sql.Date;
+import java.time.LocalDate;
 
 public class ApplicationFactory implements Cloneable, Serializable {
     /**
@@ -23,25 +24,36 @@ public class ApplicationFactory implements Cloneable, Serializable {
         return SINGLE_INSTANCE;
     }
 
-    public Application createApplication(
-            final int id, final int userId, final int orgId,
-            final int regNum, final Date dateAdd,
-            final String requirements, final Date dateResolve,
+    public void buildAppWithUserAndOrg(
+            final Application application, final int userId, final int orgId,
+            final String requirements) {
+        User user = new User(userId);
+        Organisation org = new Organisation(orgId, 0,null);
+        application.setExecutor(user);
+        application.setOrg(org);
+        application.setRequirements(requirements);
+    }
+
+    public Application createDemoApp(
+            final int id, final int regNum,
+            final Date dateAdd, final Date dateResolve,
             final int statusInd) {
         Application application = new Application(id);
-        User user = new User(userId, null);
-        Organisation org = new Organisation(orgId, -1, null);
         application.setReg_num(regNum);
         if (dateAdd != null) {
             application.setDate_add(dateAdd.toLocalDate());
         }
-        application.setRequirements(requirements);
         if (dateResolve != null) {
             application.setDate_resolve(dateResolve.toLocalDate());
         }
         application.setStatus(Status.getByIdentity(statusInd));
-        application.setExecutor(user);
-        application.setOrg(org);
+        return application;
+    }
+
+    public Application createNewClientApp(final LocalDate dateAdd) {
+        Application application = new Application(0);
+        application.setDate_add(dateAdd);
+        application.setStatus(Status.getByIdentity(0));
         return application;
     }
 

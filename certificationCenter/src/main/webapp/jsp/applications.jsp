@@ -1,5 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <html>
 <head>
     <link rel="stylesheet" href="css/bootstrap.min.css">
@@ -10,7 +11,7 @@
 <body>
 <jsp:include page="header.jsp"/>
     <div class="container">
-        <h2>ПОДАННЫЕ ЗАЯВКИ</h2>
+        <h3>ПОДАННЫЕ ЗАЯВКИ</h3>
         <table class="table table-bordered">
             <thead>
             <tr>
@@ -21,30 +22,35 @@
                 <th><c:out value="Этап работ" /></th>
             </tr>
             </thead>
-            <tbody>
+            <tbody
                 <c:forEach var="entity" items="${apps}" varStatus="status">
                     <tr>
                         <td>
                             <a href="showApplication.html?application_id=<c:out value='${entity.id}' />">
                                 <c:out value="${entity.id}" /></a>
                         </td>
-                        <td><c:out value="${entity.date_add}" /></td>
+                        <c:set var="datePattern" value="MM/dd/yyyy"/>
+                        <td>
+                            <c:set var="dateAdd" value="${entity.date_add}"/>
+                            <fmt:parseDate value="${dateAdd}" pattern="yyyy-MM-dd" var="parsedDateAdd"/>
+                            <fmt:formatDate value="${parsedDateAdd}" pattern="${datePattern}" var="formattedDateAdd"/>
+                            <c:out value="${formattedDateAdd}" />
+                        </td>
                         <td>
                             <c:set var="number" value="${entity.reg_num}" scope="request" />
-                            <c:if test="${number == 0}">
-                                <c:out value="Не зарегистрирована" />
-                            </c:if>
                             <c:if test="${number > 0}">
                                 <c:out value="${number}" />
                             </c:if>
                         </td>
                         <td>
-                            <c:catch var="e">
-                                <c:out value="${entity.date_resolve}" />
-                            </c:catch>
-                            <c:if test="${e != null}">
-                                <c:out value="${entity.date_resolve}" />
-                            </c:if>
+                            <c:choose>
+                                <c:when test="${not empty entity.date_resolve}">
+                                    <c:set var="dateResolve" value="${entity.date_add}"/>
+                                    <fmt:parseDate value="${dateResolve}" pattern="yyyy-MM-dd" var="parsedDateResolve"/>
+                                    <fmt:formatDate value="${parsedDateResolve}" pattern="${datePattern}" var="formattedDateResolve"/>
+                                    <c:out value="${formattedDateResolve}" />
+                                </c:when>
+                            </c:choose>
                         </td>
                         <td>
                             <c:catch var="e">

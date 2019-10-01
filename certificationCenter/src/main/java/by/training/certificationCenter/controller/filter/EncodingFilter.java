@@ -1,13 +1,17 @@
-package by.training.certificationCenter.controller;
+package by.training.certificationCenter.controller.filter;
 
-import javax.servlet.*;
+import javax.servlet.Filter;
+import javax.servlet.FilterChain;
+import javax.servlet.FilterConfig;
+import javax.servlet.ServletException;
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 public class EncodingFilter implements Filter {
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
-
     }
 
     @Override
@@ -16,14 +20,10 @@ public class EncodingFilter implements Filter {
         request.setCharacterEncoding("UTF-8");
         HttpServletResponse httpResponse = (HttpServletResponse) response;
         httpResponse.setCharacterEncoding("UTF-8");
-        httpResponse.setHeader("Cache-control", "no-cache");
-        httpResponse.setHeader("Pragma", "no-cache");
-        httpResponse.setDateHeader("Expires", 0l);
         chain.doFilter(request, response);
     }
 
     @Override
     public void destroy() {
-
     }
 }

@@ -6,6 +6,7 @@ public class Product extends CertificationEntity {
     private String producer;
     private String address;
     private QuantityAttribute attr;
+    private int applicationId;
 
     public Product(final int newId) {
         super(newId);
@@ -53,6 +54,14 @@ public class Product extends CertificationEntity {
 
     public void setAttr(QuantityAttribute attr) {
         this.attr = attr;
+    }
+
+    public int getApplicationId() {
+        return applicationId;
+    }
+
+    public void setApplicationId(int applicationId) {
+        this.applicationId = applicationId;
     }
 
     @Override

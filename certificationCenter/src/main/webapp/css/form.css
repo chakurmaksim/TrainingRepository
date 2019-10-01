@@ -1,0 +1,111 @@
+body {
+    background-color: #D7EAF0;
+}
+#container {
+    margin-left: auto;
+    margin-right: auto;
+    min-height: 100%;
+    position: relative;
+}
+
+#content > .content {
+    width: 1040px;
+    margin: 0 auto;
+    padding-bottom: 160px;
+}
+
+.help {
+    color: #7F7F7F;
+    font-size: 80%;
+    font-style: italic;
+}
+
+em {
+    font-style: italic;
+}
+
+#content .content li {
+    padding: 5px;
+}
+
+#content p {
+    margin: 5px;
+}
+
+div.hidden {
+    display: none;
+}
+
+fieldset {
+    float: left;
+    clear: left;
+    width: 100%;
+    margin: 0 0 1.5em 0;
+    padding: 0;
+    border: 1px solid #ccc;
+}
+
+legend {
+    margin-left: 1em;
+    color: #000000;
+    font-weight: bold;
+}
+
+fieldset > ul {
+    padding: 1em 1em 0 1em;
+    list-style: none;
+}
+
+fieldset > ul > li {
+    padding-bottom: 1em;
+    float: left;
+    clear: left;
+    width: 100%;
+    position: relative;
+}
+
+fieldset.submit {
+    border-style: none;
+    border: 0 none #FFF;
+    float: none;
+    width: auto;
+    padding-left: 12.5em;
+}
+
+fieldset > ul > li > label {
+    display: block;
+    float: left;
+    width: 11em;
+    padding-right: 2em;
+}
+
+input[type=text], textarea {
+    width: 45em;
+}
+
+input #applicant_address, #applicant_name, #applicant_unp,
+#applicant_phone, #applicant_email, #application_executor,
+#executor_phone, #executor_email {
+    background-color:transparent;
+}
+
+textarea {
+    height: 5em;
+}
+ul.radio_list {
+    padding-left: 13em;
+}
+ul.radio_list li {
+    display: block;
+}
+#add_appendix {
+    margin-left: 13em;
+}
+form div.data {
+    margin-left: 13em;
+}
+form div.help {
+    margin-left: 17em;
+    width: 50em;
+}
+

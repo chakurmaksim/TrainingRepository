@@ -1,7 +1,7 @@
 package by.training.certificationCenter.bean;
 
 public class User extends CertificationEntity {
-    private final String login;
+    private String login;
     private String password;
     private String name;
     private String surname;
@@ -12,9 +12,12 @@ public class User extends CertificationEntity {
     private boolean actual;
     private Organisation org;
 
-    public User(final int newId, final String newLogin) {
+    public User(final int newId) {
         super(newId);
-        this.login = newLogin;
+    }
+
+    public void setLogin(String login) {
+        this.login = login;
     }
 
     public String getLogin() {
