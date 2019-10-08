@@ -1,6 +1,7 @@
 package by.training.certificationCenter.controller.filter;
 
 import by.training.certificationCenter.controller.command.*;
+import by.training.certificationCenter.service.configuration.PathConfiguration;
 
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
@@ -9,26 +10,30 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class UriFilter implements Filter {
-    private static Map<String, Command> forwardCommands = new ConcurrentHashMap<>();
+    private static Map<String, Command> commands = new ConcurrentHashMap<>();
 
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
-        forwardCommands.put("/applications", new AppsListCommand());
-        forwardCommands.put("/applyFor", new ApplyForCommand());
-        forwardCommands.put("/home", new MainCommand());
-        forwardCommands.put("/index", new MainCommand());
-        forwardCommands.put("/login", new LoginCommand());
-        forwardCommands.put("/showApplication", new ShowApplicationCommand());
+        commands.put("/applications", new AppsListCommand());
+        commands.put("/applyFor", new ApplyForCommand());
+        commands.put("/chooseLanguage", new ChooseLanguageCommand());
+        commands.put(("/deleteApplication"), new DeleteApplicationCommand());
+        commands.put("/editApplication", new EditApplicationCommand());
+        commands.put("/home", new MainCommand());
+        commands.put("/index", new MainCommand());
+        commands.put("/login", new LoginCommand());
+        commands.put("/logout", new LogoutCommand());
+        commands.put("/showApplication", new ShowApplicationCommand());
     }
 
     @Override
-    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
+    public void doFilter(
+            ServletRequest request, ServletResponse response, FilterChain chain)
             throws IOException, ServletException {
         if (request instanceof HttpServletRequest) {
             HttpServletRequest httpRequest = (HttpServletRequest) request;
-            System.out.println(httpRequest.getServletPath());
             String urlPattern = UrlPatternUtils.getUrlPattern(httpRequest);
-            Command forwardCommand = forwardCommands.get(urlPattern);
+            Command forwardCommand = commands.get(urlPattern);
             String forwardPathName = String.format("/jsp%s.jsp", urlPattern);
             if (forwardCommand != null) {
                 forwardCommand.setPathName(forwardPathName);
@@ -40,15 +45,13 @@ public class UriFilter implements Filter {
                         "Запрошенный адрес %s не может быть обработан сервером",
                         httpRequest.getRequestURI()));
                 httpRequest.getServletContext().getRequestDispatcher(
-                        "/jsp/error.jsp").forward(request, response);
+                        PathConfiguration.getProperty("path.page.error")).
+                        forward(request, response);
             }
-        } else {
-
         }
     }
 
     @Override
     public void destroy() {
-
     }
 }

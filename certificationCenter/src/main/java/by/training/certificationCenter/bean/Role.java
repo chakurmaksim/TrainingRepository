@@ -1,6 +1,8 @@
 package by.training.certificationCenter.bean;
 
-public enum Role {
+import java.io.Serializable;
+
+public enum Role implements Serializable {
     GUEST("Guest", 0),
     ADMIN("Administrator",1),
     EXPERT("Expert",2),

@@ -7,7 +7,11 @@ import by.training.certificationCenter.service.exception.ServiceException;
 import java.util.List;
 
 public interface ApplicationService<T extends Application, V extends User> {
-    List<T> receiveAppsByUserId(V user, int pageNum, int pageLim) throws ServiceException;
+    List<T> receiveAppsByUserId(V user, int pageNum, int pageLim)
+            throws ServiceException;
     T showApplicationById(int applicationId, V user) throws ServiceException;
     boolean addNewApplication(T application) throws ServiceException;
+    boolean deleteApplication(int applicationId, V user)
+            throws ServiceException;
+    T updateApplication(T application) throws ServiceException;
 }

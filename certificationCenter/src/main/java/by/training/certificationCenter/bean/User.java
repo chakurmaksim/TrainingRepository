@@ -1,6 +1,8 @@
 package by.training.certificationCenter.bean;
 
-public class User extends CertificationEntity {
+import java.io.Serializable;
+
+public class User extends CertificationEntity implements Serializable {
     private String login;
     private String password;
     private String name;

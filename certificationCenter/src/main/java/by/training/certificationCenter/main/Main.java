@@ -1,7 +1,7 @@
 package by.training.certificationCenter.main;
 
 import by.training.certificationCenter.bean.*;
-import by.training.certificationCenter.service.configuration.Configuration;
+import by.training.certificationCenter.service.configuration.DatabaseConfiguration;
 import com.mysql.cj.jdbc.Driver;
 
 import java.sql.*;
@@ -11,7 +11,7 @@ import java.util.Properties;
 
 public class Main {
     public static void main(String[] args) {
-        Properties properties = Configuration.getProperties();
+        Properties properties = DatabaseConfiguration.getProperties();
         String url = properties.getProperty("mySqlUrl");
         Connection cn = null;
         try {

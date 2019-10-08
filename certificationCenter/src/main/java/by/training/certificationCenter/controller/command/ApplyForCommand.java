@@ -2,6 +2,7 @@ package by.training.certificationCenter.controller.command;
 
 import by.training.certificationCenter.bean.*;
 import by.training.certificationCenter.service.ApplicationService;
+import by.training.certificationCenter.service.configuration.PathConfiguration;
 import by.training.certificationCenter.service.exception.ServiceException;
 import by.training.certificationCenter.service.factory.ApplicationFactory;
 import by.training.certificationCenter.service.factory.ProductFactory;
@@ -19,6 +20,7 @@ import java.io.IOException;
 import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
@@ -26,6 +28,10 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 public class ApplyForCommand extends Command {
+    private static final String ATTRIBUTE_NAME_USER = "authorizedUser";
+    private static final String ATTRIBUTE_NAME_MESSAGE = "message";
+    private static final String PARAM_NAME_DATE_ADD = "date_add";
+    private static final String PARAM_NAME_REQUIREMENTS = "requirements";
     @Override
     public void execute(HttpServletRequest request,
                         HttpServletResponse response) {
@@ -38,7 +44,7 @@ public class ApplyForCommand extends Command {
             return;
         }
         HttpSession session = request.getSession();
-        User user = (User) session.getAttribute("authorizedUser");
+        User user = (User) session.getAttribute(ATTRIBUTE_NAME_USER);
         try {
             Application application = createApplication(request, user);
             List<Product> products = createProducts(request);
@@ -48,8 +54,9 @@ public class ApplyForCommand extends Command {
             ApplicationService service = factory.getApplicationService();
             if (service.addNewApplication(application)) {
                 setRedirect(true);
-                setPathName("/jsp/success.jsp");
-                request.setAttribute("message",
+                setPathName(PathConfiguration.getProperty("path.page.success"));
+                ServletContext context = request.getServletContext();
+                context.setAttribute(ATTRIBUTE_NAME_MESSAGE,
                         "Ваша заявка успешно подана!");
             }
         } catch (CommandException | ServiceException e) {
@@ -63,8 +70,8 @@ public class ApplyForCommand extends Command {
             final HttpServletRequest request, final User user)
             throws CommandException {
         ApplicationFactory factory = ApplicationFactory.getSingleInstance();
-        String date_add_param = request.getParameter("date_add");
-        String requirements = request.getParameter("requirements");
+        String date_add_param = request.getParameter(PARAM_NAME_DATE_ADD);
+        String requirements = request.getParameter(PARAM_NAME_REQUIREMENTS);
         if (date_add_param == null || date_add_param.equals("")) {
             throw new CommandException(
                     "Field with date of the applying for is empty");
@@ -72,8 +79,14 @@ public class ApplyForCommand extends Command {
             throw new CommandException(
                     "Field with the application requirements is empty");
         }
-        LocalDate dateAdd = LocalDate.parse(date_add_param,
-                DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+        LocalDate dateAdd;
+        try {
+            dateAdd = LocalDate.parse(date_add_param,
+                    DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+        } catch (DateTimeParseException e) {
+            throw new CommandException(
+                    "Field can not be parsed in to the local date");
+        }
         Application application = factory.createNewClientApp(dateAdd);
         factory.buildAppWithUserAndOrg(application, user.getId(),
                 user.getOrg().getId(), requirements);

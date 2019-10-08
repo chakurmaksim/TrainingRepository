@@ -10,11 +10,12 @@ import java.util.Properties;
 /**
  * Configuration class.
  */
-public class Configuration {
+public class DatabaseConfiguration {
     /**
      * Events logger.
      */
-    private static Logger logger = LogManager.getLogger(Configuration.class);
+    private static Logger logger = LogManager.getLogger(
+            DatabaseConfiguration.class);
 
     /**
      * Get method.
@@ -23,11 +24,11 @@ public class Configuration {
      */
     public static Properties getProperties() {
         Properties properties = new Properties();
-        try (InputStream inputStream = Configuration.class.
+        try (InputStream inputStream = DatabaseConfiguration.class.
                 getClassLoader().getResourceAsStream(
-                "configuration.properties")) {
+                "databaseConfiguration.properties")) {
             if (inputStream == null) {
-                String msg = "File configuration \"application.configuration\" "
+                String msg = "File configuration \"databaseConfiguration\" "
                         + "is not found";
                 logger.error(msg);
                 System.exit(0);

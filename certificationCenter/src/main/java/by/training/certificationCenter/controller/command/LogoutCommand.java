@@ -5,25 +5,24 @@ import by.training.certificationCenter.service.configuration.PathConfiguration;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
-public class MainCommand extends Command {
+public class LogoutCommand extends Command {
     private static final String PARAM_NAME_LOCALE = "locale";
     @Override
     public void execute(HttpServletRequest request,
                         HttpServletResponse response) {
+        request.getSession(false).invalidate();
+        setRedirect(true);
+        setPathName(PathConfiguration.getProperty("path.page.index"));
         Cookie[] cookies = request.getCookies();
-        String locale = PathConfiguration.getProperty("default.page.locale");
         if (cookies != null) {
             for (Cookie cookie : cookies) {
                 if (cookie.getName().equals(PARAM_NAME_LOCALE)) {
-                    locale = cookie.getValue();
+                    String locale = cookie.getValue();
+                    request.getSession().setAttribute(
+                            PARAM_NAME_LOCALE, locale);
                 }
             }
-        }
-        HttpSession session = request.getSession();
-        if (session.getAttribute(PARAM_NAME_LOCALE) == null) {
-            session.setAttribute(PARAM_NAME_LOCALE, locale);
         }
     }
 }

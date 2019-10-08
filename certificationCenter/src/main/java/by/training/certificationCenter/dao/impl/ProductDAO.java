@@ -7,33 +7,29 @@ import by.training.certificationCenter.service.factory.ProductFactory;
 import by.training.certificationCenter.service.specification.Specification;
 import by.training.certificationCenter.service.specification.SqlSpecification;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
 public class ProductDAO extends CertificationMySqlDAO<Product> {
-    private static final String COLUMN_ID = "id";
-    private static final String COLUMN_PROD_NAME = "product_name";
-    private static final String COLUMN_PROD_CODE = "product_code";
-    private static final String COLUMN_PRODUCER = "producer_name";
-    private static final String COLUMN_ADDR = "producer_address";
-    private static final String COLUMN_ATTR_ID = "quantity_attribute_id";
-    private static final String COLUMN_ATTR_NAME = "quantity_attribute_name";
-    private static final String INSERT_PROD;
-    private static final String FIND_PROD;
-
-    static {
-        INSERT_PROD = "INSERT INTO product(application_id, "
-                + "product_name, product_code, producer_name, "
-                + "producer_address, quantity_attribute_id) "
-                + "VALUES(?, ?, ?, ?, ?, ?)";
-        FIND_PROD = "SELECT product.id, product_name, product_code, "
-                + "producer_name, producer_address, "
-                + "quantity_attribute_id, quantity_attribute_name "
-                + "FROM product JOIN quantity_attribute ON "
-                + "product.quantity_attribute_id = quantity_attribute.id "
-                + "ORDER BY id DESC LIMIT ?,?";
-    }
+    private static final String INSERT_PROD = "INSERT INTO product("
+            + "application_id, product_name, product_code, producer_name, "
+            + "producer_address, quantity_attribute_id) "
+            + "VALUES (?, ?, ?, ?, ?, ?)";
+    private static final String FIND_PROD = "SELECT product.id, product_name, "
+            + "product_code, producer_name, producer_address, "
+            + "quantity_attribute_id, quantity_attribute_name FROM product "
+            + "JOIN quantity_attribute ON product.quantity_attribute_id = "
+            + "quantity_attribute.id ORDER BY id DESC LIMIT ?, ?";
+    private static final String REMOVE_PROD = "DELETE FROM product "
+            + "WHERE id = ?";
+    private static final String UPDATE_PROD = "UPDATE product SET "
+            + "product_name = ?, product_code = ?, producer_name = ?, "
+            + "producer_address = ?, quantity_attribute_id = ? WHERE id = ?";
 
     public ProductDAO(final Connection newConnection) {
         super(newConnection);
@@ -53,7 +49,8 @@ public class ProductDAO extends CertificationMySqlDAO<Product> {
                 products.add(product);
             }
         } catch (SQLException e) {
-            throw new DAOException(getStatementError(), e);
+            throw new DAOException(getStatementError()
+                    + " at find all products", e);
         }
         return products;
     }
@@ -64,8 +61,17 @@ public class ProductDAO extends CertificationMySqlDAO<Product> {
     }
 
     @Override
-    public boolean remove(int id) {
-        return false;
+    public boolean remove(int id) throws DAOException {
+        Connection connection = getConnection();
+        try (PreparedStatement statement = connection.
+                prepareStatement(REMOVE_PROD)) {
+            statement.setInt(1, id);
+            statement.executeUpdate();
+            return true;
+        } catch (SQLException e) {
+            throw new DAOException(getStatementError()
+                    + " at remove product by id", e);
+        }
     }
 
     @Override
@@ -78,7 +84,8 @@ public class ProductDAO extends CertificationMySqlDAO<Product> {
         int productId = 0;
         Connection connection = getConnection();
         try (PreparedStatement statement = connection.
-                prepareStatement(INSERT_PROD)) {
+                prepareStatement(INSERT_PROD,
+                        Statement.RETURN_GENERATED_KEYS)) {
             int index = 0;
             statement.setInt(++index, entity.getApplicationId());
             statement.setString(++index, entity.getName());
@@ -86,17 +93,37 @@ public class ProductDAO extends CertificationMySqlDAO<Product> {
             statement.setString(++index, entity.getProducer());
             statement.setString(++index, entity.getAddress());
             statement.setInt(++index, entity.getAttr().getId());
-            productId = statement.executeUpdate();
+            statement.executeUpdate();
+            ResultSet resultSet = statement.getGeneratedKeys();
+            if (resultSet.next()) {
+                productId = resultSet.getInt(1);
+            }
         } catch (SQLException e) {
+            e.printStackTrace();
             throw new DAOException(getStatementError()
-                    + " create product into database", e);
+                    + " at create product into database", e);
         }
         return productId;
     }
 
     @Override
-    public Product update(Product entity) {
-        return null;
+    public Product update(Product entity) throws DAOException {
+        Connection connection = getConnection();
+        try (PreparedStatement statement = connection.
+                prepareStatement(UPDATE_PROD)) {
+            int index = 0;
+            statement.setString(++index, entity.getName());
+            statement.setLong(++index, entity.getCode());
+            statement.setString(++index, entity.getProducer());
+            statement.setString(++index, entity.getAddress());
+            statement.setInt(++index, entity.getAttr().getId());
+            statement.setInt(++index, entity.getId());
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            throw new DAOException(getStatementError()
+                    + " at update product", e);
+        }
+        return entity;
     }
 
     @Override
@@ -122,13 +149,16 @@ public class ProductDAO extends CertificationMySqlDAO<Product> {
 
     private Product receiveProduct(final ResultSet resultSet)
             throws SQLException {
-        int id = resultSet.getInt(COLUMN_ID);
-        String name = resultSet.getString(COLUMN_PROD_NAME);
-        long code = resultSet.getLong(COLUMN_PROD_CODE);
-        String producer_name = resultSet.getString(COLUMN_PRODUCER);
-        String producer_address = resultSet.getString(COLUMN_ADDR);
-        int quantity_attr_id = resultSet.getInt(COLUMN_ATTR_ID);
-        String quantity_attr_name = resultSet.getString(COLUMN_ATTR_NAME);
+        int id = resultSet.getInt("id");
+        String name = resultSet.getString("product_name");
+        long code = resultSet.getLong("product_code");
+        String producer_name = resultSet.getString("producer_name");
+        String producer_address = resultSet.getString(
+                "producer_address");
+        int quantity_attr_id = resultSet.getInt(
+                "quantity_attribute_id");
+        String quantity_attr_name = resultSet.getString(
+                "quantity_attribute_name");
         ProductFactory factory = ProductFactory.getSingleInstance();
         Product product = factory.createProduct(
                 id, name, code, producer_name, producer_address,

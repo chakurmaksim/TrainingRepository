@@ -3,6 +3,7 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd"
          version="4.0">
+
     <welcome-file-list>
         <welcome-file>index.html</welcome-file>
     </welcome-file-list>
@@ -20,6 +21,18 @@
         <servlet-name>Servlet</servlet-name>
         <url-pattern>*.html</url-pattern>
     </servlet-mapping>
+    <filter>
+        <filter-name>JspPageFilter</filter-name>
+        <filter-class>by.training.certificationCenter.controller.filter.JspPageRedirectFilter</filter-class>
+        <init-param>
+            <param-name>index_path</param-name>
+            <param-value>/index.html</param-value>
+        </init-param>
+    </filter>
+    <filter-mapping>
+        <filter-name>JspPageFilter</filter-name>
+        <url-pattern>*.jsp</url-pattern>
+    </filter-mapping>
     <filter>
         <filter-name>EncodingFilter</filter-name>
         <filter-class>by.training.certificationCenter.controller.filter.EncodingFilter</filter-class>
@@ -51,9 +64,8 @@
     
     <context-param>
         <param-name>upload.location</param-name>
-        <param-value>data/uploads</param-value>
+        <param-value>WEB-INF/data/files</param-value>
     </context-param>
-
 
     <resource-ref>
         <description>MySQL database connection pool</description>
@@ -61,4 +73,12 @@
         <res-type>javax.sql.DataSource</res-type>
         <res-auth>Container</res-auth>
     </resource-ref>
+
+    <jsp-config>
+        <taglib>
+            <taglib-uri>customtags</taglib-uri>
+            <taglib-location>/WEB-INF/tld/custom.tld</taglib-location>
+        </taglib>
+    </jsp-config>
+
 </web-app>

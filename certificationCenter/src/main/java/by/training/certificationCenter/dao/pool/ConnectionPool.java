@@ -1,6 +1,6 @@
 package by.training.certificationCenter.dao.pool;
 
-import by.training.certificationCenter.service.configuration.Configuration;
+import by.training.certificationCenter.service.configuration.DatabaseConfiguration;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -18,7 +18,7 @@ public final class ConnectionPool {
 
     static {
         try {
-            Properties prop = Configuration.getProperties();
+            Properties prop = DatabaseConfiguration.getProperties();
             InitialContext initContext = new InitialContext();
             Context envContext = (Context) initContext.lookup(
                     prop.getProperty("envContextName"));

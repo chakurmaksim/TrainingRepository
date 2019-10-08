@@ -26,6 +26,10 @@ public class ApplicationDAO extends CertificationMySqlDAO<Application> {
     private static final String FIND_ALL = "SELECT id, registration_number, "
             + "date_add, date_resolve, application_status FROM application "
             + "ORDER BY id DESC LIMIT ?,?";
+    private static final String REMOVE_APP = "DELETE FROM application "
+            + "WHERE id = ?";
+    private static final String UPDATE_APP = "UPDATE application SET "
+            + "requirements = ? WHERE id = ?";
 
     public ApplicationDAO(Connection newConnection) {
         super(newConnection);
@@ -64,14 +68,25 @@ public class ApplicationDAO extends CertificationMySqlDAO<Application> {
                 buildApplicationWithUserAndOrg(application, resultSet);
             }
         } catch (SQLException e) {
-            throw new DAOException(getStatementError(), e);
+            throw new DAOException(getStatementError()
+                    + " at find application by id", e);
         }
         return application;
     }
 
     @Override
-    public boolean remove(int id) {
-        return false;
+    public boolean remove(int id) throws DAOException {
+        Connection connection = getConnection();
+        try (PreparedStatement statement = connection.
+                prepareStatement(REMOVE_APP)) {
+            statement.setInt(1, id);
+            statement.executeUpdate();
+            return true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new DAOException(getStatementError()
+                    + " at remove application by id", e);
+        }
     }
 
     @Override
@@ -84,23 +99,38 @@ public class ApplicationDAO extends CertificationMySqlDAO<Application> {
         int applicationId = 0;
         Connection connection = getConnection();
         try (PreparedStatement statement = connection.
-                prepareStatement(INSERT_APP)) {
+                prepareStatement(INSERT_APP, Statement.RETURN_GENERATED_KEYS)) {
             int index = 0;
             statement.setInt(++index, entity.getExecutor().getId());
             statement.setInt(++index, entity.getOrg().getId());
             statement.setDate(++index, Date.valueOf(entity.getDate_add().
                     format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))));
             statement.setString(++index, entity.getRequirements());
-            applicationId = statement.executeUpdate();
+            statement.executeUpdate();
+            ResultSet resultSet = statement.getGeneratedKeys();
+            if (resultSet.next()) {
+                applicationId = resultSet.getInt(1);
+            }
         } catch (SQLException e) {
-            throw new DAOException(getStatementError(), e);
+            throw new DAOException(getStatementError()
+                    + " at create application", e);
         }
         return applicationId;
     }
 
     @Override
-    public Application update(Application entity) {
-        return null;
+    public Application update(Application entity) throws DAOException {
+        Connection connection = getConnection();
+        try (PreparedStatement statement = connection.
+                prepareStatement(UPDATE_APP)) {
+            statement.setString(1, entity.getRequirements());
+            statement.setInt(2, entity.getId());
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            throw new DAOException(getStatementError()
+                    + " at update application", e);
+        }
+        return entity;
     }
 
     @Override
@@ -121,7 +151,8 @@ public class ApplicationDAO extends CertificationMySqlDAO<Application> {
                     }
                 }
             } catch (SQLException e) {
-                throw new DAOException(getStatementError(), e);
+                throw new DAOException(getStatementError()
+                        + " at at query application list", e);
             }
         }
         return entities;
@@ -134,7 +165,8 @@ public class ApplicationDAO extends CertificationMySqlDAO<Application> {
         try {
             int userId = resultSet.getInt("user_id");
             int org_Id = resultSet.getInt("organisation_id");
-            String requirements = resultSet.getString("requirements");
+            String requirements = resultSet.getString(
+                    "requirements");
             ApplicationFactory factory = ApplicationFactory.getSingleInstance();
             factory.buildAppWithUserAndOrg(
                     application, userId, org_Id, requirements);

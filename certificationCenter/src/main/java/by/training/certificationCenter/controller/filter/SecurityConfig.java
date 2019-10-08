@@ -16,10 +16,14 @@ public class SecurityConfig {
     private static void init() {
         List<String> clientUrlPatterns = new ArrayList<>();
         clientUrlPatterns.add("/applications");
-        clientUrlPatterns.add("/apply");
+        clientUrlPatterns.add("/applyFor");
+        clientUrlPatterns.add(("/deleteApplication"));
+        clientUrlPatterns.add(("/editApplication"));
+        clientUrlPatterns.add(("/showApplication"));
         mapConfig.put(Role.CLIENT, clientUrlPatterns);
         List<String> expertUrlPatterns = new ArrayList<>();
         expertUrlPatterns.add("/applications");
+        expertUrlPatterns.add("/showApplication");
         mapConfig.put(Role.EXPERT, expertUrlPatterns);
     }
 

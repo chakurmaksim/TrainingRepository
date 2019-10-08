@@ -6,26 +6,30 @@ import javax.servlet.FilterConfig;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-public class EncodingFilter implements Filter {
+public class JspPageRedirectFilter implements Filter {
+    private String indexPath;
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
+        indexPath = filterConfig.getInitParameter("index_path");
     }
 
     @Override
-    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
+    public void doFilter(ServletRequest request,
+                         ServletResponse response, FilterChain chain)
             throws IOException, ServletException {
-        request.setCharacterEncoding("UTF-8");
+        HttpServletRequest httpRequest = (HttpServletRequest) request;
         HttpServletResponse httpResponse = (HttpServletResponse) response;
-        httpResponse.setCharacterEncoding("UTF-8");
-        httpResponse.setHeader("Cache-Control", "no-cache");
-        httpResponse.setHeader("Pragma", "no-cache");
+        httpResponse.sendRedirect(httpRequest.getContextPath() + indexPath);
+        System.out.println(httpRequest.getContextPath());
         chain.doFilter(request, response);
     }
 
     @Override
     public void destroy() {
+
     }
 }

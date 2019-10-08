@@ -1,6 +1,8 @@
 package by.training.certificationCenter.bean;
 
-public class Organisation extends CertificationEntity {
+import java.io.Serializable;
+
+public class Organisation extends CertificationEntity implements Serializable {
     private final int unp;
     private final String name;
     private String address;
