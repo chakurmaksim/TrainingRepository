@@ -6,12 +6,22 @@ import by.training.certificationCenter.dao.exception.DAOException;
 import by.training.certificationCenter.service.factory.OrganisationFactory;
 import by.training.certificationCenter.service.specification.Specification;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.List;
 
 public class OrganisationDAO extends CertificationMySqlDAO<Organisation> {
+    /**
+     * The variable contains a database query to get an organisation by id.
+     */
     private static final String FIND_BY_ID = "SELECT id, unp, name, address, "
             + "phone, email, accept FROM organisation WHERE id = ?";
+    /**
+     * The variable contains a database query to add a new organisation.
+     */
     private static final String INSERT_ORG = "INSERT INTO organisation("
             + "unp, name, address, phone, email) VALUES (?, ?, ?, ?, ?)";
 
@@ -48,19 +58,14 @@ public class OrganisationDAO extends CertificationMySqlDAO<Organisation> {
                 }
             }
         } catch (SQLException e) {
-            throw new DAOException(getStatementError()
-                    + " at find organisation by id", e);
+            throw new DAOException(getStatementError(
+                    "OrganisationDAO"), e);
         }
         return org;
     }
 
     @Override
     public boolean remove(int id) {
-        return false;
-    }
-
-    @Override
-    public boolean remove(Organisation entity) {
         return false;
     }
 
@@ -81,7 +86,7 @@ public class OrganisationDAO extends CertificationMySqlDAO<Organisation> {
                 organisation_id = resultSet.getInt(1);
             }
         } catch (SQLException e) {
-            throw new DAOException(getStatementError()
+            throw new DAOException(getStatementError("OrganisationDAO")
                     + " at create organisation", e);
         }
         return organisation_id;

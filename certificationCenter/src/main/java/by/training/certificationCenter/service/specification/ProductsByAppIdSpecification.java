@@ -1,7 +1,11 @@
 package by.training.certificationCenter.service.specification;
 
 public class ProductsByAppIdSpecification implements SqlSpecification {
+    /**
+     * Application id variable.
+     */
     private int applicationId;
+
     public ProductsByAppIdSpecification(final int newApplicationId) {
         this.applicationId = newApplicationId;
     }

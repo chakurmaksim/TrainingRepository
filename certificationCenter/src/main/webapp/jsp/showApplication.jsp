@@ -60,7 +60,7 @@
     <table>
         <tr>
             <td class="title"></td>
-            <td class="data"><c:out value="${app.org.name}"/></td>
+            <td class="data"><c:out value="${app.organisation.name}"/></td>
         </tr>
         <tr>
             <td></td>
@@ -74,13 +74,13 @@
         </tr>
     </table>
     <table>
-        <tr><td class="data"><c:out value="${app.org.address}"/> </td></tr>
+        <tr><td class="data"><c:out value="${app.organisation.address}"/> </td></tr>
     </table>
     <table>
         <tr>
-            <td class="title">УНП</td><td class="data"><c:out value="${app.org.unp}"/></td>
-            <td class="title">тел.</td><td class="data"><c:out value="+${app.org.phoneNumber}"/></td>
-            <td class="title">email</td><td class="data"><a href='mailto:${app.org.email}'>${app.org.email}</a></td>
+            <td class="title">УНП</td><td class="data"><c:out value="${app.organisation.unp}"/></td>
+            <td class="title">тел.</td><td class="data"><c:out value="+${app.organisation.phoneNumber}"/></td>
+            <td class="title">email</td><td class="data"><a href='mailto:${app.organisation.email}'>${app.organisation.email}</a></td>
         </tr>>
     </table>
     <p>прошу провести регистрацию декларации о соответствии продукции</p>
@@ -215,6 +215,9 @@
     </table>
     <p>Приложения</p>
     <p>1. Документы, подтверждающие соответствие продукции установленным требованиям:</p>
+    <c:forEach var="document" items="${app.documents}">
+        <p><c:out value="${document.fileName}"/></p>
+    </c:forEach>
 </div>
 
 <script src="js/bootstrap.min.js"></script>

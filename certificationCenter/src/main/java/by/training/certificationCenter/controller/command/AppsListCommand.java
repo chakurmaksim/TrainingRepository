@@ -26,7 +26,7 @@ public class AppsListCommand extends Command {
         try {
             int pageNum = Integer.parseInt(
                     request.getParameter(PARAM_NAME_PAGE_NUM));
-            List<Application> list = service.receiveAppsByUserId(
+            List<Application> list = service.receiveAppsByUser(
                     user, pageNum, PAGE_LIMIT);
             request.setAttribute(ATTRIBUTE_NAME_APPS, list);
         } catch (NumberFormatException | ServiceException e) {

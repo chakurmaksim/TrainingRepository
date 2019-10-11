@@ -5,9 +5,9 @@ import by.training.certificationCenter.service.ApplicationService;
 import by.training.certificationCenter.service.configuration.PathConfiguration;
 import by.training.certificationCenter.service.exception.ServiceException;
 import by.training.certificationCenter.service.factory.ApplicationFactory;
+import by.training.certificationCenter.service.factory.DocumentFactory;
 import by.training.certificationCenter.service.factory.ProductFactory;
 import by.training.certificationCenter.service.factory.ServiceFactory;
-import com.fasterxml.uuid.Generators;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
@@ -15,7 +15,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.servlet.http.Part;
-import java.io.File;
 import java.io.IOException;
 import java.nio.file.Paths;
 import java.time.LocalDate;
@@ -24,7 +23,6 @@ import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
-import java.util.UUID;
 import java.util.stream.Collectors;
 
 public class ApplyForCommand extends Command {
@@ -50,13 +48,13 @@ public class ApplyForCommand extends Command {
             List<Product> products = createProducts(request);
             List<Document> documents = createDocuments(request);
             application.setProducts(products);
+            application.setDocuments(documents);
             ServiceFactory factory = ServiceFactory.getInstance();
             ApplicationService service = factory.getApplicationService();
             if (service.addNewApplication(application)) {
                 setRedirect(true);
                 setPathName(PathConfiguration.getProperty("path.page.success"));
-                ServletContext context = request.getServletContext();
-                context.setAttribute(ATTRIBUTE_NAME_MESSAGE,
+                session.setAttribute(ATTRIBUTE_NAME_MESSAGE,
                         "Ваша заявка успешно подана!");
             }
         } catch (CommandException | ServiceException e) {
@@ -74,8 +72,8 @@ public class ApplyForCommand extends Command {
         String requirements = request.getParameter(PARAM_NAME_REQUIREMENTS);
         if (date_add_param == null || date_add_param.equals("")) {
             throw new CommandException(
-                    "Field with date of the applying for is empty");
-        } else if (requirements == null || requirements.equals("")) {
+                    "Field with the applying date is empty");
+        } else if (requirements == null || requirements.trim().equals("")) {
             throw new CommandException(
                     "Field with the application requirements is empty");
         }
@@ -89,7 +87,7 @@ public class ApplyForCommand extends Command {
         }
         Application application = factory.createNewClientApp(dateAdd);
         factory.buildAppWithUserAndOrg(application, user.getId(),
-                user.getOrg().getId(), requirements);
+                user.getOrganisation().getId(), requirements);
         return application;
     }
 
@@ -103,16 +101,16 @@ public class ApplyForCommand extends Command {
         String address = request.getParameter("producer_address");
         String quantity_attr_param = request.getParameter(
                 "product_quantity_attribute");
-        if (productName == null || productName.equals("")) {
+        if (productName == null || productName.trim().equals("")) {
             throw new CommandException(
                     "Field with product name is empty");
         } else if (prod_code_param == null || prod_code_param.equals("")) {
             throw new CommandException(
                     "Field with product code is empty");
-        } else if (producer == null || producer.equals("")) {
+        } else if (producer == null || producer.trim().equals("")) {
             throw new CommandException(
                     "Field with producer name is empty");
-        } else if (address == null || address.equals("")) {
+        } else if (address == null || address.trim().equals("")) {
             throw new CommandException(
                     "Field with producer address is empty");
         }
@@ -138,21 +136,19 @@ public class ApplyForCommand extends Command {
         String applicationPath = context.getRealPath("");
         String uploadPath = context.getInitParameter("upload.location");
         String uploadFilePath = applicationPath + uploadPath;
-        File fileSaveDir = new File(uploadFilePath);
-        if (!fileSaveDir.exists()) {
-            System.out.println(uploadFilePath);
-        }
         try {
             List<Part> fileParts = request.getParts().stream().filter(
                     part -> "attachment".equals(part.getName())).
                     collect(Collectors.toList());
+            DocumentFactory factory = DocumentFactory.getSingleInstance();
             for (Part part : fileParts) {
                 String originalFileName = Paths.get(
                         part.getSubmittedFileName()).getFileName().toString();
                 if (!"".equals(originalFileName)) {
-                    UUID fileName = Generators.timeBasedGenerator().generate();
-                    String fullFileName = uploadFilePath + File.separator + originalFileName;
-                    // part.write(fullFileName);
+                    Document document = factory.createNewDocument(0,
+                            uploadFilePath, originalFileName,
+                            part.getInputStream());
+                    documentList.add(document);
                 }
             }
         } catch (IOException | ServletException e) {

@@ -9,10 +9,17 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class SecurityConfig {
-    private static final Map<Role, List<String>> mapConfig = new ConcurrentHashMap<>();
+    /**
+     * Map contains user roles that have access rights to certain resources
+     * and url patterns of these resources.
+     */
+    private static final Map<Role, List<String>>
+            mapConfig = new ConcurrentHashMap<>();
+
     static {
         init();
     }
+
     private static void init() {
         List<String> clientUrlPatterns = new ArrayList<>();
         clientUrlPatterns.add("/applications");
@@ -27,10 +34,21 @@ public class SecurityConfig {
         mapConfig.put(Role.EXPERT, expertUrlPatterns);
     }
 
+    /**
+     * Method returns user roles from the map.
+     *
+     * @return Roles that the map contains
+     */
     public static Set<Role> getAllAppRoles() {
         return mapConfig.keySet();
     }
 
+    /**
+     * Method returns url patterns from the map.
+     *
+     * @param role user Role
+     * @return url patterns of the resources the user has access to
+     */
     public static List<String> getUrlPatternsForRole(Role role) {
         return mapConfig.get(role);
     }

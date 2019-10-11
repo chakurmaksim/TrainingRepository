@@ -1,8 +1,6 @@
 package by.training.certificationCenter.service.factory;
 
 import by.training.certificationCenter.service.ApplicationService;
-import by.training.certificationCenter.service.OrganisationService;
-import by.training.certificationCenter.service.ProductService;
 import by.training.certificationCenter.service.UserService;
 import by.training.certificationCenter.service.impl.*;
 
@@ -25,15 +23,7 @@ public class ServiceFactory {
         return new ApplicationServiceImpl();
     }
 
-    public ProductService getProductService() {
-        return new ProductServiceImpl();
-    }
-
     public UserService getUserService() {
         return new UserServiceImpl();
-    }
-
-    public OrganisationService getOrganisationService() {
-        return new OrganisationServiceImpl();
     }
 }

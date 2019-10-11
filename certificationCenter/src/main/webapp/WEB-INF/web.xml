@@ -64,7 +64,7 @@
     
     <context-param>
         <param-name>upload.location</param-name>
-        <param-value>WEB-INF/data/files</param-value>
+        <param-value>WEB-INF/data/files/</param-value>
     </context-param>
 
     <resource-ref>

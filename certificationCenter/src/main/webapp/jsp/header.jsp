@@ -34,7 +34,8 @@
                 </c:if>
                 <c:if test="${empty role}">
                     <li class="nav-item">
-                        <a id="login" class="nav-link" href="login.html"><fmt:message key="menu.login" bundle="${rb}"/></a>
+                        <c:url value="login.html" var="login"/>
+                        <a id="login" class="nav-link" href="${login}"><fmt:message key="menu.login" bundle="${rb}"/></a>
                     </li>
                     <li class="nav-item">
                         <a id="reg" class="nav-link" href="registration.html"><fmt:message key="menu.registration" bundle="${rb}"/></a>
@@ -46,7 +47,7 @@
                     </li>
                 </c:if>
                 <li class="nav-item">
-                    <a class="nav-link" href="home.html" style="color: red">${authorizedUser.login}</a>
+                    <a class="nav-link" href="success.html" style="color: red">${authorizedUser.login}</a>
                 </li>
             </ul>
             <form class="form-inline my-2 my-lg-0" action="chooseLanguage.html">
@@ -59,7 +60,7 @@
                     <div class="input-group-append">
                         <input type="hidden" name="servletPath" value="${pageContext.request.servletPath}">
                         <c:if test="${not empty application}">
-                            <c:set var="application" value="${application}" scope="request"/>
+                            <c:set var="application" value="${application}" scope="session"/>
                         </c:if>
                         <button class="btn btn-outline-dark" type="submit"><fmt:message key="language.choose" bundle="${rb}"/></button>
                     </div>

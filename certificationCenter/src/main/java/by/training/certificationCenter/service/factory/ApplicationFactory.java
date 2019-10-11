@@ -9,7 +9,7 @@ import java.io.Serializable;
 import java.sql.Date;
 import java.time.LocalDate;
 
-public class ApplicationFactory implements Cloneable, Serializable {
+public final class ApplicationFactory implements Cloneable, Serializable {
     /**
      * Variable for keeping ProductFactory instance.
      */
@@ -30,11 +30,11 @@ public class ApplicationFactory implements Cloneable, Serializable {
         User user = new User(userId);
         Organisation org = new Organisation(orgId, 0,null);
         application.setExecutor(user);
-        application.setOrg(org);
+        application.setOrganisation(org);
         application.setRequirements(requirements);
     }
 
-    public Application createDemoApp(
+    public Application createDemoApplication(
             final int id, final int regNum,
             final Date dateAdd, final Date dateResolve,
             final int statusInd) {

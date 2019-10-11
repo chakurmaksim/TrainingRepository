@@ -12,7 +12,7 @@ public class User extends CertificationEntity implements Serializable {
     private String mail;
     private Role role;
     private boolean actual;
-    private Organisation org;
+    private Organisation organisation;
 
     public User(final int newId) {
         super(newId);
@@ -90,12 +90,12 @@ public class User extends CertificationEntity implements Serializable {
         this.actual = actual;
     }
 
-    public Organisation getOrg() {
-        return org;
+    public Organisation getOrganisation() {
+        return organisation;
     }
 
-    public void setOrg(Organisation org) {
-        this.org = org;
+    public void setOrganisation(Organisation organisation) {
+        this.organisation = organisation;
     }
 
     @Override
@@ -110,7 +110,7 @@ public class User extends CertificationEntity implements Serializable {
                 + ", mail='" + mail + '\''
                 + ", role=" + role
                 + ", actual=" + actual
-                + ", org=" + org
+                + ", org=" + organisation
                 + '}';
     }
 }

@@ -9,6 +9,7 @@
 </head>
 <body>
 <jsp:include page="header.jsp"/>
+
 <ctg:info-footer/>
 
 <script src="js/bootstrap.min.js"></script>

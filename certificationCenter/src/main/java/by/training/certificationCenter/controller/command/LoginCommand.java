@@ -29,7 +29,7 @@ public class LoginCommand extends Command {
                 if (user != null) {
                     setRedirect(true);
                     setPathName(PathConfiguration.getProperty(
-                            "path.page.home"));
+                            "path.page.success"));
                     HttpSession session = request.getSession();
                     session.setAttribute(ATTRIBUTE_NAME_USER, user);
                     getLogger().info(String.format(

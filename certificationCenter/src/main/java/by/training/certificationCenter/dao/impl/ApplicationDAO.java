@@ -18,16 +18,32 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ApplicationDAO extends CertificationMySqlDAO<Application> {
+    /**
+     * The variable contains a database query to add a new application.
+     */
     private static final String INSERT_APP = "INSERT INTO application(user_id, "
             + "organisation_id, date_add, requirements) VALUES (?, ?, ?, ?)";
+    /**
+     * The variable contains a database query to get an application by id.
+     */
     private static final String FIND_APP = "SELECT id, user_id, "
             + "organisation_id, registration_number, date_add, requirements, "
             + "date_resolve, application_status FROM application WHERE id = ?";
+    /**
+     * The variable contains a database query to get a limited list of
+     * applications.
+     */
     private static final String FIND_ALL = "SELECT id, registration_number, "
             + "date_add, date_resolve, application_status FROM application "
             + "ORDER BY id DESC LIMIT ?,?";
+    /**
+     * The variable contains a database query to remove an application by id.
+     */
     private static final String REMOVE_APP = "DELETE FROM application "
             + "WHERE id = ?";
+    /**
+     * The variable contains a database query to update an application by id.
+     */
     private static final String UPDATE_APP = "UPDATE application SET "
             + "requirements = ? WHERE id = ?";
 
@@ -35,26 +51,41 @@ public class ApplicationDAO extends CertificationMySqlDAO<Application> {
         super(newConnection);
     }
 
+    /**
+     * Method allows to find a limited list of applications.
+     *
+     * @param skipPages number of pages that needs to skip
+     * @param pageLim   number of rows (applications) at the page
+     * @return list of applications
+     * @throws DAOException when occurs a database access error
+     */
     @Override
-    public List<Application> findAll(int skip, int pageLim)
+    public List<Application> findAll(int skipPages, int pageLim)
             throws DAOException {
         Connection connection = getConnection();
         List<Application> entities = new ArrayList<>();
         try (PreparedStatement statement = connection.
                 prepareStatement(FIND_ALL)) {
-            statement.setInt(1, skip);
+            statement.setInt(1, skipPages);
             statement.setInt(2, pageLim);
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
-                Application application = receiveDemoApplication(resultSet);
-                entities.add(application);
+                entities.add(receiveDemoApplication(resultSet));
             }
         } catch (SQLException e) {
-            throw new DAOException(getStatementError(), e);
+            throw new DAOException(getStatementError(
+                    "ApplicationDAO"), e);
         }
         return entities;
     }
 
+    /**
+     * Method allows to find an application by id.
+     *
+     * @param id application id
+     * @return Application instance
+     * @throws DAOException when occurs a database access error
+     */
     @Override
     public Application findEntityById(final int id) throws DAOException {
         Connection connection = getConnection();
@@ -68,12 +99,19 @@ public class ApplicationDAO extends CertificationMySqlDAO<Application> {
                 buildApplicationWithUserAndOrg(application, resultSet);
             }
         } catch (SQLException e) {
-            throw new DAOException(getStatementError()
-                    + " at find application by id", e);
+            throw new DAOException(getStatementError(
+                    "ApplicationDAO"), e);
         }
         return application;
     }
 
+    /**
+     * Method allows to remove an application by id from the database.
+     *
+     * @param id application id
+     * @return true if entity was successfully removed from the database
+     * @throws DAOException when occurs a database access error
+     */
     @Override
     public boolean remove(int id) throws DAOException {
         Connection connection = getConnection();
@@ -83,17 +121,18 @@ public class ApplicationDAO extends CertificationMySqlDAO<Application> {
             statement.executeUpdate();
             return true;
         } catch (SQLException e) {
-            e.printStackTrace();
-            throw new DAOException(getStatementError()
-                    + " at remove application by id", e);
+            throw new DAOException(getStatementError(
+                    "ApplicationDAO"), e);
         }
     }
 
-    @Override
-    public boolean remove(Application entity) {
-        return false;
-    }
-
+    /**
+     * Method allows to add a new application in to the database.
+     *
+     * @param entity Application instance
+     * @return generated id by the database
+     * @throws DAOException when occurs a database access error
+     */
     @Override
     public int create(Application entity) throws DAOException {
         int applicationId = 0;
@@ -102,7 +141,7 @@ public class ApplicationDAO extends CertificationMySqlDAO<Application> {
                 prepareStatement(INSERT_APP, Statement.RETURN_GENERATED_KEYS)) {
             int index = 0;
             statement.setInt(++index, entity.getExecutor().getId());
-            statement.setInt(++index, entity.getOrg().getId());
+            statement.setInt(++index, entity.getOrganisation().getId());
             statement.setDate(++index, Date.valueOf(entity.getDate_add().
                     format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))));
             statement.setString(++index, entity.getRequirements());
@@ -112,12 +151,23 @@ public class ApplicationDAO extends CertificationMySqlDAO<Application> {
                 applicationId = resultSet.getInt(1);
             }
         } catch (SQLException e) {
-            throw new DAOException(getStatementError()
-                    + " at create application", e);
+            throw new DAOException(getStatementError(
+                    "ApplicationDAO"), e);
+        } catch (IllegalArgumentException e) {
+            String message = "Value can not be parsed to a Date object at the "
+                    + "ApplicationDAO";
+            throw new DAOException(message, e);
         }
         return applicationId;
     }
 
+    /**
+     * Method allows to update an application fields.
+     *
+     * @param entity updated Application instance
+     * @return Application instance if operation finished successfully
+     * @throws DAOException when occurs a database access error
+     */
     @Override
     public Application update(Application entity) throws DAOException {
         Connection connection = getConnection();
@@ -126,20 +176,28 @@ public class ApplicationDAO extends CertificationMySqlDAO<Application> {
             statement.setString(1, entity.getRequirements());
             statement.setInt(2, entity.getId());
             statement.executeUpdate();
+            return entity;
         } catch (SQLException e) {
-            throw new DAOException(getStatementError()
-                    + " at update application", e);
+            throw new DAOException(getStatementError(
+                    "ApplicationDAO"), e);
         }
-        return entity;
     }
 
+    /**
+     * Method allows to get a specific query. In this case to find a limited
+     * list of applications by user id.
+     *
+     * @param specification Specification instance
+     * @return list of applications
+     * @throws DAOException when occurs a database access error
+     */
     @Override
     public List<Application> query(final Specification specification)
             throws DAOException {
-        List<Application> entities = new ArrayList<>();
+        List<Application> applicationList = new ArrayList<>();
         if (specification instanceof AppsByUserIdSpecification) {
-            AppsByUserIdSpecification appsByUserId =
-                    (AppsByUserIdSpecification) specification;
+            AppsByUserIdSpecification
+                    appsByUserId = (AppsByUserIdSpecification) specification;
             Connection connection = getConnection();
             try (Statement statement = connection.createStatement()) {
                 try (ResultSet resultSet = statement.executeQuery(
@@ -147,34 +205,33 @@ public class ApplicationDAO extends CertificationMySqlDAO<Application> {
                     while (resultSet.next()) {
                         Application application = receiveDemoApplication(
                                 resultSet);
-                        entities.add(application);
+                        applicationList.add(application);
                     }
                 }
             } catch (SQLException e) {
-                throw new DAOException(getStatementError()
-                        + " at at query application list", e);
+                throw new DAOException(getStatementError(
+                        "ApplicationDAO"), e);
             }
         }
-        return entities;
+        return applicationList;
     }
 
     private boolean buildApplicationWithUserAndOrg(
             final Application application, final ResultSet resultSet)
             throws DAOException {
-        boolean flag = false;
         try {
             int userId = resultSet.getInt("user_id");
             int org_Id = resultSet.getInt("organisation_id");
-            String requirements = resultSet.getString(
-                    "requirements");
+            String appRequirements = resultSet.
+                    getString("requirements");
             ApplicationFactory factory = ApplicationFactory.getSingleInstance();
             factory.buildAppWithUserAndOrg(
-                    application, userId, org_Id, requirements);
-            flag = true;
+                    application, userId, org_Id, appRequirements);
+            return true;
         } catch (SQLException e) {
-            throw new DAOException(getColumnLabelError(), e);
+            throw new DAOException(getColumnLabelError(
+                    "ApplicationDAO"), e);
         }
-        return flag;
     }
 
     private Application receiveDemoApplication(final ResultSet resultSet)
@@ -186,11 +243,12 @@ public class ApplicationDAO extends CertificationMySqlDAO<Application> {
             Date dateResolve = resultSet.getDate("date_resolve");
             int status = resultSet.getInt("application_status");
             ApplicationFactory factory = ApplicationFactory.getSingleInstance();
-            Application application = factory.createDemoApp(appId, regNum,
-                    dateAdd, dateResolve, status);
+            Application application = factory.createDemoApplication(appId,
+                    regNum, dateAdd, dateResolve, status);
             return application;
         } catch (SQLException e) {
-            throw new DAOException(getColumnLabelError(), e);
+            throw new DAOException(getColumnLabelError(
+                    "ApplicationDAO"), e);
         }
     }
 }

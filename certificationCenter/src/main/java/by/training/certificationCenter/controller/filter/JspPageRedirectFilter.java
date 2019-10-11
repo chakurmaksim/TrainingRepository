@@ -11,7 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 public class JspPageRedirectFilter implements Filter {
-    private String indexPath;
+    private static String indexPath;
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
         indexPath = filterConfig.getInitParameter("index_path");
@@ -23,13 +23,12 @@ public class JspPageRedirectFilter implements Filter {
             throws IOException, ServletException {
         HttpServletRequest httpRequest = (HttpServletRequest) request;
         HttpServletResponse httpResponse = (HttpServletResponse) response;
-        httpResponse.sendRedirect(httpRequest.getContextPath() + indexPath);
-        System.out.println(httpRequest.getContextPath());
+        httpResponse.sendRedirect(
+                httpRequest.getContextPath() + indexPath);
         chain.doFilter(request, response);
     }
 
     @Override
     public void destroy() {
-
     }
 }

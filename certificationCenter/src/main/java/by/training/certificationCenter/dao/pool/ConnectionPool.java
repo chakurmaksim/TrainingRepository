@@ -13,7 +13,14 @@ import java.sql.SQLException;
 import java.util.Properties;
 
 public final class ConnectionPool {
+    /**
+     * Component that provides a connection to a DBMS application.
+     */
     private static DataSource dataSource;
+    /**
+     * Events logger, in that case to register possible exceptions when
+     * creating an instance of the DataSource.
+     */
     private static Logger logger = LogManager.getLogger(ConnectionPool.class);
 
     static {

@@ -10,7 +10,7 @@ public class Application extends CertificationEntity {
     private String requirements;
     private Status status;
     private User executor;
-    private Organisation org;
+    private Organisation organisation;
     private List<Product> products;
     private List<Document> documents;
 
@@ -66,12 +66,12 @@ public class Application extends CertificationEntity {
         this.executor = executor;
     }
 
-    public Organisation getOrg() {
-        return org;
+    public Organisation getOrganisation() {
+        return organisation;
     }
 
-    public void setOrg(Organisation org) {
-        this.org = org;
+    public void setOrganisation(Organisation organisation) {
+        this.organisation = organisation;
     }
 
     public List<Product> getProducts() {
@@ -99,7 +99,7 @@ public class Application extends CertificationEntity {
                 + ", requirements='" + requirements + '\''
                 + ", status=" + status
                 + ", executor=" + executor
-                + ", org=" + org
+                + ", org=" + organisation
                 + ", products=" + products
                 + ", documents=" + documents
                 + '}';

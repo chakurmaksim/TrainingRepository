@@ -16,6 +16,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class UserDAO extends CertificationMySqlDAO<User> {
+    /**
+     * The variable contains a database query to get an user by id.
+     */
     private static final String FIND_USER = "SELECT id, organisation_id, "
             + "login, name, surname, patronymic, phone, email, user_role, "
             + "actual FROM user WHERE id = ?";
@@ -41,18 +44,13 @@ public class UserDAO extends CertificationMySqlDAO<User> {
                 user = receiveUser(resultSet);
             }
         } catch (SQLException e) {
-            throw new DAOException(getStatementError(), e);
+            throw new DAOException(getStatementError("UserDAO"), e);
         }
         return user;
     }
 
     @Override
     public boolean remove(int id) {
-        return false;
-    }
-
-    @Override
-    public boolean remove(User entity) {
         return false;
     }
 
@@ -77,12 +75,11 @@ public class UserDAO extends CertificationMySqlDAO<User> {
                 try (ResultSet resultSet = statement.executeQuery(
                         sqlSpec.toSqlQuery())) {
                     while (resultSet.next()) {
-                        User user = receiveUser(resultSet);
-                        entities.add(user);
+                        entities.add(receiveUser(resultSet));
                     }
                 }
             } catch (SQLException e) {
-                throw new DAOException(getStatementError(), e);
+                throw new DAOException(getStatementError("UserDAO"), e);
             }
         }
         return entities;
@@ -91,7 +88,6 @@ public class UserDAO extends CertificationMySqlDAO<User> {
     private User receiveUser(final ResultSet resultSet) throws DAOException {
         try {
             int userId = resultSet.getInt("id");
-            System.out.println(userId);
             int organisation_id = resultSet.getInt("organisation_id");
             String login = resultSet.getString("login");
             String name = resultSet.getString("name");
@@ -105,10 +101,9 @@ public class UserDAO extends CertificationMySqlDAO<User> {
             User user = factory.createUser(
                     userId, organisation_id, login, name, surname,
                     patronymic, phone, email, role, actual);
-            System.out.println(user.getId() +" "+user.getLogin() +" "+ user.getRole().getRoleName());
             return user;
         } catch (SQLException e) {
-            throw new DAOException(getColumnLabelError(), e);
+            throw new DAOException(getColumnLabelError("UserDAO"), e);
         }
     }
 }

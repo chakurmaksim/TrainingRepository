@@ -10,6 +10,8 @@ import javax.servlet.http.HttpSession;
 public class ChooseLanguageCommand extends Command {
     private static final String PARAM_NAME_PATH = "servletPath";
     private static final String PARAM_NAME_LOCALE = "locale";
+    private static final String ATTR_NAME_APPLICATION = "application";
+
     @Override
     public void execute(HttpServletRequest request,
                         HttpServletResponse response) {
@@ -20,10 +22,10 @@ public class ChooseLanguageCommand extends Command {
         session.setAttribute(PARAM_NAME_LOCALE, locale);
         Cookie localeCookie = new Cookie(PARAM_NAME_LOCALE, locale);
         response.addCookie(localeCookie);
-        /*Application application = (Application) request.getAttribute("application");
-        System.out.println(application);
+        Application application = (Application) session.
+                getAttribute(ATTR_NAME_APPLICATION);
         if (application != null) {
-            request.setAttribute("application", application);
-        }*/
+            request.setAttribute(ATTR_NAME_APPLICATION, application);
+        }
     }
 }

@@ -20,23 +20,23 @@
                     <ul>
                         <li>
                             <label class="required" for="applicant_name">Наименование заявителя:</label>
-                            <input readonly="readonly" name="applicant_name" type="text" value="${authorizedUser.org.name}" id="applicant_name" />
+                            <input readonly="readonly" name="applicant_name" type="text" value="${authorizedUser.organisation.name}" id="applicant_name" />
                         </li>
                         <li>
                             <label class="required" for="applicant_address">Место нахождения:</label>
-                            <input readonly="readonly" name="applicant_address" type="text" value="${authorizedUser.org.address}" id="applicant_address" />
+                            <input readonly="readonly" name="applicant_address" type="text" value="${authorizedUser.organisation.address}" id="applicant_address" />
                         </li>
                         <li>
                             <label class="required" for="applicant_unp">УНП</label>
-                            <input readonly="readonly" name="applicant_unp" type="text" value="${authorizedUser.org.unp}" id="applicant_unp" />
+                            <input readonly="readonly" name="applicant_unp" type="text" value="${authorizedUser.organisation.unp}" id="applicant_unp" />
                         </li>
                         <li>
                             <label class="required" for="applicant_phone">Телефон:</label>
-                            <input readonly="readonly" type="text" name="applicant_phone" value="+${authorizedUser.org.phoneNumber}" id="applicant_phone" />
+                            <input readonly="readonly" type="text" name="applicant_phone" value="+${authorizedUser.organisation.phoneNumber}" id="applicant_phone" />
                         </li>
                         <li>
                             <label for="applicant_email">Адрес эл. почты:</label>
-                            <input readonly="readonly" type="text" name="applicant_email" value="${authorizedUser.org.email}" id="applicant_email" />
+                            <input readonly="readonly" type="text" name="applicant_email" value="${authorizedUser.organisation.email}" id="applicant_email" />
                         </li>
                         <li>
                             <label class="required" for="application_product_name">Наименование и обозначение продукции:</label>
