@@ -24,7 +24,8 @@ public abstract class CertificationMySqlDAO<T extends CertificationEntity>
         STATEMENT_ERROR = "Error has occurred while creating the Statement "
                 + "object at the %s because database access error has occurred "
                 + "or the given SQL statement has produced anything other than "
-                + "a single ResultSet object";
+                + "a single ResultSet object or such object has already "
+                + "been existed";
         COLUMN_LABEL_ERROR = "Column label in the ResultSet object at the %s "
                 + "is not valid or database access error has occurred";
     }

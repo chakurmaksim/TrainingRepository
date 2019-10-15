@@ -23,7 +23,8 @@ public class OrganisationDAO extends CertificationMySqlDAO<Organisation> {
      * The variable contains a database query to add a new organisation.
      */
     private static final String INSERT_ORG = "INSERT INTO organisation("
-            + "unp, name, address, phone, email) VALUES (?, ?, ?, ?, ?)";
+            + "unp, name, address, phone, email, accept) "
+            + "VALUES (?, ?, ?, ?, ?, ?)";
 
     public OrganisationDAO(Connection newConnection) {
         super(newConnection);
@@ -81,13 +82,15 @@ public class OrganisationDAO extends CertificationMySqlDAO<Organisation> {
             statement.setString(++count, entity.getAddress());
             statement.setLong(++count, entity.getPhoneNumber());
             statement.setString(++count, entity.getEmail());
+            statement.setBoolean(++count, entity.isAccepted());
+            statement.executeUpdate();
             ResultSet resultSet = statement.getGeneratedKeys();
             if (resultSet.next()) {
                 organisation_id = resultSet.getInt(1);
             }
         } catch (SQLException e) {
-            throw new DAOException(getStatementError("OrganisationDAO")
-                    + " at create organisation", e);
+            throw new DAOException(getStatementError(
+                    "OrganisationDAO"), e);
         }
         return organisation_id;
     }

@@ -22,6 +22,10 @@ public class UserDAO extends CertificationMySqlDAO<User> {
     private static final String FIND_USER = "SELECT id, organisation_id, "
             + "login, name, surname, patronymic, phone, email, user_role, "
             + "actual FROM user WHERE id = ?";
+    private static final String CREATE_USER = "INSERT INTO user("
+            + "organisation_id, login, password, name, surname, patronymic, "
+            + "phone, email, user_role, actual) VALUES ("
+            + "?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
     public UserDAO(Connection newConnection) {
         super(newConnection);
@@ -55,8 +59,31 @@ public class UserDAO extends CertificationMySqlDAO<User> {
     }
 
     @Override
-    public int create(User entity) {
-        return 0;
+    public int create(User entity) throws DAOException {
+        int userId = 0;
+        Connection connection = getConnection();
+        try (PreparedStatement statement = connection.prepareStatement(
+                CREATE_USER, Statement.RETURN_GENERATED_KEYS)) {
+            int count = 0;
+            statement.setInt(++count, entity.getOrganisation().getId());
+            statement.setString(++count, entity.getLogin());
+            statement.setString(++count, entity.getPassword());
+            statement.setString(++count, entity.getName());
+            statement.setString(++count, entity.getSurname());
+            statement.setString(++count, entity.getPatronymic());
+            statement.setLong(++count, entity.getPhone());
+            statement.setString(++count, entity.getMail());
+            statement.setInt(++count, entity.getRole().getIndex());
+            statement.setBoolean(++count, entity.isActual());
+            statement.executeUpdate();
+            ResultSet resultSet = statement.getGeneratedKeys();
+            if (resultSet.next()) {
+                userId = resultSet.getInt(1);
+            }
+        } catch (SQLException e) {
+            throw new DAOException(getStatementError("userDAO"));
+        }
+        return userId;
     }
 
     @Override

@@ -27,11 +27,13 @@ public class UriFilter implements Filter {
         commands.put("/applyFor", new ApplyForCommand());
         commands.put("/chooseLanguage", new ChooseLanguageCommand());
         commands.put(("/deleteApplication"), new DeleteApplicationCommand());
+        commands.put("/downloadDocument", new DownloadDocumentCommand());
         commands.put("/editApplication", new EditApplicationCommand());
         commands.put("/success", new MainCommand());
         commands.put("/index", new MainCommand());
         commands.put("/login", new LoginCommand());
         commands.put("/logout", new LogoutCommand());
+        commands.put("/registration", new RegistrationCommand());
         commands.put("/showApplication", new ShowApplicationCommand());
     }
 

@@ -29,7 +29,7 @@
                             <a href="showApplication.html?application_id=<c:out value='${entity.id}' />">
                                 <c:out value="${entity.id}" /></a>
                         </td>
-                        <c:set var="datePattern" value="MM/dd/yyyy"/>
+                        <c:set var="datePattern" value="dd/MM/yyyy"/>
                         <td>
                             <c:set var="dateAdd" value="${entity.date_add}"/>
                             <fmt:parseDate value="${dateAdd}" pattern="yyyy-MM-dd" var="parsedDateAdd"/>

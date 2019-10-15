@@ -44,6 +44,16 @@ public final class UserFactory implements Cloneable, Serializable {
         return user;
     }
 
+    public User createNewUser(final String login, final String name,
+                              final String surname, final String patronymic,
+                              final long phone, final String email,
+                              final int roleInd, final String password) {
+        User user = createUser(0, 0, login, name, surname,
+                patronymic, phone, email, roleInd, true);
+        user.setPassword(password);
+        return user;
+    }
+
     @Override
     protected Object clone() throws CloneNotSupportedException {
         return SINGLE_INSTANCE;

@@ -28,8 +28,7 @@ public class DeleteApplicationCommand extends Command {
             if (service.deleteApplication(applicationId, user)) {
                 setRedirect(true);
                 setPathName(PathConfiguration.getProperty("path.page.success"));
-                ServletContext context = request.getServletContext();
-                context.setAttribute(ATTRIBUTE_NAME_MESSAGE,
+                session.setAttribute(ATTRIBUTE_NAME_MESSAGE,
                         "Ваша заявка успешно удалена!");
             }
         } catch (NumberFormatException | ServiceException e) {

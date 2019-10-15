@@ -19,7 +19,10 @@
         <c:when test="${not empty pageContext.errorData.requestURI}">
             <h2>Запрошенная страница ${pageContext.errorData.requestURI} не найдена на сервере</h2>
         </c:when>
-        <c:otherwise>Непредвиденная ошибка приложения</c:otherwise>
+        <c:otherwise>
+            Непредвиденная ошибка приложения.
+            ${pageContext.request.getAttribute("errorMessage")}
+        </c:otherwise>
     </c:choose>
     <c:url value="/index.html" var="mainUrl"/>
     <a href="${mainUrl}">На главную</a>

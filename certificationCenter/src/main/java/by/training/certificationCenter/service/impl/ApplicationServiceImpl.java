@@ -9,6 +9,7 @@ import by.training.certificationCenter.dao.impl.DocumentDAO;
 import by.training.certificationCenter.dao.impl.ProductDAO;
 import by.training.certificationCenter.dao.pool.ConnectionWrapper;
 import by.training.certificationCenter.service.ApplicationService;
+import by.training.certificationCenter.service.validator.ApplicationValidator;
 import by.training.certificationCenter.service.UserService;
 import by.training.certificationCenter.service.exception.ServiceException;
 import by.training.certificationCenter.service.factory.ServiceFactory;
@@ -20,6 +21,7 @@ import com.fasterxml.uuid.Generators;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.io.FileInputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -120,13 +122,24 @@ public class ApplicationServiceImpl
     public boolean addNewApplication(final Application application)
             throws ServiceException {
         boolean flag = false;
+        if (!ApplicationValidator.validateAddedDate(
+                application.getDate_add())) {
+            throw new ServiceException("Application date has to be today");
+        }
+        for (Product product : application.getProducts()) {
+            if (!ApplicationValidator.validateProductCode(product.getCode())) {
+                throw new ServiceException("Product code should be between 4 "
+                        + "and 10 digits");
+            }
+        }
         DAOFactory factory = DAOFactory.getInstance();
         ConnectionWrapper wrapper = ConnectionWrapper.getInstance();
         ApplicationDAO applicationDAO = null;
         int isolationLevel = 0;
         try {
             applicationDAO = factory.getApplicationDAO(wrapper.getConnection());
-            wrapper.setAutoCommit(applicationDAO.getConnection(), false);
+            wrapper.setAutoCommit(applicationDAO.
+                    getConnection(), false);
             isolationLevel = wrapper.getTransactionIsolationLevel(
                     applicationDAO.getConnection());
             wrapper.setTransactionReadUncommittedLevel(
@@ -166,7 +179,8 @@ public class ApplicationServiceImpl
         int isolationLevel = 0;
         try {
             applicationDAO = factory.getApplicationDAO(wrapper.getConnection());
-            wrapper.setAutoCommit(applicationDAO.getConnection(), false);
+            wrapper.setAutoCommit(applicationDAO.
+                    getConnection(), false);
             isolationLevel = wrapper.getTransactionIsolationLevel(
                     applicationDAO.getConnection());
             wrapper.setTransactionReadUncommittedLevel(
@@ -210,7 +224,8 @@ public class ApplicationServiceImpl
         int isolationLevel = 0;
         try {
             applicationDAO = factory.getApplicationDAO(wrapper.getConnection());
-            wrapper.setAutoCommit(applicationDAO.getConnection(), false);
+            wrapper.setAutoCommit(applicationDAO.
+                    getConnection(), false);
             isolationLevel = wrapper.getTransactionIsolationLevel(
                     applicationDAO.getConnection());
             wrapper.setTransactionReadUncommittedLevel(
@@ -239,6 +254,16 @@ public class ApplicationServiceImpl
         }
     }
 
+    public FileInputStream receiveFileInputStream(final String fullFileName)
+            throws ServiceException {
+        try {
+            return FileWriteReader.getSingleInstance().
+                    getInputStream(fullFileName);
+        } catch (DAOException e) {
+            throw new ServiceException(e.getMessage(), e);
+        }
+    }
+
     private List<Product> receiveProductsByAppId(
             final int appId, final ProductDAO productDAO)
             throws ServiceException {
@@ -257,11 +282,6 @@ public class ApplicationServiceImpl
         FileWriteReader writeReader = FileWriteReader.getSingleInstance();
         try {
             List<Document> documentList = documentDAO.query(specification);
-            for (Document document : documentList) {
-                document.setInputStream(writeReader.getInputStream(
-                        document.getUploadFilePath()
-                                + document.getFileName()));
-            }
             return documentList;
         } catch (DAOException e) {
             throw new ServiceException(e.getMessage(), e);
@@ -347,7 +367,8 @@ public class ApplicationServiceImpl
                             applicationDAO.getConnection(),
                             isolationLevel);
                 }
-                wrapper.setAutoCommit(applicationDAO.getConnection(), true);
+                wrapper.setAutoCommit(applicationDAO.
+                        getConnection(), true);
                 wrapper.closeConnection(applicationDAO.getConnection());
             } catch (DAOException e) {
                 logger.error(e.getMessage(), e);

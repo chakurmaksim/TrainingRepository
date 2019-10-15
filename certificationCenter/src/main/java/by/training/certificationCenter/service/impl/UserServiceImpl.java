@@ -10,6 +10,7 @@ import by.training.certificationCenter.service.UserService;
 import by.training.certificationCenter.service.exception.ServiceException;
 import by.training.certificationCenter.service.specification.Specification;
 import by.training.certificationCenter.service.specification.UserByLoginSpecification;
+import by.training.certificationCenter.service.validator.UserValidator;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -52,7 +53,7 @@ public class UserServiceImpl implements UserService<User> {
                 return user;
             } else {
                 String message = String.format("User login \"%s\" or "
-                        + "organisation name \"%s\" are not valid",
+                                + "organisation name \"%s\" are not valid",
                         user.getLogin(), user.getOrganisation().getName());
                 throw new ServiceException(message);
             }
@@ -105,6 +106,69 @@ public class UserServiceImpl implements UserService<User> {
     @Override
     public boolean registration(final User user)
             throws ServiceException {
-        return false;
+        boolean flag = false;
+        if (!UserValidator.validateUNP(user.getOrganisation().getUnp())) {
+            throw new ServiceException("Identification number of the "
+                    + "organisation has to contain 9 digits");
+        }
+        if (!UserValidator.validateEmail(user.getMail()) ||
+                !UserValidator.validateEmail(user.getOrganisation().
+                        getEmail())) {
+            throw new ServiceException("Organisation or executor's email "
+                    + "address are not correct");
+        }
+        if (!UserValidator.validatePhoneNumber(user.getPhone())
+                || !UserValidator.validatePhoneNumber(user.getOrganisation().
+                getPhoneNumber())) {
+            throw new ServiceException("Organisation or executor's phone "
+                    + "number are incorrect");
+        }
+        if (!UserValidator.validatePassword(user.getPassword())) {
+            throw new ServiceException("Password is not strong enough");
+        }
+        ConnectionWrapper wrapper = ConnectionWrapper.getInstance();
+        DAOFactory factory = DAOFactory.getInstance();
+        UserDAO userDAO = null;
+        int isolationLevel = 0;
+        try {
+            userDAO = factory.getUserDAO(wrapper.getConnection());
+            wrapper.setAutoCommit(userDAO.getConnection(), false);
+            isolationLevel = wrapper.getTransactionIsolationLevel(
+                    userDAO.getConnection());
+            wrapper.setTransactionReadUncommittedLevel(userDAO.getConnection());
+            OrganisationDAO organisationDAO = factory.getOrganisationDAO(
+                    userDAO.getConnection());
+            int organisationId = organisationDAO.create(user.getOrganisation());
+            if (organisationId > 0) {
+                user.getOrganisation().setId(organisationId);
+                try {
+                    int userId = userDAO.create(user);
+                    user.setId(userId);
+                    wrapper.commitOperation(userDAO.getConnection());
+                    flag = true;
+                } catch (DAOException e) {
+                    wrapper.rollbackOperation(userDAO.getConnection());
+                    throw new ServiceException(e.getMessage(), e);
+                }
+            }
+        } catch (DAOException e) {
+            throw new ServiceException(e.getMessage(), e);
+        } finally {
+            if (userDAO != null) {
+                try {
+                    if (isolationLevel != 0) {
+                        wrapper.setTransactionIsolationLevel(
+                                userDAO.getConnection(),
+                                isolationLevel);
+                    }
+                    wrapper.setAutoCommit(userDAO.getConnection(),
+                            true);
+                    wrapper.closeConnection(userDAO.getConnection());
+                } catch (DAOException e) {
+                    logger.error(e.getMessage(), e);
+                }
+            }
+        }
+        return flag;
     }
 }

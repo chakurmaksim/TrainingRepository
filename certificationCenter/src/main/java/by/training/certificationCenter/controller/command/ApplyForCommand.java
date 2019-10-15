@@ -28,6 +28,7 @@ import java.util.stream.Collectors;
 public class ApplyForCommand extends Command {
     private static final String ATTRIBUTE_NAME_USER = "authorizedUser";
     private static final String ATTRIBUTE_NAME_MESSAGE = "message";
+    private static final String ATTRIBUTE_NAME_ERROR = "errorMessage";
     private static final String PARAM_NAME_DATE_ADD = "date_add";
     private static final String PARAM_NAME_REQUIREMENTS = "requirements";
     @Override
@@ -58,7 +59,7 @@ public class ApplyForCommand extends Command {
                         "Ваша заявка успешно подана!");
             }
         } catch (CommandException | ServiceException e) {
-            request.setAttribute("errorMessage", e.getMessage());
+            request.setAttribute(ATTRIBUTE_NAME_ERROR, e.getMessage());
             getLogger().error(String.format("user \"%s\" unsuccessfully "
                             + "tried to add application", user.getLogin()));
         }

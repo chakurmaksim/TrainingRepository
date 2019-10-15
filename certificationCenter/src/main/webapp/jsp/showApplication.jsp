@@ -50,7 +50,7 @@
                 <c:set var="regNum" value=""/>
             </c:otherwise>
         </c:choose>
-        <c:set var="datePattern" value="MM/dd/yyyy"/>
+        <c:set var="datePattern" value="dd/MM/yyyy"/>
         <c:set var="date" value="${app.date_add}"/>
         <fmt:parseDate value="${date}" pattern="yyyy-MM-dd" var="parsedDate"/>
         <fmt:formatDate value="${parsedDate}" pattern="${datePattern}" var="formattedDate"/>
@@ -216,7 +216,11 @@
     <p>Приложения</p>
     <p>1. Документы, подтверждающие соответствие продукции установленным требованиям:</p>
     <c:forEach var="document" items="${app.documents}">
-        <p><c:out value="${document.fileName}"/></p>
+        <p>
+            <a href="downloadDocument.html?uploadFilePath=${document.uploadFilePath}&fileName=${document.fileName}">
+                    ${document.fileName}
+            </a>
+        </p>
     </c:forEach>
 </div>
 

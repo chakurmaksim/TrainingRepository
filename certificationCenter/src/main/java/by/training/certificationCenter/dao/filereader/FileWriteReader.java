@@ -66,7 +66,7 @@ public final class FileWriteReader {
         }
     }
 
-    public InputStream getInputStream(final String fullFileName)
+    public FileInputStream getInputStream(final String fullFileName)
             throws DAOException {
         try {
             return new FileInputStream(fullFileName);

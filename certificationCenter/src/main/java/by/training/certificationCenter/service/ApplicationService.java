@@ -4,6 +4,7 @@ import by.training.certificationCenter.bean.Application;
 import by.training.certificationCenter.bean.User;
 import by.training.certificationCenter.service.exception.ServiceException;
 
+import java.io.FileInputStream;
 import java.util.List;
 
 public interface ApplicationService<T extends Application, V extends User> {
@@ -14,4 +15,6 @@ public interface ApplicationService<T extends Application, V extends User> {
     boolean deleteApplication(int applicationId, V user)
             throws ServiceException;
     T updateApplication(T application) throws ServiceException;
+    FileInputStream receiveFileInputStream(String fullFileName)
+            throws ServiceException;
 }
