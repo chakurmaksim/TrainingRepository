@@ -40,7 +40,7 @@ public final class UserFactory implements Cloneable, Serializable {
         Role role = optRole.get();
         user.setRole(role);
         user.setActual(actual);
-        user.setOrganisation(new Organisation(orgId, 0,null));
+        user.setOrganisation(new Organisation(orgId));
         return user;
     }
 

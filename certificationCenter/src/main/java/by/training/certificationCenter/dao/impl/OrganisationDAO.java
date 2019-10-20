@@ -96,8 +96,8 @@ public class OrganisationDAO extends CertificationMySqlDAO<Organisation> {
     }
 
     @Override
-    public Organisation update(Organisation entity) {
-        return null;
+    public boolean update(Organisation entity) {
+        return false;
     }
 
     @Override

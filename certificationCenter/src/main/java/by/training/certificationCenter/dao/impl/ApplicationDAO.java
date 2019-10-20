@@ -2,6 +2,7 @@ package by.training.certificationCenter.dao.impl;
 
 import by.training.certificationCenter.bean.Application;
 import by.training.certificationCenter.dao.CertificationMySqlDAO;
+import by.training.certificationCenter.dao.PaginationDAO;
 import by.training.certificationCenter.dao.exception.DAOException;
 import by.training.certificationCenter.service.factory.ApplicationFactory;
 import by.training.certificationCenter.service.specification.AppsByUserIdSpecification;
@@ -17,7 +18,8 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ApplicationDAO extends CertificationMySqlDAO<Application> {
+public class ApplicationDAO extends CertificationMySqlDAO<Application>
+        implements PaginationDAO {
     /**
      * The variable contains a database query to add a new application.
      */
@@ -46,6 +48,18 @@ public class ApplicationDAO extends CertificationMySqlDAO<Application> {
      */
     private static final String UPDATE_APP = "UPDATE application SET "
             + "requirements = ? WHERE id = ?";
+    /**
+     * The variable contains a database query to get the number
+     * of all applications.
+     */
+    private static final String ROWS_NUM_ALL
+            = "SELECT COUNT(id) FROM application";
+    /**
+     * The variable contains a database query to get the number
+     * of applications by user id.
+     */
+    private static final String ROWS_NUM_BY_USER
+            = "SELECT COUNT(id) FROM application WHERE user_id = ?";
 
     public ApplicationDAO(Connection newConnection) {
         super(newConnection);
@@ -169,14 +183,14 @@ public class ApplicationDAO extends CertificationMySqlDAO<Application> {
      * @throws DAOException when occurs a database access error
      */
     @Override
-    public Application update(Application entity) throws DAOException {
+    public boolean update(Application entity) throws DAOException {
         Connection connection = getConnection();
         try (PreparedStatement statement = connection.
                 prepareStatement(UPDATE_APP)) {
             statement.setString(1, entity.getRequirements());
             statement.setInt(2, entity.getId());
             statement.executeUpdate();
-            return entity;
+            return true;
         } catch (SQLException e) {
             throw new DAOException(getStatementError(
                     "ApplicationDAO"), e);
@@ -194,11 +208,11 @@ public class ApplicationDAO extends CertificationMySqlDAO<Application> {
     @Override
     public List<Application> query(final Specification specification)
             throws DAOException {
+        Connection connection = getConnection();
         List<Application> applicationList = new ArrayList<>();
         if (specification instanceof AppsByUserIdSpecification) {
             AppsByUserIdSpecification
                     appsByUserId = (AppsByUserIdSpecification) specification;
-            Connection connection = getConnection();
             try (Statement statement = connection.createStatement()) {
                 try (ResultSet resultSet = statement.executeQuery(
                         appsByUserId.toSqlQuery())) {
@@ -224,8 +238,7 @@ public class ApplicationDAO extends CertificationMySqlDAO<Application> {
             int org_Id = resultSet.getInt("organisation_id");
             String appRequirements = resultSet.
                     getString("requirements");
-            ApplicationFactory factory = ApplicationFactory.getSingleInstance();
-            factory.buildAppWithUserAndOrg(
+            ApplicationFactory.getSingleInstance().buildAppWithUserAndOrg(
                     application, userId, org_Id, appRequirements);
             return true;
         } catch (SQLException e) {
@@ -242,13 +255,46 @@ public class ApplicationDAO extends CertificationMySqlDAO<Application> {
             Date dateAdd = resultSet.getDate("date_add");
             Date dateResolve = resultSet.getDate("date_resolve");
             int status = resultSet.getInt("application_status");
-            ApplicationFactory factory = ApplicationFactory.getSingleInstance();
-            Application application = factory.createDemoApplication(appId,
-                    regNum, dateAdd, dateResolve, status);
+            Application application = ApplicationFactory.getSingleInstance().
+                    createDemoApplication(appId, regNum, dateAdd,
+                            dateResolve, status);
             return application;
         } catch (SQLException e) {
             throw new DAOException(getColumnLabelError(
                     "ApplicationDAO"), e);
         }
+    }
+
+    @Override
+    public int getRowsNumber(int userId) throws DAOException {
+        int rows = 0;
+        try (PreparedStatement statement = getConnection().
+                prepareStatement(ROWS_NUM_BY_USER)) {
+            statement.setInt(1, userId);
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                rows = resultSet.getInt(1);
+            }
+        } catch (SQLException e) {
+            throw new DAOException(getStatementError(
+                    "ApplicationDAO"));
+        }
+        return rows;
+    }
+
+    @Override
+    public int getRowsNumber() throws DAOException {
+        int rows = 0;
+        try (PreparedStatement statement = getConnection().
+                prepareStatement(ROWS_NUM_ALL)) {
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                rows = resultSet.getInt(1);
+            }
+        } catch (SQLException e) {
+            throw new DAOException(getStatementError(
+                    "ApplicationDAO"));
+        }
+        return rows;
     }
 }

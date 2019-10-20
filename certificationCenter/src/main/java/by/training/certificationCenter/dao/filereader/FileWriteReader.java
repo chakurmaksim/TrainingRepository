@@ -58,6 +58,7 @@ public final class FileWriteReader {
         file.deleteOnExit();
         try {
             Files.copy(inputStream, file.toPath());
+            inputStream.close();
         } catch (IOException e) {
             String errorMessage = String.format(
                     "Document can not be written in to the file \"%s\"",

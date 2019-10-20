@@ -1,5 +1,6 @@
 package by.training.certificationCenter.service.validator;
 
+import by.training.certificationCenter.bean.Status;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
@@ -35,6 +36,32 @@ public class ApplicationValidatorTest {
         };
     }
 
+    @DataProvider(name = "dataForValidateFileExtension")
+    public Object[][] createData_ForValidateFileExtension() {
+        return new Object[][]{
+                {"file.txt", true},
+                {"file.doc", true},
+                {"file.docx", true},
+                {"file.pdf", true},
+                {"file.jpg", true},
+                {"file.png", true},
+                {"file.pps", true},
+                {"file.ppt", true},
+                {"file.avi", false},
+                {"file.mp3", false}
+        };
+    }
+
+    @DataProvider(name = "dataForCheckPossibilityToUpdate")
+    public Object[][] createData_ForCheckPossibilityToUpdate() {
+        return new Object[][]{
+                {Status.APPROVED, false},
+                {Status.REJECTED, false},
+                {Status.CONSIDERATION, true},
+                {Status.REGISTRATION, true}
+        };
+    }
+
     @Test(description = "positive and negative scenario of verification application date",
             dataProvider = "dataForValidateAddedDate")
     public void testValidateAddedDate(LocalDate date, boolean expected) {
@@ -46,6 +73,20 @@ public class ApplicationValidatorTest {
             dataProvider = "dataForValidateProductCode")
     public void testValidateProductCode(long code, boolean expected) {
         boolean actual = ApplicationValidator.validateProductCode(code);
+        assertEquals(actual, expected);
+    }
+
+    @Test(description = "positive scenario of verification file extension",
+            dataProvider = "dataForValidateFileExtension")
+    public void testValidateFileExtension(String fileName, boolean expected) {
+        boolean actual = ApplicationValidator.validateFileExtension(fileName);
+        assertEquals(actual, expected);
+    }
+
+    @Test(description = "positive scenario of checking possibility to update",
+            dataProvider = "dataForCheckPossibilityToUpdate")
+    public void testCheckPossibilityToUpdate(Status status, boolean expected) {
+        boolean actual = ApplicationValidator.checkPossibilityToUpdate(status);
         assertEquals(actual, expected);
     }
 }

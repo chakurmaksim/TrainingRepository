@@ -19,7 +19,7 @@ import java.util.List;
 public class UserServiceImpl implements UserService<User> {
     /**
      * Events logger, in that case to register possible exceptions when
-     * connection is being closed.
+     * connection is being closed or DAO exceptions occur.
      */
     private static Logger logger = LogManager.getLogger(
             ApplicationServiceImpl.class);
@@ -36,29 +36,27 @@ public class UserServiceImpl implements UserService<User> {
                     login, password);
             List<User> userList = userDAO.query(userByLogin);
             User user = null;
-            if (userList.size() > 0) {
+            if (userList.size() == 1) {
                 user = userList.remove(0);
             }
             if (user == null) {
-                String message = String.format("User login \"%s\" or password "
-                        + "are not recognized", login);
-                throw new ServiceException(message);
+                throw new ServiceException("message.user.login.recognized");
             } else {
                 OrganisationDAO organisationDAO = factory.
                         getOrganisationDAO(userDAO.getConnection());
                 user.setOrganisation(organisationDAO.findEntityById(
                         user.getOrganisation().getId()));
             }
-            if (user.isActual() && user.getOrganisation().isAccepted()) {
-                return user;
+            if (!user.isActual()) {
+                throw new ServiceException("message.login.validity");
+            } else if (!user.getOrganisation().isAccepted()) {
+                throw new ServiceException("message.organisation.validity");
             } else {
-                String message = String.format("User login \"%s\" or "
-                                + "organisation name \"%s\" are not valid",
-                        user.getLogin(), user.getOrganisation().getName());
-                throw new ServiceException(message);
+                return user;
             }
         } catch (DAOException e) {
-            throw new ServiceException(e.getMessage(), e);
+            logger.error(e.getMessage(), e);
+            throw new ServiceException("message.user.show.mistake");
         } finally {
             if (userDAO != null) {
                 try {
@@ -86,12 +84,11 @@ public class UserServiceImpl implements UserService<User> {
                         user.getOrganisation().getId()));
                 return user;
             } else {
-                String message = String.format("User with id number "
-                        + "\"%d\" does not exist", userId);
-                throw new ServiceException(message);
+                throw new ServiceException("message.user.id.existed");
             }
         } catch (DAOException e) {
-            throw new ServiceException(e.getMessage(), e);
+            logger.error(e.getMessage(), e);
+            throw new ServiceException("message.user.show.mistake");
         } finally {
             if (userDAO != null) {
                 try {
@@ -108,23 +105,20 @@ public class UserServiceImpl implements UserService<User> {
             throws ServiceException {
         boolean flag = false;
         if (!UserValidator.validateUNP(user.getOrganisation().getUnp())) {
-            throw new ServiceException("Identification number of the "
-                    + "organisation has to contain 9 digits");
+            throw new ServiceException("message.organisation.unp.incorrect");
         }
         if (!UserValidator.validateEmail(user.getMail()) ||
                 !UserValidator.validateEmail(user.getOrganisation().
                         getEmail())) {
-            throw new ServiceException("Organisation or executor's email "
-                    + "address are not correct");
+            throw new ServiceException("message.user.email.incorrect");
         }
         if (!UserValidator.validatePhoneNumber(user.getPhone())
                 || !UserValidator.validatePhoneNumber(user.getOrganisation().
                 getPhoneNumber())) {
-            throw new ServiceException("Organisation or executor's phone "
-                    + "number are incorrect");
+            throw new ServiceException("message.user.phone.incorrect");
         }
         if (!UserValidator.validatePassword(user.getPassword())) {
-            throw new ServiceException("Password is not strong enough");
+            throw new ServiceException("message.user.password.notStrong");
         }
         ConnectionWrapper wrapper = ConnectionWrapper.getInstance();
         DAOFactory factory = DAOFactory.getInstance();
@@ -147,12 +141,15 @@ public class UserServiceImpl implements UserService<User> {
                     wrapper.commitOperation(userDAO.getConnection());
                     flag = true;
                 } catch (DAOException e) {
+                    logger.error(e.getMessage(), e);
                     wrapper.rollbackOperation(userDAO.getConnection());
-                    throw new ServiceException(e.getMessage(), e);
+                    throw new ServiceException(
+                            "message.user.registration.error");
                 }
             }
         } catch (DAOException e) {
-            throw new ServiceException(e.getMessage(), e);
+            logger.error(e.getMessage(), e);
+            throw new ServiceException("message.user.registration.error");
         } finally {
             if (userDAO != null) {
                 try {

@@ -87,8 +87,8 @@ public class UserDAO extends CertificationMySqlDAO<User> {
     }
 
     @Override
-    public User update(User entity) {
-        return null;
+    public boolean update(User entity) {
+        return false;
     }
 
     @Override

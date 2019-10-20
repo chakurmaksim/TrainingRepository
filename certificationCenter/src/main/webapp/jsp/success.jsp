@@ -1,6 +1,9 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@taglib prefix="ctg" uri="customtags" %>
+<fmt:setLocale value="${locale}"/>
+<fmt:setBundle basename="pagecontent" var="rb"/>
 <html>
 <head>
     <link rel="stylesheet" href="css/bootstrap.min.css">
@@ -13,13 +16,14 @@
 <div id="content">
     <c:choose>
         <c:when test="${not empty message}">
-            <h2>Транзакция</h2>
+            <h2><fmt:message key="successPage.operation" bundle="${rb}"/></h2>
             <p> ${message} </p>
         </c:when>
         <c:otherwise>
-            <h2>Авторизация</h2>
+            <h2><fmt:message key="successPage.authorization" bundle="${rb}"/></h2>
             <p>
-                Здравствуйте, ${authorizedUser.surname} ${authorizedUser.name} ${authorizedUser.patronymic}
+                <fmt:message key="successPage.hello" bundle="${rb}"/>
+                    ${authorizedUser.surname} ${authorizedUser.name} ${authorizedUser.patronymic}
             </p>
         </c:otherwise>
     </c:choose>

@@ -1,5 +1,6 @@
 package by.training.certificationCenter.service.factory;
 
+import by.training.certificationCenter.bean.Application;
 import by.training.certificationCenter.bean.Document;
 
 import java.io.InputStream;
@@ -21,12 +22,13 @@ public final class DocumentFactory implements Cloneable, Serializable {
     }
 
     public Document createNewDocument(
-            final int id, final String uploadFilePath,
-            final String fileName, final InputStream inputStream) {
-        Document document = new Document(id);
+            final String uploadFilePath, final String fileName,
+            final InputStream inputStream, final Application application) {
+        Document document = new Document(0);
         document.setUploadFilePath(uploadFilePath);
         document.setFileName(fileName);
         document.setInputStream(inputStream);
+        document.setApplication(application);
         return document;
     }
 

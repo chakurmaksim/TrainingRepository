@@ -1,6 +1,7 @@
 package by.training.certificationCenter.controller;
 
 import by.training.certificationCenter.controller.command.Command;
+import by.training.certificationCenter.dao.pool.ConnectionPool;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -14,6 +15,14 @@ public class CertificationServlet extends HttpServlet {
      * from the HttpServletRequest instance.
      */
     private static final String ATTR_NAME_COMMAND = "command";
+
+    public void init() {
+        ConnectionPool.initialPool();
+    }
+
+    public void destroy() {
+        ConnectionPool.closePool();
+    }
 
     protected void doPost(final HttpServletRequest request,
                           final HttpServletResponse response)

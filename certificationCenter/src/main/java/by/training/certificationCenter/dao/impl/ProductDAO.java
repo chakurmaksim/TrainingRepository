@@ -124,7 +124,7 @@ public class ProductDAO extends CertificationMySqlDAO<Product> {
                 prepareStatement(INSERT_PROD,
                         Statement.RETURN_GENERATED_KEYS)) {
             int index = 0;
-            statement.setInt(++index, entity.getApplicationId());
+            statement.setInt(++index, entity.getApplication().getId());
             statement.setString(++index, entity.getName());
             statement.setLong(++index, entity.getCode());
             statement.setString(++index, entity.getProducer());
@@ -150,7 +150,7 @@ public class ProductDAO extends CertificationMySqlDAO<Product> {
      * @throws DAOException when occurs a database access error
      */
     @Override
-    public Product update(Product entity) throws DAOException {
+    public boolean update(Product entity) throws DAOException {
         Connection connection = getConnection();
         try (PreparedStatement statement = connection.
                 prepareStatement(UPDATE_PROD)) {
@@ -162,7 +162,7 @@ public class ProductDAO extends CertificationMySqlDAO<Product> {
             statement.setInt(++index, entity.getAttr().getId());
             statement.setInt(++index, entity.getId());
             statement.executeUpdate();
-            return entity;
+            return true;
         } catch (SQLException e) {
             throw new DAOException(getStatementError(
                     "ProductDAO"), e);

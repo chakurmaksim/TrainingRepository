@@ -13,6 +13,7 @@ import java.sql.SQLException;
 import java.util.Properties;
 
 public final class ConnectionPool {
+    private static Context envContext;
     /**
      * Component that provides a connection to a DBMS application.
      */
@@ -23,20 +24,28 @@ public final class ConnectionPool {
      */
     private static Logger logger = LogManager.getLogger(ConnectionPool.class);
 
-    static {
+    private ConnectionPool() {
+    }
+
+    public static void initialPool() {
         try {
             Properties prop = DatabaseConfiguration.getProperties();
             InitialContext initContext = new InitialContext();
-            Context envContext = (Context) initContext.lookup(
+            envContext = (Context) initContext.lookup(
                     prop.getProperty("envContextName"));
             dataSource = (DataSource) envContext.lookup(
                     prop.getProperty("dataSourceName"));
         } catch (NamingException e) {
-            logger.error(e.toString());
+            logger.error(e);
         }
     }
 
-    private ConnectionPool() {
+    public static void closePool() {
+        try {
+            envContext.close();
+        } catch (NamingException e) {
+            logger.error(e);
+        }
     }
 
     public static Connection getConnection() throws SQLException {

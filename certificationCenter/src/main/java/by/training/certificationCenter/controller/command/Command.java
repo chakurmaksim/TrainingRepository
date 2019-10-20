@@ -7,8 +7,18 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 public abstract class Command {
+    /**
+     * Events logger, in that case to register possible exceptions when
+     * Service or Controller exceptions occur.
+     */
     private static Logger logger = LogManager.getLogger(Command.class);
+    /**
+     * Relative page path.
+     */
     private String pathName;
+    /**
+     * Variable shows whether to redirect the request or not.
+     */
     private boolean isRedirect;
     /**
      * Method calls to a certain operation of business logic.

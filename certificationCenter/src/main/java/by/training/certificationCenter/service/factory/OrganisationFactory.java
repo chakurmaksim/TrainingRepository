@@ -21,12 +21,21 @@ public class OrganisationFactory implements Cloneable, Serializable {
             final String name, final String address,
             final long phone, final String email,
             final boolean accept) {
-        Organisation org = new Organisation(id, unp, name);
+        Organisation org = new Organisation(id);
+        org.setUnp(unp);
+        org.setName(name);
         org.setAddress(address);
         org.setPhoneNumber(phone);
         org.setEmail(email);
         org.setAccepted(accept);
         return org;
+    }
+
+    public Organisation createNewClientOrganisation(
+            final int unp, final String name, final String address,
+            final long phone, final String email) {
+        return createOrganisation(0, unp, name, address, phone,
+                email, true);
     }
 
     public static OrganisationFactory getSingleInstance() {

@@ -7,7 +7,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 public class LogoutCommand extends Command {
+    /**
+     * The key is required to obtain the current page locale.
+     */
     private static final String PARAM_NAME_LOCALE = "locale";
+
     @Override
     public void execute(HttpServletRequest request,
                         HttpServletResponse response) {

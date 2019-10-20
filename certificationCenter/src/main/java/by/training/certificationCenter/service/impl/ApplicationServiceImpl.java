@@ -1,6 +1,10 @@
 package by.training.certificationCenter.service.impl;
 
-import by.training.certificationCenter.bean.*;
+import by.training.certificationCenter.bean.Application;
+import by.training.certificationCenter.bean.Document;
+import by.training.certificationCenter.bean.Product;
+import by.training.certificationCenter.bean.Role;
+import by.training.certificationCenter.bean.User;
 import by.training.certificationCenter.dao.exception.DAOException;
 import by.training.certificationCenter.dao.factory.DAOFactory;
 import by.training.certificationCenter.dao.filereader.FileWriteReader;
@@ -22,7 +26,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.io.FileInputStream;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -30,19 +33,18 @@ public class ApplicationServiceImpl
         implements ApplicationService<Application, User> {
     /**
      * Events logger, in that case to register possible exceptions when
-     * connection is being closed.
+     * connection is being closed or DAO exceptions occur.
      */
     private static Logger logger = LogManager.getLogger(
             ApplicationServiceImpl.class);
 
     @Override
     public List<Application> receiveAppsByUser(
-            final User user, final int pageNum, final int pageLim)
+            final User user, final int skipPages, final int pageLimit)
             throws ServiceException {
         DAOFactory factory = DAOFactory.getInstance();
         ConnectionWrapper wrapper = ConnectionWrapper.getInstance();
         ApplicationDAO applicationDAO = null;
-        int skipPages = (pageNum - 1) * pageLim;
         try {
             applicationDAO = factory.getApplicationDAO(
                     wrapper.getConnection());
@@ -51,22 +53,20 @@ public class ApplicationServiceImpl
                 case CLIENT:
                     Specification appsByUserIdSpec =
                             new AppsByUserIdSpecification(
-                                    user.getId(), skipPages, pageLim);
+                                    user.getId(), skipPages, pageLimit);
                     List<Application> applications = applicationDAO.
                             query(appsByUserIdSpec);
                     return applications;
                 case EXPERT:
-                    applications = applicationDAO.findAll(skipPages, pageLim);
+                    applications = applicationDAO.findAll(skipPages, pageLimit);
                     return applications;
                 default:
-                    String message = String.format("User \"%s\" with the role "
-                                    + "\"%s\" does not have permission to "
-                                    + "access applications", user.getLogin(),
-                            user.getRole().getRoleName());
-                    throw new ServiceException(message);
+                    throw new ServiceException(
+                            "message.application.list.permission");
             }
         } catch (DAOException e) {
-            throw new ServiceException(e.getMessage(), e);
+            logger.error(e.getMessage(), e);
+            throw new ServiceException("message.application.list.mistake");
         } finally {
             if (applicationDAO != null) {
                 try {
@@ -92,21 +92,20 @@ public class ApplicationServiceImpl
             if (application != null) {
                 ProductDAO productDAO = daoFactory.getProductDAO(
                         applicationDAO.getConnection());
-                application.setProducts(receiveProductsByAppId(
-                        applicationId, productDAO));
+                application.setProducts(productDAO.query(
+                        new ProductsByAppIdSpecification(applicationId)));
                 DocumentDAO documentDAO = daoFactory.getDocumentDAO(
                         applicationDAO.getConnection());
-                application.setDocuments(receiveDocumentsByAppId(
-                        applicationId, documentDAO));
+                application.setDocuments(documentDAO.query(
+                        new DocumentsByAppIdSpecification(applicationId)));
                 appointAppExecutor(application, user);
                 return application;
             } else {
-                String message = String.format("Application with id number "
-                        + "\"%d\" does not exist", applicationId);
-                throw new ServiceException(message);
+                throw new ServiceException("message.application.id.existed");
             }
         } catch (DAOException e) {
-            throw new ServiceException(e.getMessage(), e);
+            logger.error(e.getMessage(), e);
+            throw new ServiceException("message.application.show.mistake");
         } finally {
             if (applicationDAO != null) {
                 try {
@@ -124,12 +123,11 @@ public class ApplicationServiceImpl
         boolean flag = false;
         if (!ApplicationValidator.validateAddedDate(
                 application.getDate_add())) {
-            throw new ServiceException("Application date has to be today");
+            throw new ServiceException("message.application.date.validate");
         }
         for (Product product : application.getProducts()) {
             if (!ApplicationValidator.validateProductCode(product.getCode())) {
-                throw new ServiceException("Product code should be between 4 "
-                        + "and 10 digits");
+                throw new ServiceException("message.product.code.validate");
             }
         }
         DAOFactory factory = DAOFactory.getInstance();
@@ -146,22 +144,26 @@ public class ApplicationServiceImpl
                     applicationDAO.getConnection());
             int applicationId = applicationDAO.create(application);
             if (applicationId > 0) {
+                application.setId(applicationId);
                 DocumentDAO documentDAO = factory.getDocumentDAO(
                         applicationDAO.getConnection());
                 ProductDAO productDAO = factory.getProductDAO(
                         applicationDAO.getConnection());
                 try {
-                    saveNewDocuments(application, applicationId, documentDAO);
-                    addNewProducts(application, applicationId, productDAO);
+                    saveNewDocuments(application, documentDAO);
+                    addNewProducts(application, productDAO);
                     wrapper.commitOperation(applicationDAO.getConnection());
                     flag = true;
-                } catch (ServiceException | DAOException e) {
+                } catch (DAOException e) {
+                    logger.error(e.getMessage(), e);
                     wrapper.rollbackOperation(applicationDAO.getConnection());
-                    throw new ServiceException(e.getMessage(), e);
+                    throw new ServiceException(
+                            "message.application.added.mistake");
                 }
             }
         } catch (DAOException e) {
-            throw new ServiceException(e.getMessage(), e);
+            logger.error(e.getMessage(), e);
+            throw new ServiceException("message.application.added.mistake");
         } finally {
             returnBackConnection(wrapper, applicationDAO, isolationLevel);
         }
@@ -172,7 +174,12 @@ public class ApplicationServiceImpl
     public boolean deleteApplication(final int applicationId, final User user)
             throws ServiceException {
         boolean flag = false;
-        Application application = showApplicationById(applicationId, user);
+        Application application;
+        try {
+           application = showApplicationById(applicationId, user);
+        } catch (ServiceException e) {
+            throw new ServiceException("message.application.deleted.mistake");
+        }
         DAOFactory factory = DAOFactory.getInstance();
         ConnectionWrapper wrapper = ConnectionWrapper.getInstance();
         ApplicationDAO applicationDAO = null;
@@ -204,11 +211,14 @@ public class ApplicationServiceImpl
                 wrapper.commitOperation(applicationDAO.getConnection());
                 flag = true;
             } catch (DAOException e) {
+                logger.error(e.getMessage(), e);
                 wrapper.rollbackOperation(applicationDAO.getConnection());
-                throw new ServiceException(e.getMessage(), e);
+                throw new ServiceException(
+                        "message.application.deleted.mistake");
             }
         } catch (DAOException e) {
-            throw new ServiceException(e.getMessage(), e);
+            logger.error(e.getMessage(), e);
+            throw new ServiceException("message.application.deleted.mistake");
         } finally {
             returnBackConnection(wrapper, applicationDAO, isolationLevel);
         }
@@ -216,8 +226,12 @@ public class ApplicationServiceImpl
     }
 
     @Override
-    public Application updateApplication(final Application application)
+    public boolean updateApplication(final Application application)
             throws ServiceException {
+        if (!ApplicationValidator.checkPossibilityToUpdate(
+                application.getStatus())) {
+            throw new ServiceException("message.application.updated.late");
+        }
         DAOFactory factory = DAOFactory.getInstance();
         ConnectionWrapper wrapper = ConnectionWrapper.getInstance();
         ApplicationDAO applicationDAO = null;
@@ -230,61 +244,73 @@ public class ApplicationServiceImpl
                     applicationDAO.getConnection());
             wrapper.setTransactionReadUncommittedLevel(
                     applicationDAO.getConnection());
-            Application updatedApplication = applicationDAO.update(application);
-            if (updatedApplication != null) {
-                ProductDAO productDAO = factory.getProductDAO(
-                        applicationDAO.getConnection());
-                try {
-                    updateProducts(updatedApplication, productDAO);
-                    wrapper.commitOperation(applicationDAO.getConnection());
-                    return updatedApplication;
-                } catch (ServiceException | DAOException e) {
-                    wrapper.rollbackOperation(applicationDAO.getConnection());
-                    throw new ServiceException(e.getMessage(), e);
+            applicationDAO.update(application);
+            ProductDAO productDAO = factory.getProductDAO(
+                    applicationDAO.getConnection());
+            try {
+                for (Product product : application.getProducts()) {
+                    if (product.getId() > 0) {
+                        productDAO.update(product);
+                    } else {
+                        productDAO.create(product);
+                    }
                 }
-            } else {
-                String message = String.format("Application with id number "
-                        + "\"%d\" can not be updated", application.getId());
-                throw new ServiceException(message);
+                wrapper.commitOperation(applicationDAO.getConnection());
+                return true;
+            } catch (DAOException e) {
+                logger.error(e.getMessage(), e);
+                wrapper.rollbackOperation(applicationDAO.getConnection());
+                throw new ServiceException(
+                        "message.application.updated.mistake");
             }
         } catch (DAOException e) {
-            throw new ServiceException(e.getMessage());
+            logger.error(e.getMessage(), e);
+            throw new ServiceException("message.application.updated.mistake");
         } finally {
             returnBackConnection(wrapper, applicationDAO, isolationLevel);
         }
     }
 
+    @Override
     public FileInputStream receiveFileInputStream(final String fullFileName)
             throws ServiceException {
         try {
             return FileWriteReader.getSingleInstance().
                     getInputStream(fullFileName);
         } catch (DAOException e) {
-            throw new ServiceException(e.getMessage(), e);
+            logger.error(e.getMessage(), e);
+            throw new ServiceException("message.file.found.error");
         }
     }
 
-    private List<Product> receiveProductsByAppId(
-            final int appId, final ProductDAO productDAO)
-            throws ServiceException {
-        Specification specification = new ProductsByAppIdSpecification(appId);
+    @Override
+    public int receiveRowsNumber(User user) throws ServiceException {
+        ConnectionWrapper wrapper = ConnectionWrapper.getInstance();
+        ApplicationDAO applicationDAO = null;
         try {
-            return productDAO.query(specification);
+            applicationDAO = DAOFactory.getInstance().getApplicationDAO(
+                    wrapper.getConnection());
+            Role role = Role.getByIdentity(user.getRole().getIndex());
+            switch (role) {
+                case CLIENT:
+                    return applicationDAO.getRowsNumber(user.getId());
+                case EXPERT:
+                    return applicationDAO.getRowsNumber();
+                default:
+                    throw new ServiceException(
+                            "message.application.list.permission");
+            }
         } catch (DAOException e) {
-            throw new ServiceException(e.getMessage(), e);
-        }
-    }
-
-    private List<Document> receiveDocumentsByAppId(
-            final int appId, final DocumentDAO documentDAO)
-            throws ServiceException {
-        Specification specification = new DocumentsByAppIdSpecification(appId);
-        FileWriteReader writeReader = FileWriteReader.getSingleInstance();
-        try {
-            List<Document> documentList = documentDAO.query(specification);
-            return documentList;
-        } catch (DAOException e) {
-            throw new ServiceException(e.getMessage(), e);
+            logger.error(e.getMessage(), e);
+            throw new ServiceException("message.application.list.mistake");
+        } finally {
+            if (applicationDAO != null) {
+                try {
+                    wrapper.closeConnection(applicationDAO.getConnection());
+                } catch (DAOException e) {
+                    logger.error(e.getMessage(), e);
+                }
+            }
         }
     }
 
@@ -295,65 +321,41 @@ public class ApplicationServiceImpl
             application.setExecutor(user);
             application.setOrganisation(user.getOrganisation());
         } else {
-            UserService userService = ServiceFactory.
-                    getInstance().getUserService();
+            UserService userService = ServiceFactory.getInstance().
+                    getUserService();
             try {
                 User appUser = userService.receiveUserById(
                         application.getExecutor().getId());
                 application.setExecutor(appUser);
                 application.setOrganisation(appUser.getOrganisation());
             } catch (ServiceException e) {
-                throw new ServiceException(e.getMessage(), e);
+                throw new ServiceException("message.application.show.mistake");
             }
         }
     }
 
     private void addNewProducts(
-            final Application application, final int applicationId,
-            final ProductDAO productDAO) throws ServiceException {
-        try {
-            for (Product product : application.getProducts()) {
-                product.setApplicationId(applicationId);
-                productDAO.create(product);
-            }
-        } catch (DAOException e) {
-            throw new ServiceException(e.getMessage(), e);
+            final Application application, final ProductDAO productDAO)
+            throws DAOException {
+        for (Product product : application.getProducts()) {
+            productDAO.create(product);
         }
     }
 
     private void saveNewDocuments(
-            Application application, final int applicationId,
-            final DocumentDAO documentDAO) throws ServiceException {
+            final Application application, final DocumentDAO documentDAO)
+            throws DAOException {
         FileWriteReader writeReader = FileWriteReader.getSingleInstance();
         List<Document> documentList = application.getDocuments();
         for (Document document : documentList) {
-            document.setApplicationId(applicationId);
             UUID generatedName = Generators.timeBasedGenerator().generate();
             int pointInd = document.getFileName().lastIndexOf(".");
             String fileExtension = document.getFileName().substring(pointInd);
             String fileName = generatedName + fileExtension;
             document.setFileName(fileName);
-            try {
-                writeReader.writeDocument(document.getUploadFilePath(),
-                        document.getFileName(), document.getInputStream());
-                documentDAO.create(document);
-            } catch (DAOException e) {
-                throw new ServiceException(e.getMessage(), e);
-            }
-        }
-    }
-
-    private void updateProducts(
-            final Application application, final ProductDAO productDAO)
-            throws ServiceException {
-        List<Product> productList = new ArrayList<>();
-        try {
-            for (Product product : application.getProducts()) {
-                productList.add(productDAO.update(product));
-            }
-            application.setProducts(productList);
-        } catch (DAOException e) {
-            throw new ServiceException(e.getMessage(), e);
+            writeReader.writeDocument(document.getUploadFilePath(),
+                    document.getFileName(), document.getInputStream());
+            documentDAO.create(document);
         }
     }
 

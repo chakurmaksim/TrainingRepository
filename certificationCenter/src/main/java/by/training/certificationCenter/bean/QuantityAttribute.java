@@ -17,13 +17,6 @@ public class QuantityAttribute {
         return attributeName;
     }
 
-    @Override
-    public String toString() {
-        return "Количественный признак{"
-                + "индекс=" + id
-                + ", признак='" + attributeName + '\''
-                + '}';
-    }
     public enum AttributeName {
         SERIAL("Серийный выпуск"),
         BATCH("Партия"),

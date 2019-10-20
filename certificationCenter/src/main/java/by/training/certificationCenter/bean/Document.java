@@ -3,10 +3,22 @@ package by.training.certificationCenter.bean;
 import java.io.InputStream;
 
 public class Document extends CertificationEntity {
+    /**
+     * Real path to the directory where the file is located.
+     */
     private String uploadFilePath;
+    /**
+     * File name.
+     */
     private String fileName;
+    /**
+     * Link to the InputStream.
+     */
     private InputStream inputStream;
-    private int applicationId;
+    /**
+     * Link to the application to which this product belongs.
+     */
+    private Application application;
 
     public Document(final int newId) {
         super(newId);
@@ -36,11 +48,11 @@ public class Document extends CertificationEntity {
         this.inputStream = inputStream;
     }
 
-    public int getApplicationId() {
-        return applicationId;
+    public Application getApplication() {
+        return application;
     }
 
-    public void setApplicationId(int applicationId) {
-        this.applicationId = applicationId;
+    public void setApplication(Application newApplication) {
+        this.application = newApplication;
     }
 }

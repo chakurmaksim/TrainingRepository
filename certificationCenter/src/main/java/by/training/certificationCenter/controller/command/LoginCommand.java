@@ -1,26 +1,62 @@
 package by.training.certificationCenter.controller.command;
 
 import by.training.certificationCenter.bean.User;
+import by.training.certificationCenter.controller.resourceBundle.ResourceBundleWrapper;
 import by.training.certificationCenter.service.UserService;
 import by.training.certificationCenter.service.configuration.PathConfiguration;
 import by.training.certificationCenter.service.exception.ServiceException;
 import by.training.certificationCenter.service.factory.ServiceFactory;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.util.ResourceBundle;
 
 public class LoginCommand extends Command {
+    /**
+     * Key is required to get the user login from the request parameters.
+     */
     private static final String PARAM_LOGIN = "login";
+    /**
+     * Key is required to get the user password from the request parameters.
+     */
     private static final String PARAM_PASS = "password";
+    /**
+     * Key is required to remember user login and password.
+     */
+    private static final String PARAM_REMEMBER = "rememberMe";
+    /**
+     * The key that is required to get the user instance from the
+     * request attribute.
+     */
     private static final String ATTRIBUTE_NAME_USER = "authorizedUser";
+    /**
+     * Key that is required to set the error message to the request attribute.
+     */
     private static final String ATTRIBUTE_ERROR_MESSAGE = "errorMessage";
 
     @Override
     public void execute(HttpServletRequest request,
                         HttpServletResponse response) {
+        Cookie[] cookies = request.getCookies();
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                if (cookie.getName().equals("savedLogin")) {
+                    request.setAttribute("savedLogin", cookie.getValue());
+                }
+                if (cookie.getName().equals("savedPassword")) {
+                    request.setAttribute("savedPassword",
+                            cookie.getValue());
+                }
+            }
+        }
         String login = request.getParameter(PARAM_LOGIN);
         String password = request.getParameter(PARAM_PASS);
+        String checkBox = request.getParameter(PARAM_REMEMBER);
+        HttpSession session = request.getSession();
+        ResourceBundle bundle = ResourceBundleWrapper.getSingleInstance().
+                createResourceBundle(session);
         if (login != null && password != null) {
             ServiceFactory factory = ServiceFactory.getInstance();
             UserService service = factory.getUserService();
@@ -30,7 +66,6 @@ public class LoginCommand extends Command {
                     setRedirect(true);
                     setPathName(PathConfiguration.getProperty(
                             "path.page.success"));
-                    HttpSession session = request.getSession();
                     session.setAttribute(ATTRIBUTE_NAME_USER, user);
                     getLogger().info(String.format(
                             "user \"%s\" is logged in from %s (%s:%s)",
@@ -38,14 +73,16 @@ public class LoginCommand extends Command {
                             request.getRemoteHost(), request.getRemotePort()));
                 } else {
                     request.setAttribute(ATTRIBUTE_ERROR_MESSAGE,
-                            "User name or password are not recognized");
+                            bundle.getString(
+                                    "message.user.login.recognized"));
                     getLogger().info(String.format("user \"%s\" unsuccessfully "
                                     + "tried to log in from %s (%s:%s)",
                             login, request.getRemoteAddr(),
                             request.getRemoteHost(), request.getRemotePort()));
                 }
             } catch (ServiceException e) {
-                request.setAttribute(ATTRIBUTE_ERROR_MESSAGE, e.getMessage());
+                request.setAttribute(ATTRIBUTE_ERROR_MESSAGE,
+                        bundle.getString(e.getMessage()));
                 getLogger().error(String.format("user \"%s\" unsuccessfully "
                                 + "tried to log in from %s (%s:%s)",
                         login, request.getRemoteAddr(),

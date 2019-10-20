@@ -11,7 +11,11 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 public class JspPageRedirectFilter implements Filter {
+    /**
+     * Path to home page.
+     */
     private static String indexPath;
+
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
         indexPath = filterConfig.getInitParameter("index_path");
@@ -21,10 +25,16 @@ public class JspPageRedirectFilter implements Filter {
     public void doFilter(ServletRequest request,
                          ServletResponse response, FilterChain chain)
             throws IOException, ServletException {
-        HttpServletRequest httpRequest = (HttpServletRequest) request;
-        HttpServletResponse httpResponse = (HttpServletResponse) response;
-        httpResponse.sendRedirect(
-                httpRequest.getContextPath() + indexPath);
+        if (request instanceof HttpServletRequest
+                && response instanceof HttpServletResponse) {
+            HttpServletRequest httpRequest = (HttpServletRequest) request;
+            HttpServletResponse httpResponse = (HttpServletResponse) response;
+            String uriPattern = UrlPatternUtils.getUrlPattern(httpRequest);
+            if (!uriPattern.equals("/jsp/error")) {
+                httpResponse.sendRedirect(
+                        httpRequest.getContextPath() + indexPath);
+            }
+        }
         chain.doFilter(request, response);
     }
 

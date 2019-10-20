@@ -1,17 +1,46 @@
 package by.training.certificationCenter.bean;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.List;
 
-public class Application extends CertificationEntity {
+public class Application extends CertificationEntity implements Serializable {
+    /**
+     * Registration number of the application.
+     */
     private int reg_num;
+    /**
+     * Date when the application was added.
+     */
     private LocalDate date_add;
+    /**
+     * Date when the application will be considered or executed.
+     */
     private LocalDate date_resolve;
+    /**
+     * Technical requirements for product quality and safety.
+     */
     private String requirements;
+    /**
+     * Application progress status.
+     */
     private Status status;
+    /**
+     * Executor on the part of the client, who submitted the application.
+     */
     private User executor;
+    /**
+     * Customer organisation.
+     */
     private Organisation organisation;
+    /**
+     * Products that have to pass the certification procedure.
+     */
     private List<Product> products;
+    /**
+     * List of documents that confirm the products conformity with
+     * established requirements.
+     */
     private List<Document> documents;
 
     public Application(final int newId) {
@@ -88,20 +117,5 @@ public class Application extends CertificationEntity {
 
     public void setDocuments(List<Document> documents) {
         this.documents = documents;
-    }
-
-    @Override
-    public String toString() {
-        return "Application{"
-                + "reg_num=" + reg_num
-                + ", date_add=" + date_add
-                + ", date_resolve=" + date_resolve
-                + ", requirements='" + requirements + '\''
-                + ", status=" + status
-                + ", executor=" + executor
-                + ", org=" + organisation
-                + ", products=" + products
-                + ", documents=" + documents
-                + '}';
     }
 }

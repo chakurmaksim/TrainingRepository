@@ -28,16 +28,16 @@ public final class ApplicationFactory implements Cloneable, Serializable {
             final Application application, final int userId, final int orgId,
             final String requirements) {
         User user = new User(userId);
-        Organisation org = new Organisation(orgId, 0,null);
+        Organisation org = new Organisation(orgId);
+        user.setOrganisation(org);
         application.setExecutor(user);
         application.setOrganisation(org);
         application.setRequirements(requirements);
     }
 
     public Application createDemoApplication(
-            final int id, final int regNum,
-            final Date dateAdd, final Date dateResolve,
-            final int statusInd) {
+            final int id, final int regNum, final Date dateAdd,
+            final Date dateResolve, final int statusInd) {
         Application application = new Application(id);
         application.setReg_num(regNum);
         if (dateAdd != null) {
@@ -50,9 +50,14 @@ public final class ApplicationFactory implements Cloneable, Serializable {
         return application;
     }
 
-    public Application createNewClientApp(final LocalDate dateAdd) {
+    public Application createNewClientApplication(final LocalDate dateAdd,
+                                                  final User user,
+                                                  final String requirements) {
         Application application = new Application(0);
         application.setDate_add(dateAdd);
+        application.setExecutor(user);
+        application.setOrganisation(user.getOrganisation());
+        application.setRequirements(requirements);
         application.setStatus(Status.getByIdentity(0));
         return application;
     }

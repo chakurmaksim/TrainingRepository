@@ -22,7 +22,7 @@
                     <div class="col-md">
                         <fmt:message var="loginPlaceholder" key="formForLogin.loginPlaceholder" bundle="${rb}"/>
                         <input type="text" class="form-control" id="login" name="login"
-                               aria-describedby="loginHelp" placeholder="${loginPlaceholder}">
+                               aria-describedby="loginHelp" placeholder="${loginPlaceholder}" value="${savedLogin}">
                         <small id="loginHelp" class="form-text text-muted"><fmt:message key="formForLogin.loginHelp" bundle="${rb}"/></small>
                     </div>
                 </div>
@@ -31,12 +31,12 @@
                     <div class="col-md">
                         <fmt:message var="passwordPlaceholder" key="formForLogin.passwordPlaceholder" bundle="${rb}"/>
                         <input type="password" class="form-control" id="password" name="password"
-                               aria-describedby="passwordHelp" placeholder="${passwordPlaceholder}">
+                               aria-describedby="passwordHelp" placeholder="${passwordPlaceholder}" value="${savedPassword}">
                         <small id="passwordHelp" class="form-text text-muted"><fmt:message key="formForLogin.passwordHelp" bundle="${rb}"/></small>
                     </div>
                 </div>
                 <div class="form-group form-check">
-                    <input type="checkbox" class="form-check-input" id="checkMeOut">
+                    <input type="checkbox" class="form-check-input" id="checkMeOut" name="rememberMe">
                     <label class="form-check-label" for="checkMeOut"><fmt:message key="formForLogin.checkboxLabel" bundle="${rb}"/></label>
                 </div>
                 <button type="submit" class="btn btn-primary"><fmt:message key="formForLogin.button" bundle="${rb}"/></button>

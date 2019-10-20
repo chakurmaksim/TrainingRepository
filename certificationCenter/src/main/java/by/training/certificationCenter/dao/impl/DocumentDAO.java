@@ -70,7 +70,7 @@ public class DocumentDAO extends CertificationMySqlDAO<Document> {
         int documentId = 0;
         try (PreparedStatement statement = connection.prepareStatement(
                 INSERT_DOC, Statement.RETURN_GENERATED_KEYS)) {
-            statement.setInt(1, entity.getApplicationId());
+            statement.setInt(1, entity.getApplication().getId());
             statement.setString(2,
                     entity.getUploadFilePath() + entity.getFileName());
             statement.executeUpdate();
@@ -85,7 +85,7 @@ public class DocumentDAO extends CertificationMySqlDAO<Document> {
     }
 
     @Override
-    public Document update(Document entity) throws DAOException {
+    public boolean update(Document entity) throws DAOException {
         throw new DAOException(DAOException.getUnsupportedOperation(
                 "update", "DocumentDAO"));
     }

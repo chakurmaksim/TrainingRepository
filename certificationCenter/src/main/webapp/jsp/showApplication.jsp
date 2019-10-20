@@ -9,7 +9,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="css/main.css">
     <link rel="stylesheet" href="css/show.css">
-    <title>Title</title>
+    <title>Show application page</title>
 </head>
 <body>
 <jsp:include page="header.jsp"/>
@@ -23,19 +23,27 @@
             </a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href="editApplication.html?application_id=${app.id}">
+            <a class="nav-link" href="editApplication.html" onclick="putApplicationToSession(this);return false">
                 <fmt:message key="submenu.editApplication" bundle="${rb}"/>
             </a>
+            <script>
+                function putApplicationToSession(form) {
+                    ${pageContext.session.setAttribute("currentApplication", app)}
+                    form.submit();
+                }
+            </script>
         </li>
         <li class="nav-item">
             <a class="nav-link" href="deleteApplication.html?application_id=${app.id}"
-               onclick="return confirm('Вы уверены?')">
+               <fmt:message var="confirmation" key="submenu.deleteApplication.confirmation" bundle="${rb}"/>
+               onclick="return confirm('${confirmation}')">
                 <fmt:message key="submenu.deleteApplication" bundle="${rb}"/>
             </a>
         </li>
     </ul>
 </c:if>
 <div id="show">
+    <p style="color:red">${errorMessage}</p>
     <p class='right header'>Общество с ограниченной ответственностью</p>
     <p class='right header'>«Центр сертификации продукции»</p>
     <p class='right header'>220017, г.Минск, ул. Казимировская, 15</p>

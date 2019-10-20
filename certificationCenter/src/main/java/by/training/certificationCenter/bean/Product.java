@@ -1,19 +1,35 @@
 package by.training.certificationCenter.bean;
 
-public class Product extends CertificationEntity {
+import java.io.Serializable;
+
+public class Product extends CertificationEntity implements Serializable {
+    /**
+     * Product name.
+     */
     private String name;
+    /**
+     * Product code commodity nomenclature of foreign economic activity.
+     */
     private long code;
+    /**
+     * Producer name.
+     */
     private String producer;
+    /**
+     * Producer location.
+     */
     private String address;
+    /**
+     * Release sign.
+     */
     private QuantityAttribute attr;
-    private int applicationId;
+    /**
+     * Link to the application to which this product belongs.
+     */
+    private Application application;
 
     public Product(final int newId) {
         super(newId);
-    }
-
-    public int getId() {
-        return id;
     }
 
     public String getName() {
@@ -56,22 +72,11 @@ public class Product extends CertificationEntity {
         this.attr = attr;
     }
 
-    public int getApplicationId() {
-        return applicationId;
+    public Application getApplication() {
+        return application;
     }
 
-    public void setApplicationId(int applicationId) {
-        this.applicationId = applicationId;
-    }
-
-    @Override
-    public String toString() {
-        return "Продукция{"
-                + "Наименование и обозначение='" + name + '\''
-                + ", Код ТН ВЭД ЕАЭС=" + code
-                + ", Изготовитель='" + producer + '\''
-                + ", Место нахождения='" + address + '\''
-                + ", Признак выпуска=" + attr
-                + '}';
+    public void setApplication(Application newApplication) {
+        this.application = newApplication;
     }
 }

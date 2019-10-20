@@ -11,6 +11,6 @@ public interface CertificationDAO<T extends CertificationEntity> {
     T findEntityById(int id) throws DAOException;
     boolean remove(int id) throws DAOException;
     int create(T entity) throws DAOException;
-    T update(T entity) throws DAOException;
+    boolean update(T entity) throws DAOException;
     List<T> query(Specification specification) throws DAOException;
 }

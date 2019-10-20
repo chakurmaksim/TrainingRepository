@@ -1,5 +1,6 @@
 package by.training.certificationCenter.service.factory;
 
+import by.training.certificationCenter.bean.Application;
 import by.training.certificationCenter.bean.Product;
 import by.training.certificationCenter.bean.QuantityAttribute;
 
@@ -33,6 +34,16 @@ public class ProductFactory implements Cloneable, Serializable {
         product.setProducer(producer);
         product.setAddress(address);
         product.setAttr(attribute);
+        return product;
+    }
+
+    public Product createNewClientProduct(
+            final String name, final long code, final String producer,
+            final String address, final int quantity_attr_id,
+            final Application application) {
+        Product product = createProduct(0, name, code, producer, address,
+                quantity_attr_id, null);
+        product.setApplication(application);
         return product;
     }
 

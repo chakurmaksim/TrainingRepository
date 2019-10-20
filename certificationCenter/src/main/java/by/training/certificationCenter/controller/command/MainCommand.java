@@ -8,7 +8,11 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 public class MainCommand extends Command {
+    /**
+     * The key is required to obtain the current page locale.
+     */
     private static final String PARAM_NAME_LOCALE = "locale";
+
     @Override
     public void execute(HttpServletRequest request,
                         HttpServletResponse response) {

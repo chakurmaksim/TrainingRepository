@@ -14,7 +14,8 @@ public interface ApplicationService<T extends Application, V extends User> {
     boolean addNewApplication(T application) throws ServiceException;
     boolean deleteApplication(int applicationId, V user)
             throws ServiceException;
-    T updateApplication(T application) throws ServiceException;
+    boolean updateApplication(T application) throws ServiceException;
     FileInputStream receiveFileInputStream(String fullFileName)
             throws ServiceException;
+    int receiveRowsNumber(V user) throws ServiceException;
 }
