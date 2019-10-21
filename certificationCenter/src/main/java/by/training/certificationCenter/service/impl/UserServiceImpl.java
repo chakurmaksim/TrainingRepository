@@ -27,13 +27,14 @@ public class UserServiceImpl implements UserService<User> {
     @Override
     public User signIn(final String login, final String password)
             throws ServiceException {
+        String encodedPass = PasswordEncoder.encodePassword(login, password);
         DAOFactory factory = DAOFactory.getInstance();
         ConnectionWrapper wrapper = ConnectionWrapper.getInstance();
         UserDAO userDAO = null;
         try {
             userDAO = factory.getUserDAO(wrapper.getConnection());
             Specification userByLogin = new UserByLoginSpecification(
-                    login, password);
+                    login, encodedPass);
             List<User> userList = userDAO.query(userByLogin);
             User user = null;
             if (userList.size() == 1) {
@@ -120,6 +121,8 @@ public class UserServiceImpl implements UserService<User> {
         if (!UserValidator.validatePassword(user.getPassword())) {
             throw new ServiceException("message.user.password.notStrong");
         }
+        user.setPassword(PasswordEncoder.encodePassword(user.getLogin(),
+                user.getPassword()));
         ConnectionWrapper wrapper = ConnectionWrapper.getInstance();
         DAOFactory factory = DAOFactory.getInstance();
         UserDAO userDAO = null;

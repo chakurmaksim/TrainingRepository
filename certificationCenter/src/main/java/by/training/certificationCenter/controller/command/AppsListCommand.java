@@ -35,7 +35,7 @@ public class AppsListCommand extends Command {
     /**
      * Limit of applications that will be displayed on the page.
      */
-    private static final int PAGE_LIMIT = 2;
+    private static final int PAGE_LIMIT = 4;
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) {
