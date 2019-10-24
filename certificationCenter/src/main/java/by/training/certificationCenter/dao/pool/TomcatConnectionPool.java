@@ -12,7 +12,7 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Properties;
 
-public final class ConnectionPool {
+public final class TomcatConnectionPool {
     private static Context envContext;
     /**
      * Component that provides a connection to a DBMS application.
@@ -22,37 +22,40 @@ public final class ConnectionPool {
      * Events logger, in that case to register possible exceptions when
      * creating an instance of the DataSource.
      */
-    private static Logger logger = LogManager.getLogger(ConnectionPool.class);
+    private static Logger logger = LogManager.getLogger(
+            TomcatConnectionPool.class);
 
-    private ConnectionPool() {
+    private TomcatConnectionPool() {
     }
 
-    public static void initialPool() {
+    static void initialPool() {
         try {
-            Properties prop = DatabaseConfiguration.getProperties();
+            Properties properties = DatabaseConfiguration.getProperties();
             InitialContext initContext = new InitialContext();
             envContext = (Context) initContext.lookup(
-                    prop.getProperty("envContextName"));
+                    properties.getProperty("envContextName"));
             dataSource = (DataSource) envContext.lookup(
-                    prop.getProperty("dataSourceName"));
+                    properties.getProperty("dataSourceName"));
+            logger.debug("Application is started");
         } catch (NamingException e) {
             logger.error(e);
         }
     }
 
-    public static void closePool() {
+    static void closePool() {
         try {
+            logger.debug("Application is stopped");
             envContext.close();
         } catch (NamingException e) {
             logger.error(e);
         }
     }
 
-    public static Connection getConnection() throws SQLException {
+    static Connection getConnection() throws SQLException {
         return dataSource.getConnection();
     }
 
-    public static void close(final Connection connection)
+    static void close(final Connection connection)
             throws SQLException {
         connection.close();
     }

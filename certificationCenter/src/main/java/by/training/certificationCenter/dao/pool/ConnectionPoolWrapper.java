@@ -5,7 +5,7 @@ import by.training.certificationCenter.dao.exception.DAOException;
 import java.sql.Connection;
 import java.sql.SQLException;
 
-public final class ConnectionWrapper {
+public abstract class ConnectionPoolWrapper {
     /**
      * Variable that keeps error message when database access error occurs.
      */
@@ -64,39 +64,24 @@ public final class ConnectionWrapper {
                 + "in auto-commit mode";
     }
 
-    private ConnectionWrapper() {
+    protected String getConnectionGetError() {
+        return CONNECTION_GET_ERROR;
     }
 
-    private static class ConnectionWrapperHolder {
-        /**
-         * Variable that holds the ConnectionWrapper single instance.
-         */
-        private static final ConnectionWrapper
-                SINGLE_INSTANCE = new ConnectionWrapper();
+    protected String getConnectionCloseError() {
+        return CONNECTION_CLOSE_ERROR;
     }
 
-    public static ConnectionWrapper getInstance() {
-        return ConnectionWrapperHolder.SINGLE_INSTANCE;
-    }
+    public abstract void initialPool();
 
-    public Connection getConnection() throws DAOException {
-        try {
-            return ConnectionPool.getConnection();
-        } catch (SQLException e) {
-            throw new DAOException(CONNECTION_GET_ERROR, e);
-        }
-    }
+    public abstract void closePool();
 
-    public void closeConnection(final Connection connection)
-            throws DAOException {
-        try {
-            ConnectionPool.close(connection);
-        } catch (SQLException e) {
-            throw new DAOException(CONNECTION_CLOSE_ERROR, e);
-        }
-    }
+    public abstract Connection getConnection() throws DAOException;
 
-    public void setAutoCommit(final Connection connection, boolean autoCommit)
+    public abstract void closeConnection(Connection connection)
+            throws DAOException;
+
+    public void setAutoCommit(Connection connection, boolean autoCommit)
             throws DAOException {
         try {
             connection.setAutoCommit(autoCommit);
@@ -105,17 +90,24 @@ public final class ConnectionWrapper {
         }
     }
 
-    public void setTransactionIsolationLevel(
-            final Connection connection, int level) throws DAOException {
+    public void commitOperation(Connection connection) throws DAOException {
         try {
-            connection.setTransactionIsolation(level);
+            connection.commit();
         } catch (SQLException e) {
-            throw new DAOException(SET_TRANSACTION_ERROR, e);
+            throw new DAOException(COMMIT_OPERATION_ERROR, e);
         }
     }
 
-    public void setTransactionReadUncommittedLevel(
-            final Connection connection) throws DAOException {
+    public void rollbackOperation(Connection connection) throws DAOException {
+        try {
+            connection.rollback();
+        } catch (SQLException e) {
+            throw new DAOException(ROLL_BACK_ERROR, e);
+        }
+    }
+
+    public void setTransactionReadUncommittedLevel(Connection connection)
+            throws DAOException {
         try {
             connection.setTransactionIsolation(
                     Connection.TRANSACTION_READ_UNCOMMITTED);
@@ -133,21 +125,12 @@ public final class ConnectionWrapper {
         }
     }
 
-    public void rollbackOperation(final Connection connection)
+    public void setTransactionIsolationLevel(Connection connection, int level)
             throws DAOException {
         try {
-            connection.rollback();
+            connection.setTransactionIsolation(level);
         } catch (SQLException e) {
-            throw new DAOException(ROLL_BACK_ERROR, e);
-        }
-    }
-
-    public void commitOperation(final Connection connection)
-            throws DAOException {
-        try {
-            connection.commit();
-        } catch (SQLException e) {
-            throw new DAOException(COMMIT_OPERATION_ERROR, e);
+            throw new DAOException(SET_TRANSACTION_ERROR, e);
         }
     }
 }

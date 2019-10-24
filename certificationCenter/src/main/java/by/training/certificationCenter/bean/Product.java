@@ -1,6 +1,7 @@
 package by.training.certificationCenter.bean;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 public class Product extends CertificationEntity implements Serializable {
     /**
@@ -78,5 +79,36 @@ public class Product extends CertificationEntity implements Serializable {
 
     public void setApplication(Application newApplication) {
         this.application = newApplication;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+        Product product = (Product) o;
+        return id == product.id
+                && code == product.code
+                && attr.getId() == product.attr.getId()
+                && Objects.equals(name, product.name) &&
+                Objects.equals(producer, product.producer) &&
+                Objects.equals(address, product.address);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, code, producer, address, attr.getId());
+    }
+
+    @Override
+    public String toString() {
+        return "Product{"
+                + "id=" + id
+                + ", name='" + name + '\''
+                + ", code=" + code
+                + ", producer='" + producer + '\''
+                + ", address='" + address + '\''
+                + ", attrId=" + attr.getId()
+                + '}';
     }
 }

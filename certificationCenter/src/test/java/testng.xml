@@ -1,0 +1,19 @@
+<suite name="ChefApplicationTest" verbose="1" >
+    <test name="ServicesTest">
+        <packages>
+            <package name="by.training.certificationCenter.service.impl.*">
+                <exclude name="by.training.certificationCenter.service.impl.InitServiceTest"></exclude>
+                <exclude name="by.training.certificationCenter.service.impl.ApplicationServiceImplTest"></exclude>
+            </package>
+        </packages>
+    </test>
+
+    <test name="ValidatorsTest">
+        <classes>
+            <class name="by.training.certificationCenter.service.validator.ApplicationValidatorTest"/>
+            <class name="by.training.certificationCenter.service.validator.UserValidatorTest"/>
+        </classes>
+    </test>
+
+</suite>
+

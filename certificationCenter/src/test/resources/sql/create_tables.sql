@@ -1,4 +1,4 @@
-USE certificationCenter;
+USE certificationCenterTest;
 
 CREATE TABLE organisation (
     id INT AUTO_INCREMENT,
@@ -15,7 +15,7 @@ CREATE TABLE user (
     id INT AUTO_INCREMENT,
     organisation_id INT NOT NULL,
     login VARCHAR(255) NOT NULL UNIQUE,
-    password VARCHAR(255) NOT NULL,
+    password VARCHAR(256) NOT NULL,
     name VARCHAR(30) NOT NULL,
     surname VARCHAR(30) NOT NULL,
     patronymic VARCHAR(30) NOT NULL,

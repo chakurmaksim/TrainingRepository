@@ -1,6 +1,7 @@
 package by.training.certificationCenter.bean;
 
 import java.io.InputStream;
+import java.util.Objects;
 
 public class Document extends CertificationEntity {
     /**
@@ -54,5 +55,30 @@ public class Document extends CertificationEntity {
 
     public void setApplication(Application newApplication) {
         this.application = newApplication;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+        Document document = (Document) o;
+        return id == document.id
+                && Objects.equals(uploadFilePath, document.uploadFilePath)
+                && Objects.equals(fileName, document.fileName);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, uploadFilePath, fileName);
+    }
+
+    @Override
+    public String toString() {
+        return "Document{"
+                + " id=" + id
+                + ", uploadFilePath='" + uploadFilePath + '\''
+                + ", fileName='" + fileName + '\''
+                + '}';
     }
 }

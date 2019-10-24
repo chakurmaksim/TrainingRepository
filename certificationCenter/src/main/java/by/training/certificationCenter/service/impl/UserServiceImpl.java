@@ -5,7 +5,8 @@ import by.training.certificationCenter.dao.exception.DAOException;
 import by.training.certificationCenter.dao.factory.DAOFactory;
 import by.training.certificationCenter.dao.impl.OrganisationDAO;
 import by.training.certificationCenter.dao.impl.UserDAO;
-import by.training.certificationCenter.dao.pool.ConnectionWrapper;
+import by.training.certificationCenter.dao.pool.ConnectionPoolWrapper;
+import by.training.certificationCenter.dao.pool.TomcatConnectionPoolWrapper;
 import by.training.certificationCenter.service.UserService;
 import by.training.certificationCenter.service.exception.ServiceException;
 import by.training.certificationCenter.service.specification.Specification;
@@ -23,16 +24,40 @@ public class UserServiceImpl implements UserService<User> {
      */
     private static Logger logger = LogManager.getLogger(
             ApplicationServiceImpl.class);
+    /**
+     * Variable contains database connection pool wrapper.
+     */
+    private ConnectionPoolWrapper wrapper;
+    /**
+     * DAOFactory instance.
+     */
+    private DAOFactory daoFactory;
+
+    /**
+     * Constructor where Tomcat connection pool is initialized.
+     */
+    public UserServiceImpl() {
+        wrapper = TomcatConnectionPoolWrapper.getInstance();
+        daoFactory = DAOFactory.getInstance();
+    }
+
+    /**
+     * There is connection pool could be various.
+     *
+     * @param newWrapper Connection pool wrapper
+     */
+    public UserServiceImpl(ConnectionPoolWrapper newWrapper) {
+        this.wrapper = newWrapper;
+        daoFactory = DAOFactory.getInstance();
+    }
 
     @Override
     public User signIn(final String login, final String password)
             throws ServiceException {
         String encodedPass = PasswordEncoder.encodePassword(login, password);
-        DAOFactory factory = DAOFactory.getInstance();
-        ConnectionWrapper wrapper = ConnectionWrapper.getInstance();
         UserDAO userDAO = null;
         try {
-            userDAO = factory.getUserDAO(wrapper.getConnection());
+            userDAO = daoFactory.getUserDAO(wrapper.getConnection());
             Specification userByLogin = new UserByLoginSpecification(
                     login, encodedPass);
             List<User> userList = userDAO.query(userByLogin);
@@ -43,7 +68,7 @@ public class UserServiceImpl implements UserService<User> {
             if (user == null) {
                 throw new ServiceException("message.user.login.recognized");
             } else {
-                OrganisationDAO organisationDAO = factory.
+                OrganisationDAO organisationDAO = daoFactory.
                         getOrganisationDAO(userDAO.getConnection());
                 user.setOrganisation(organisationDAO.findEntityById(
                         user.getOrganisation().getId()));
@@ -72,14 +97,12 @@ public class UserServiceImpl implements UserService<User> {
     @Override
     public User receiveUserById(final int userId)
             throws ServiceException {
-        DAOFactory factory = DAOFactory.getInstance();
-        ConnectionWrapper wrapper = ConnectionWrapper.getInstance();
         UserDAO userDAO = null;
         try {
-            userDAO = factory.getUserDAO(wrapper.getConnection());
+            userDAO = daoFactory.getUserDAO(wrapper.getConnection());
             User user = userDAO.findEntityById(userId);
             if (user != null) {
-                OrganisationDAO organisationDAO = factory.getOrganisationDAO(
+                OrganisationDAO organisationDAO = daoFactory.getOrganisationDAO(
                         userDAO.getConnection());
                 user.setOrganisation(organisationDAO.findEntityById(
                         user.getOrganisation().getId()));
@@ -123,17 +146,15 @@ public class UserServiceImpl implements UserService<User> {
         }
         user.setPassword(PasswordEncoder.encodePassword(user.getLogin(),
                 user.getPassword()));
-        ConnectionWrapper wrapper = ConnectionWrapper.getInstance();
-        DAOFactory factory = DAOFactory.getInstance();
         UserDAO userDAO = null;
         int isolationLevel = 0;
         try {
-            userDAO = factory.getUserDAO(wrapper.getConnection());
+            userDAO = daoFactory.getUserDAO(wrapper.getConnection());
             wrapper.setAutoCommit(userDAO.getConnection(), false);
             isolationLevel = wrapper.getTransactionIsolationLevel(
                     userDAO.getConnection());
             wrapper.setTransactionReadUncommittedLevel(userDAO.getConnection());
-            OrganisationDAO organisationDAO = factory.getOrganisationDAO(
+            OrganisationDAO organisationDAO = daoFactory.getOrganisationDAO(
                     userDAO.getConnection());
             int organisationId = organisationDAO.create(user.getOrganisation());
             if (organisationId > 0) {

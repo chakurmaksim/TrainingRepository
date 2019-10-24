@@ -35,6 +35,15 @@ public class LoginCommand extends Command {
      * Key that is required to set the error message to the request attribute.
      */
     private static final String ATTRIBUTE_ERROR_MESSAGE = "errorMessage";
+    /**
+     * Key is required to remember user login into the Cookies.
+     */
+    private static final String COOKIES_SAVE_LOGIN = "savedLogin";
+    /**
+     * Key is required to remember user password into the Cookies.
+     */
+    private static final String COOKIES_SAVE_PASSWORD = "savedPassword";
+
 
     @Override
     public void execute(HttpServletRequest request,
@@ -42,27 +51,29 @@ public class LoginCommand extends Command {
         Cookie[] cookies = request.getCookies();
         if (cookies != null) {
             for (Cookie cookie : cookies) {
-                if (cookie.getName().equals("savedLogin")) {
-                    request.setAttribute("savedLogin", cookie.getValue());
+                if (cookie.getName().equals(COOKIES_SAVE_LOGIN)) {
+                    request.setAttribute(COOKIES_SAVE_LOGIN, cookie.getValue());
                 }
-                if (cookie.getName().equals("savedPassword")) {
-                    request.setAttribute("savedPassword",
+                if (cookie.getName().equals(COOKIES_SAVE_PASSWORD)) {
+                    request.setAttribute(COOKIES_SAVE_PASSWORD,
                             cookie.getValue());
                 }
             }
         }
-        String login = request.getParameter(PARAM_LOGIN);
-        String password = request.getParameter(PARAM_PASS);
-        String checkBox = request.getParameter(PARAM_REMEMBER);
         HttpSession session = request.getSession();
         ResourceBundle bundle = ResourceBundleWrapper.getSingleInstance().
                 createResourceBundle(session);
-        if (login != null && password != null) {
+        String login = request.getParameter(PARAM_LOGIN);
+        String password = request.getParameter(PARAM_PASS);
+        String checkBox = request.getParameter(PARAM_REMEMBER);
+        if (login != null && password != null && !login.trim().equals("")) {
             ServiceFactory factory = ServiceFactory.getInstance();
             UserService service = factory.getUserService();
             try {
                 User user = service.signIn(login, password);
                 if (user != null) {
+                    rememberLoginAndPassword(response, login,
+                            password, checkBox);
                     setRedirect(true);
                     setPathName(PathConfiguration.getProperty(
                             "path.page.success"));
@@ -88,6 +99,20 @@ public class LoginCommand extends Command {
                         login, request.getRemoteAddr(),
                         request.getRemoteHost(), request.getRemotePort()));
             }
+        } else if (login != null && login.trim().equals("")) {
+            request.setAttribute(ATTRIBUTE_ERROR_MESSAGE,
+                    bundle.getString("message.user.login.empty"));
+        }
+    }
+
+    private void rememberLoginAndPassword(HttpServletResponse response,
+                                          String login, String password,
+                                          String checkBox) {
+        if (checkBox != null && Boolean.valueOf(checkBox)) {
+            Cookie cookieLogin = new Cookie(COOKIES_SAVE_LOGIN, login);
+            Cookie cookiePass = new Cookie(COOKIES_SAVE_PASSWORD, password);
+            response.addCookie(cookieLogin);
+            response.addCookie(cookiePass);
         }
     }
 }

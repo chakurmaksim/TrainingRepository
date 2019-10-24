@@ -12,8 +12,8 @@ public class FooterTag extends TagSupport {
     @Override
     public int doStartTag() throws JspException {
         LocalDate ld = LocalDate.now();
-        String copyright = "<hr/><b> © " + ld.getYear() + " Copyright: "
-                + "<a href=\"index.html\"> certification.by</a></b><hr/>";
+        String copyright = "<hr/><center><b> © " + ld.getYear() + " Copyright: "
+                + "<a href=\"index.html\"> certification.by</a></b></center><hr/>";
         try {
             JspWriter out = pageContext.getOut();
             out.write(copyright);

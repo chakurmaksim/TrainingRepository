@@ -1,7 +1,8 @@
 package by.training.certificationCenter.controller;
 
 import by.training.certificationCenter.controller.command.Command;
-import by.training.certificationCenter.dao.pool.ConnectionPool;
+import by.training.certificationCenter.dao.pool.ConnectionPoolWrapper;
+import by.training.certificationCenter.dao.pool.TomcatConnectionPoolWrapper;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -15,13 +16,15 @@ public class CertificationServlet extends HttpServlet {
      * from the HttpServletRequest instance.
      */
     private static final String ATTR_NAME_COMMAND = "command";
+    private static ConnectionPoolWrapper wrapper;
 
     public void init() {
-        ConnectionPool.initialPool();
+        wrapper = TomcatConnectionPoolWrapper.getInstance();
+        wrapper.initialPool();
     }
 
     public void destroy() {
-        ConnectionPool.closePool();
+        wrapper.closePool();
     }
 
     protected void doPost(final HttpServletRequest request,

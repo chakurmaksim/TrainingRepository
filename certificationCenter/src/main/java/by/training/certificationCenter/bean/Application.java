@@ -3,6 +3,7 @@ package by.training.certificationCenter.bean;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Objects;
 
 public class Application extends CertificationEntity implements Serializable {
     /**
@@ -117,5 +118,42 @@ public class Application extends CertificationEntity implements Serializable {
 
     public void setDocuments(List<Document> documents) {
         this.documents = documents;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+        Application that = (Application) o;
+        return id == that.id
+                && reg_num == that.reg_num
+                && Objects.equals(date_add, that.date_add)
+                && Objects.equals(date_resolve, that.date_resolve)
+                && Objects.equals(requirements, that.requirements)
+                && Objects.equals(executor, that.executor)
+                && Objects.equals(products, that.products)
+                && Objects.equals(documents, that.documents);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, reg_num, date_add, date_resolve, requirements,
+                executor, products, documents);
+    }
+
+    @Override
+    public String toString() {
+        return "Application{"
+                + ", id=" + id
+                + "reg_num=" + reg_num
+                + ", date_add=" + date_add
+                + ", date_resolve=" + date_resolve +
+                ", requirements='" + requirements + '\''
+                + ", status=" + status
+                + ", executor=" + executor
+                + ", products=" + products
+                + ", documents=" + documents
+                + '}';
     }
 }

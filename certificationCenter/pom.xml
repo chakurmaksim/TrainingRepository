@@ -17,16 +17,10 @@
             <version>7.0.0</version>
             <scope>test</scope>
         </dependency>
-        <!-- https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-api -->
+        <!-- https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-web -->
         <dependency>
             <groupId>org.apache.logging.log4j</groupId>
-            <artifactId>log4j-api</artifactId>
-            <version>2.12.1</version>
-        </dependency>
-        <!-- https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-core -->
-        <dependency>
-            <groupId>org.apache.logging.log4j</groupId>
-            <artifactId>log4j-core</artifactId>
+            <artifactId>log4j-web</artifactId>
             <version>2.12.1</version>
         </dependency>
         <!-- https://mvnrepository.com/artifact/mysql/mysql-connector-java -->
@@ -75,8 +69,14 @@
             <artifactId>commons-codec</artifactId>
             <version>1.13</version>
         </dependency>
-
+        <!-- https://mvnrepository.com/artifact/com.wix/wix-embedded-mysql -->
+        <dependency>
+            <groupId>com.wix</groupId>
+            <artifactId>wix-embedded-mysql</artifactId>
+            <version>4.6.0</version>
+        </dependency>
     </dependencies>
+
     <properties>
         <jdk.version>11</jdk.version>
     </properties>

@@ -31,6 +31,7 @@ public class SecurityConfig {
         List<String> expertUrlPatterns = new ArrayList<>();
         expertUrlPatterns.add("/applications");
         expertUrlPatterns.add("/showApplication");
+        expertUrlPatterns.add("/registerApplication");
         mapConfig.put(Role.EXPERT, expertUrlPatterns);
     }
 

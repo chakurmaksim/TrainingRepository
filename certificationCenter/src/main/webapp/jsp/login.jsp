@@ -36,7 +36,7 @@
                     </div>
                 </div>
                 <div class="form-group form-check">
-                    <input type="checkbox" class="form-check-input" id="checkMeOut" name="rememberMe">
+                    <input type="checkbox" class="form-check-input" id="checkMeOut" name="rememberMe" value="true">
                     <label class="form-check-label" for="checkMeOut"><fmt:message key="formForLogin.checkboxLabel" bundle="${rb}"/></label>
                 </div>
                 <button type="submit" class="btn btn-primary"><fmt:message key="formForLogin.button" bundle="${rb}"/></button>

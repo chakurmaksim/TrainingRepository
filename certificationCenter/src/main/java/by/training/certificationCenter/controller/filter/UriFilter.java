@@ -34,6 +34,7 @@ public class UriFilter implements Filter {
         commands.put("/login", new LoginCommand());
         commands.put("/logout", new LogoutCommand());
         commands.put("/registration", new RegistrationCommand());
+        commands.put("/registerApplication", new RegisterApplicationCommand());
         commands.put("/showApplication", new ShowApplicationCommand());
     }
 

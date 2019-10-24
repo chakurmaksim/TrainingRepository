@@ -1,6 +1,6 @@
 INSERT INTO quantity_attribute(quantity_attribute_name)
-VALUES('Серийный выпуск');
+VALUES('Serial');
 INSERT INTO quantity_attribute(quantity_attribute_name)
-VALUES('Партия');
+VALUES('Batch');
 INSERT INTO quantity_attribute(quantity_attribute_name)
-VALUES('Единичное изделие');
+VALUES('Single');

@@ -1,6 +1,7 @@
 package by.training.certificationCenter.bean;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 public class User extends CertificationEntity implements Serializable {
     private String login;
@@ -96,6 +97,27 @@ public class User extends CertificationEntity implements Serializable {
 
     public void setOrganisation(Organisation organisation) {
         this.organisation = organisation;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+        User user = (User) o;
+        return id == user.id
+                && phone == user.phone
+                && Objects.equals(login, user.login)
+                && Objects.equals(name, user.name)
+                && Objects.equals(surname, user.surname)
+                && Objects.equals(mail, user.mail)
+                && Objects.equals(organisation, user.organisation);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, login, name, surname, phone,
+                mail, organisation);
     }
 
     @Override

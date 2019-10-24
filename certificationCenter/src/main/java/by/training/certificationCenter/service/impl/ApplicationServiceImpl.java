@@ -11,7 +11,8 @@ import by.training.certificationCenter.dao.filereader.FileWriteReader;
 import by.training.certificationCenter.dao.impl.ApplicationDAO;
 import by.training.certificationCenter.dao.impl.DocumentDAO;
 import by.training.certificationCenter.dao.impl.ProductDAO;
-import by.training.certificationCenter.dao.pool.ConnectionWrapper;
+import by.training.certificationCenter.dao.pool.ConnectionPoolWrapper;
+import by.training.certificationCenter.dao.pool.TomcatConnectionPoolWrapper;
 import by.training.certificationCenter.service.ApplicationService;
 import by.training.certificationCenter.service.validator.ApplicationValidator;
 import by.training.certificationCenter.service.UserService;
@@ -37,16 +38,40 @@ public class ApplicationServiceImpl
      */
     private static Logger logger = LogManager.getLogger(
             ApplicationServiceImpl.class);
+    /**
+     * Variable contains database connection pool wrapper.
+     */
+    private ConnectionPoolWrapper wrapper;
+    /**
+     * DAOFactory instance.
+     */
+    private DAOFactory daoFactory;
+
+    /**
+     * Constructor where is used Tomcat connection pool.
+     */
+    public ApplicationServiceImpl() {
+        wrapper = TomcatConnectionPoolWrapper.getInstance();
+        daoFactory = DAOFactory.getInstance();
+    }
+
+    /**
+     * There is connection pool could be various.
+     *
+     * @param newWrapper Connection pool wrapper
+     */
+    public ApplicationServiceImpl(final ConnectionPoolWrapper newWrapper) {
+        this.wrapper = newWrapper;
+        daoFactory = DAOFactory.getInstance();
+    }
 
     @Override
     public List<Application> receiveAppsByUser(
             final User user, final int skipPages, final int pageLimit)
             throws ServiceException {
-        DAOFactory factory = DAOFactory.getInstance();
-        ConnectionWrapper wrapper = ConnectionWrapper.getInstance();
         ApplicationDAO applicationDAO = null;
         try {
-            applicationDAO = factory.getApplicationDAO(
+            applicationDAO = daoFactory.getApplicationDAO(
                     wrapper.getConnection());
             Role role = Role.getByIdentity(user.getRole().getIndex());
             switch (role) {
@@ -81,8 +106,6 @@ public class ApplicationServiceImpl
     @Override
     public Application showApplicationById(
             final int applicationId, final User user) throws ServiceException {
-        DAOFactory daoFactory = DAOFactory.getInstance();
-        ConnectionWrapper wrapper = ConnectionWrapper.getInstance();
         ApplicationDAO applicationDAO = null;
         try {
             applicationDAO = daoFactory.getApplicationDAO(
@@ -130,12 +153,11 @@ public class ApplicationServiceImpl
                 throw new ServiceException("message.product.code.validate");
             }
         }
-        DAOFactory factory = DAOFactory.getInstance();
-        ConnectionWrapper wrapper = ConnectionWrapper.getInstance();
         ApplicationDAO applicationDAO = null;
         int isolationLevel = 0;
         try {
-            applicationDAO = factory.getApplicationDAO(wrapper.getConnection());
+            applicationDAO = daoFactory.getApplicationDAO(
+                    wrapper.getConnection());
             wrapper.setAutoCommit(applicationDAO.
                     getConnection(), false);
             isolationLevel = wrapper.getTransactionIsolationLevel(
@@ -145,9 +167,9 @@ public class ApplicationServiceImpl
             int applicationId = applicationDAO.create(application);
             if (applicationId > 0) {
                 application.setId(applicationId);
-                DocumentDAO documentDAO = factory.getDocumentDAO(
+                DocumentDAO documentDAO = daoFactory.getDocumentDAO(
                         applicationDAO.getConnection());
-                ProductDAO productDAO = factory.getProductDAO(
+                ProductDAO productDAO = daoFactory.getProductDAO(
                         applicationDAO.getConnection());
                 try {
                     saveNewDocuments(application, documentDAO);
@@ -165,7 +187,9 @@ public class ApplicationServiceImpl
             logger.error(e.getMessage(), e);
             throw new ServiceException("message.application.added.mistake");
         } finally {
-            returnBackConnection(wrapper, applicationDAO, isolationLevel);
+            if (applicationDAO != null) {
+                returnBackConnection(applicationDAO, isolationLevel);
+            }
         }
         return flag;
     }
@@ -176,25 +200,23 @@ public class ApplicationServiceImpl
         boolean flag = false;
         Application application;
         try {
-           application = showApplicationById(applicationId, user);
+            application = showApplicationById(applicationId, user);
         } catch (ServiceException e) {
             throw new ServiceException("message.application.deleted.mistake");
         }
-        DAOFactory factory = DAOFactory.getInstance();
-        ConnectionWrapper wrapper = ConnectionWrapper.getInstance();
         ApplicationDAO applicationDAO = null;
         int isolationLevel = 0;
         try {
-            applicationDAO = factory.getApplicationDAO(wrapper.getConnection());
+            applicationDAO = daoFactory.getApplicationDAO(wrapper.getConnection());
             wrapper.setAutoCommit(applicationDAO.
                     getConnection(), false);
             isolationLevel = wrapper.getTransactionIsolationLevel(
                     applicationDAO.getConnection());
             wrapper.setTransactionReadUncommittedLevel(
                     applicationDAO.getConnection());
-            ProductDAO productDAO = factory.getProductDAO(
+            ProductDAO productDAO = daoFactory.getProductDAO(
                     applicationDAO.getConnection());
-            DocumentDAO documentDAO = factory.getDocumentDAO(
+            DocumentDAO documentDAO = daoFactory.getDocumentDAO(
                     applicationDAO.getConnection());
             FileWriteReader writeReader = FileWriteReader.getSingleInstance();
             try {
@@ -220,7 +242,9 @@ public class ApplicationServiceImpl
             logger.error(e.getMessage(), e);
             throw new ServiceException("message.application.deleted.mistake");
         } finally {
-            returnBackConnection(wrapper, applicationDAO, isolationLevel);
+            if (applicationDAO != null) {
+                returnBackConnection(applicationDAO, isolationLevel);
+            }
         }
         return flag;
     }
@@ -232,12 +256,11 @@ public class ApplicationServiceImpl
                 application.getStatus())) {
             throw new ServiceException("message.application.updated.late");
         }
-        DAOFactory factory = DAOFactory.getInstance();
-        ConnectionWrapper wrapper = ConnectionWrapper.getInstance();
         ApplicationDAO applicationDAO = null;
         int isolationLevel = 0;
         try {
-            applicationDAO = factory.getApplicationDAO(wrapper.getConnection());
+            applicationDAO = daoFactory.getApplicationDAO(
+                    wrapper.getConnection());
             wrapper.setAutoCommit(applicationDAO.
                     getConnection(), false);
             isolationLevel = wrapper.getTransactionIsolationLevel(
@@ -245,7 +268,7 @@ public class ApplicationServiceImpl
             wrapper.setTransactionReadUncommittedLevel(
                     applicationDAO.getConnection());
             applicationDAO.update(application);
-            ProductDAO productDAO = factory.getProductDAO(
+            ProductDAO productDAO = daoFactory.getProductDAO(
                     applicationDAO.getConnection());
             try {
                 for (Product product : application.getProducts()) {
@@ -267,7 +290,9 @@ public class ApplicationServiceImpl
             logger.error(e.getMessage(), e);
             throw new ServiceException("message.application.updated.mistake");
         } finally {
-            returnBackConnection(wrapper, applicationDAO, isolationLevel);
+            if (applicationDAO != null) {
+                returnBackConnection(applicationDAO, isolationLevel);
+            }
         }
     }
 
@@ -285,10 +310,9 @@ public class ApplicationServiceImpl
 
     @Override
     public int receiveRowsNumber(User user) throws ServiceException {
-        ConnectionWrapper wrapper = ConnectionWrapper.getInstance();
         ApplicationDAO applicationDAO = null;
         try {
-            applicationDAO = DAOFactory.getInstance().getApplicationDAO(
+            applicationDAO = daoFactory.getApplicationDAO(
                     wrapper.getConnection());
             Role role = Role.getByIdentity(user.getRole().getIndex());
             switch (role) {
@@ -359,22 +383,19 @@ public class ApplicationServiceImpl
         }
     }
 
-    private void returnBackConnection(final ConnectionWrapper wrapper,
-                                      final ApplicationDAO applicationDAO,
+    private void returnBackConnection(final ApplicationDAO applicationDAO,
                                       final int isolationLevel) {
-        if (applicationDAO != null) {
-            try {
-                if (isolationLevel != 0) {
-                    wrapper.setTransactionIsolationLevel(
-                            applicationDAO.getConnection(),
-                            isolationLevel);
-                }
-                wrapper.setAutoCommit(applicationDAO.
-                        getConnection(), true);
-                wrapper.closeConnection(applicationDAO.getConnection());
-            } catch (DAOException e) {
-                logger.error(e.getMessage(), e);
+        try {
+            if (isolationLevel != 0) {
+                wrapper.setTransactionIsolationLevel(
+                        applicationDAO.getConnection(),
+                        isolationLevel);
             }
+            wrapper.setAutoCommit(applicationDAO.
+                    getConnection(), true);
+            wrapper.closeConnection(applicationDAO.getConnection());
+        } catch (DAOException e) {
+            logger.error(e.getMessage(), e);
         }
     }
 }
