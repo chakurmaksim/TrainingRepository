@@ -33,7 +33,7 @@
                 <fmt:message key="formForApps.stage" bundle="${rb}" var="stage"/>
                 <th><c:out value="${stage}"/></th>
                 <c:if test="${not empty role and role eq 'Expert'}">
-                    <fmt:message key="formForregistration.applicationRegister" bundle="${rb}" var="appReg"/>
+                    <fmt:message key="formForRegistration.applicationRegister" bundle="${rb}" var="appReg"/>
                     <th><c:out value="${appReg}"/></th>
                 </c:if>
             </tr>
@@ -66,10 +66,10 @@
                             </c:when>
                             <c:when test="${not empty role and role eq 'Expert'}">
                                 <c:if test="${number > 0}">
-                                    <input type="number" name="regNumber" value="${number}">
+                                    <input type="number" name="registration_number" value="${number}" placeholder="[0-9]{1,9}">
                                 </c:if>
                                 <c:if test="${number == 0}">
-                                    <input type="number" name="regNumber">
+                                    <input type="number" name="registration_number" placeholder="[0-9]{1,9}">
                                 </c:if>
                             </c:when>
                         </c:choose>
@@ -89,9 +89,14 @@
                                     <c:out value="${formattedDateResolve}"/>
                                 </c:if>
                                 <c:if test="${not empty role and role eq 'Expert'}">
-                                    <input type="text" value="${formattedDateResolve}" placeholder="dd/MM/yyyy">
+                                    <input type="text" name="date_resolve" value="${formattedDateResolve}" placeholder="dd/MM/yyyy">
                                 </c:if>
                             </c:when>
+                            <c:otherwise>
+                                <c:if test="${not empty role and role eq 'Expert'}">
+                                    <input type="text" name="date_resolve" placeholder="dd/MM/yyyy">
+                                </c:if>
+                            </c:otherwise>
                         </c:choose>
                     </td>
                     <td>
@@ -102,7 +107,7 @@
                         </c:if>
                         <c:if test="${not empty role and role eq 'Expert'}">
                             <c:catch var="e">
-                                <select name="appStatus">
+                                <select name="application_status_index">
                                     <option value="0" <c:if test="${entity.status.index == 0}">selected</c:if>>
                                         На регистрации
                                     </option>
@@ -122,8 +127,9 @@
                     <c:if test="${not empty role and role eq 'Expert'}">
                         <fmt:message key="formForRegistration.submit" bundle="${rb}" var="register" />
                         <td>
-                            <input type="hidden" name="applicationId" value="${entity.id}">
-                            <input type="submit" value="${register}">
+                            <input type="hidden" name="servletPath" value="${pageContext.request.servletPath}">
+                            <input type="hidden" name="application_id" value="${entity.id}">
+                            <input type="submit" value="${register}" onsubmit="putApplicationListToSession(this);return false;">
                         </td>
                     </c:if>
                 </tr>
@@ -132,6 +138,12 @@
         </table>
     </form>
 </div>
+<script>
+    function putApplicationListToSession(form) {
+        ${pageContext.session.setAttribute("applicationList", apps)}
+        form.submit();
+    }
+</script>
 <jsp:include page="pagination.jsp"/>
 <script src="js/bootstrap.min.js"></script>
 </body>

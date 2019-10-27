@@ -5,6 +5,7 @@ import by.training.certificationCenter.bean.User;
 import by.training.certificationCenter.service.exception.ServiceException;
 
 import java.io.FileInputStream;
+import java.time.LocalDate;
 import java.util.List;
 
 public interface ApplicationService<T extends Application, V extends User> {
@@ -18,4 +19,7 @@ public interface ApplicationService<T extends Application, V extends User> {
     FileInputStream receiveFileInputStream(String fullFileName)
             throws ServiceException;
     int receiveRowsNumber(V user) throws ServiceException;
+    boolean registerApplication(V user, int applicationId, int regNumber,
+                                LocalDate resolveDate, int statusIndex)
+            throws ServiceException;
 }

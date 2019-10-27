@@ -10,10 +10,16 @@ public final class ApplicationValidator {
     private ApplicationValidator() {
     }
 
-    public static boolean validateAddedDate(final LocalDate addedDate) {
+    public static boolean validateDateAdded(final LocalDate addedDate) {
         LocalDate today = LocalDate.now();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
         return today.format(formatter).equals(addedDate.format(formatter));
+    }
+
+    public static boolean validateDateResolved(final LocalDate addedDate,
+                                               final LocalDate resolveDate) {
+        return resolveDate.compareTo(addedDate) >= 0
+                && resolveDate.compareTo(addedDate) <= 15;
     }
 
     public static boolean validateProductCode(final long productCode) {
@@ -45,5 +51,9 @@ public final class ApplicationValidator {
                 return false;
         }
         return true;
+    }
+
+    public static boolean checkApplicationStatusIndex(final int index) {
+        return index >= 0 && index < 4;
     }
 }

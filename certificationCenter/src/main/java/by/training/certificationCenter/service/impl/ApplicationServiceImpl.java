@@ -4,6 +4,7 @@ import by.training.certificationCenter.bean.Application;
 import by.training.certificationCenter.bean.Document;
 import by.training.certificationCenter.bean.Product;
 import by.training.certificationCenter.bean.Role;
+import by.training.certificationCenter.bean.Status;
 import by.training.certificationCenter.bean.User;
 import by.training.certificationCenter.dao.exception.DAOException;
 import by.training.certificationCenter.dao.factory.DAOFactory;
@@ -27,6 +28,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.io.FileInputStream;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 
@@ -65,6 +67,16 @@ public class ApplicationServiceImpl
         daoFactory = DAOFactory.getInstance();
     }
 
+    /**
+     * Method allows to get a list of applications by user id depending of
+     * the user role.
+     *
+     * @param user      User instance with the role of client or expert
+     * @param skipPages number of pages you need to skip
+     * @param pageLimit number of applications you need to get
+     * @return list of applications
+     * @throws ServiceException when could not get the application list
+     */
     @Override
     public List<Application> receiveAppsByUser(
             final User user, final int skipPages, final int pageLimit)
@@ -103,6 +115,14 @@ public class ApplicationServiceImpl
         }
     }
 
+    /**
+     * Method is to get an application by id.
+     *
+     * @param applicationId application id
+     * @param user          User instance with the role of client or expert
+     * @return Application instance
+     * @throws ServiceException when could not get an application
+     */
     @Override
     public Application showApplicationById(
             final int applicationId, final User user) throws ServiceException {
@@ -140,11 +160,18 @@ public class ApplicationServiceImpl
         }
     }
 
+    /**
+     * Method is to save the new application with its contents
+     *
+     * @param application Application instance
+     * @return true if operation finished successfully
+     * @throws ServiceException if operation failed
+     */
     @Override
     public boolean addNewApplication(final Application application)
             throws ServiceException {
         boolean flag = false;
-        if (!ApplicationValidator.validateAddedDate(
+        if (!ApplicationValidator.validateDateAdded(
                 application.getDate_add())) {
             throw new ServiceException("message.application.date.validate");
         }
@@ -194,6 +221,14 @@ public class ApplicationServiceImpl
         return flag;
     }
 
+    /**
+     * Method is to delete the application by id with its contents.
+     *
+     * @param applicationId application id
+     * @param user          User instance with the role of client
+     * @return true if operation finished successfully
+     * @throws ServiceException if operation failed
+     */
     @Override
     public boolean deleteApplication(final int applicationId, final User user)
             throws ServiceException {
@@ -202,7 +237,7 @@ public class ApplicationServiceImpl
         try {
             application = showApplicationById(applicationId, user);
         } catch (ServiceException e) {
-            throw new ServiceException("message.application.deleted.mistake");
+            throw new ServiceException("message.application.id.existed");
         }
         ApplicationDAO applicationDAO = null;
         int isolationLevel = 0;
@@ -249,6 +284,13 @@ public class ApplicationServiceImpl
         return flag;
     }
 
+    /**
+     * Method is to update application fields.
+     *
+     * @param application updated Application instance
+     * @return true if operation finished successfully
+     * @throws ServiceException if operation failed
+     */
     @Override
     public boolean updateApplication(final Application application)
             throws ServiceException {
@@ -296,6 +338,14 @@ public class ApplicationServiceImpl
         }
     }
 
+    /**
+     * Method allows you to get a FileInputStream for downloading a file that
+     * relates to a specific application
+     *
+     * @param fullFileName file name with packages
+     * @return FileInputStream object
+     * @throws ServiceException FileInputStream object could not be got
+     */
     @Override
     public FileInputStream receiveFileInputStream(final String fullFileName)
             throws ServiceException {
@@ -308,6 +358,13 @@ public class ApplicationServiceImpl
         }
     }
 
+    /**
+     * Method is to get the total number of applications
+     *
+     * @param user User instance
+     * @return quantity of rows (number of applications)
+     * @throws ServiceException number of rows can not be got
+     */
     @Override
     public int receiveRowsNumber(User user) throws ServiceException {
         ApplicationDAO applicationDAO = null;
@@ -336,6 +393,58 @@ public class ApplicationServiceImpl
                 }
             }
         }
+    }
+
+    /**
+     * Method consists in updating the application fields, namely in assigning
+     * a registration number, date of completion and status of work.
+     *
+     * @param user User instance with the role of expert
+     * @param applicationId application id
+     * @param regNumber registration number of an application
+     * @param resolveDate date of completion
+     * @param statusIndex status index of work
+     * @return true if operation finished successfully
+     * @throws ServiceException if operation failed
+     */
+    @Override
+    public boolean registerApplication(
+            final User user, int applicationId, int regNumber,
+            LocalDate resolveDate, int statusIndex) throws ServiceException {
+        Application application;
+        if (!ApplicationValidator.checkApplicationStatusIndex(statusIndex)) {
+            throw new ServiceException("message.application.status.index.error");
+        }
+        try {
+            application = showApplicationById(applicationId, user);
+        } catch (ServiceException e) {
+            throw new ServiceException("message.application.id.existed");
+        }
+        if (!ApplicationValidator.validateDateResolved(
+                application.getDate_add(), resolveDate)) {
+            throw new ServiceException("message.application.resolveDate.validate");
+        }
+        application.setReg_num(regNumber);
+        application.setDate_resolve(resolveDate);
+        application.setStatus(Status.getByIdentity(statusIndex));
+        ApplicationDAO applicationDAO = null;
+        try {
+            applicationDAO = daoFactory.getApplicationDAO(
+                    wrapper.getConnection());
+            applicationDAO.update(application);
+        } catch (DAOException e) {
+            logger.error(e.getMessage(), e);
+            throw new ServiceException("message.application.register.mistake");
+        } finally {
+            if (applicationDAO != null) {
+                try {
+                    wrapper.closeConnection(applicationDAO.getConnection());
+                } catch (DAOException e) {
+                    logger.error(e.getMessage(), e);
+                }
+            }
+        }
+        return true;
     }
 
     private void appointAppExecutor(

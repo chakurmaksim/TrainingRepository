@@ -47,7 +47,8 @@ public class ApplicationDAO extends CertificationMySqlDAO<Application>
      * The variable contains a database query to update an application by id.
      */
     private static final String UPDATE_APP = "UPDATE application SET "
-            + "requirements = ? WHERE id = ?";
+            + "registration_number = ?, requirements = ?, date_resolve = ?, "
+            + "application_status = ? WHERE id = ?";
     /**
      * The variable contains a database query to get the number
      * of all applications.
@@ -187,8 +188,17 @@ public class ApplicationDAO extends CertificationMySqlDAO<Application>
         Connection connection = getConnection();
         try (PreparedStatement statement = connection.
                 prepareStatement(UPDATE_APP)) {
-            statement.setString(1, entity.getRequirements());
-            statement.setInt(2, entity.getId());
+            int count = 0;
+            statement.setInt(++count, entity.getReg_num());
+            statement.setString(++count, entity.getRequirements());
+            if (entity.getDate_resolve() != null) {
+                statement.setDate(++count, Date.valueOf(
+                        entity.getDate_resolve()));
+            } else {
+                statement.setDate(++count,null);
+            }
+            statement.setInt(++count, entity.getStatus().getIndex());
+            statement.setInt(++count, entity.getId());
             statement.executeUpdate();
             return true;
         } catch (SQLException e) {
