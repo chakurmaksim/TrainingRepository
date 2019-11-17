@@ -16,6 +16,10 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class UriFilter implements Filter {
+    /**
+     * Depending on the Url pattern the Map contains the specific objects
+     * of the Command.
+     */
     private static Map<String, Command> commands = new ConcurrentHashMap<>();
     private static final String ATTR_NAME_COMMAND = "command";
     private static final String ATTR_NAME_URL_PATTERN = "urlPattern";
@@ -38,6 +42,18 @@ public class UriFilter implements Filter {
         commands.put("/showApplication", new ShowApplicationCommand());
     }
 
+    /**
+     * The filter parses the request by extracting a specific URL pattern
+     * from it to determine which command to execute. If a command is found,
+     * the filter passes execution to the next filter; otherwise,
+     * information is sent to the client that the page does not exist.
+     *
+     * @param request ServletRequest object
+     * @param response ServletResponse object
+     * @param chain FilterChain
+     * @throws IOException
+     * @throws ServletException
+     */
     @Override
     public void doFilter(
             ServletRequest request, ServletResponse response, FilterChain chain)

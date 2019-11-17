@@ -77,6 +77,12 @@ public class RegisterApplicationCommand extends Command {
             request.setAttribute("apps", applicationList);
             return;
         }
+        if (regNumber < 0) {
+            request.setAttribute(ATTRIBUTE_NAME_ERROR, bundle.getString(
+                    "message.application.registration.numberFormat"));
+            request.setAttribute("apps", applicationList);
+            return;
+        }
         String[] resolveDateParamArray = resolveDateParam.split("/");
         if (resolveDateParamArray.length != 3) {
             request.setAttribute(ATTRIBUTE_NAME_ERROR, bundle.getString(

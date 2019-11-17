@@ -10,6 +10,7 @@ public class UserRoleRequestWrapper extends HttpServletRequestWrapper {
     private String userLogin;
     private Role userRole;
     private HttpServletRequest realRequest;
+
     /**
      * Constructs a request object wrapping the given request.
      *
@@ -24,14 +25,26 @@ public class UserRoleRequestWrapper extends HttpServletRequestWrapper {
         this.userRole = role;
     }
 
+    /**
+     * Method compares the current user role with the role which is required
+     * to get the access to the certain page.
+     *
+     * @param roleName role name
+     * @return true if both of the names are equals.
+     */
     @Override
     public boolean isUserInRole(String roleName) {
-        if (userRole == null) {
-            return this.realRequest.isUserInRole(roleName);
+        if (userRole != null) {
+            return userRole.getRoleName().equals(roleName);
         }
-        return userRole.getRoleName().equals(roleName);
+        return false;
     }
 
+    /**
+     * Method is to get user login.
+     *
+     * @return login
+     */
     @Override
     public Principal getUserPrincipal() {
         if (this.userLogin == null) {

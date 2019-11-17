@@ -58,8 +58,8 @@ public class ShowApplicationCommand extends Command {
             request.setAttribute(ATTRIBUTE_ERROR_MESSAGE,
                     bundle.getString(e.getMessage()));
             getLogger().error(String.format("User login \"%s\" unsuccessfully "
-                    + "tried to get application id \"%d\""),
-                    user.getLogin(), applicationId);
+                    + "tried to get application id \"%d\"",
+                    user.getLogin(), applicationId));
         }
     }
 }

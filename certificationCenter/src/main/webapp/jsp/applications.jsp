@@ -19,27 +19,27 @@
     <p style="color:red">${errorMessage}</p>
     <fmt:message key="formForApps.applications" bundle="${rb}" var="appsFiled"/>
     <h3>${fn:toUpperCase(appsFiled)}</h3>
-    <form action="registerApplication.html" method="post">
-        <table class="table table-bordered">
-            <thead>
-            <tr>
-                <th><c:out value="№"/></th>
-                <fmt:message key="formForApps.date.added" bundle="${rb}" var="appDate"/>
-                <th><c:out value="${appDate}"/></th>
-                <fmt:message key="formForApps.regNumber" bundle="${rb}" var="regNumber"/>
-                <th><c:out value="${regNumber}"/></th>
-                <fmt:message key="formForApps.date.finished" bundle="${rb}" var="completionDate"/>
-                <th><c:out value="${completionDate}"/></th>
-                <fmt:message key="formForApps.stage" bundle="${rb}" var="stage"/>
-                <th><c:out value="${stage}"/></th>
-                <c:if test="${not empty role and role eq 'Expert'}">
-                    <fmt:message key="formForRegistration.applicationRegister" bundle="${rb}" var="appReg"/>
-                    <th><c:out value="${appReg}"/></th>
-                </c:if>
-            </tr>
-            </thead>
-            <tbody
-            <c:forEach var="entity" items="${apps}" varStatus="status">
+    <table class="table table-bordered">
+        <thead>
+        <tr>
+            <th><c:out value="№"/></th>
+            <fmt:message key="formForApps.date.added" bundle="${rb}" var="appDate"/>
+            <th><c:out value="${appDate}"/></th>
+            <fmt:message key="formForApps.regNumber" bundle="${rb}" var="regNumber"/>
+            <th><c:out value="${regNumber}"/></th>
+            <fmt:message key="formForApps.date.finished" bundle="${rb}" var="completionDate"/>
+            <th><c:out value="${completionDate}"/></th>
+            <fmt:message key="formForApps.stage" bundle="${rb}" var="stage"/>
+            <th><c:out value="${stage}"/></th>
+            <c:if test="${not empty role and role eq 'Expert'}">
+                <fmt:message key="formForRegistration.applicationRegister" bundle="${rb}" var="appReg"/>
+                <th><c:out value="${appReg}"/></th>
+            </c:if>
+        </tr>
+        </thead>
+        <tbody
+        <c:forEach var="entity" items="${apps}" varStatus="status">
+            <form action="registerApplication.html" method="post">
                 <c:set var="datePattern" value="dd/MM/yyyy"/>
                 <tr>
                     <td>
@@ -128,15 +128,15 @@
                         <fmt:message key="formForRegistration.submit" bundle="${rb}" var="register" />
                         <td>
                             <input type="hidden" name="servletPath" value="${pageContext.request.servletPath}">
-                            <input type="hidden" name="application_id" value="${entity.id}">
+                            <input type="hidden" name="application_id" value="<c:out value='${entity.id}'/>">
                             <input type="submit" value="${register}" onsubmit="putApplicationListToSession(this);return false;">
                         </td>
                     </c:if>
                 </tr>
-            </c:forEach>
-            </tbody>
-        </table>
-    </form>
+            </form>
+        </c:forEach>
+        </tbody>
+    </table>
 </div>
 <script>
     function putApplicationListToSession(form) {

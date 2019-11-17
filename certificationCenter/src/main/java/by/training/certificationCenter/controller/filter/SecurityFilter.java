@@ -21,13 +21,30 @@ import java.util.Set;
 public class SecurityFilter implements Filter {
     private static final String ATTRIBUTE_NAME_USER = "authorizedUser";
     private static final String ATTRIBUTE_NAME_URL_PATTERN = "urlPattern";
+    /**
+     * The Set contains URL-patterns for the execution of commands which
+     * do not require user authorization.
+     */
     private static Set<String> freeUrlPatterns = new HashSet<>();
+
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
         freeUrlPatterns.add("/login");
         freeUrlPatterns.add("/registration");
     }
 
+    /**
+     * The filter determines whether user authorization is required to access
+     * a specific resource. If authorization is not required, passes the
+     * execution to the next filter, otherwise it determines whether this
+     * user has access right.
+     *
+     * @param request ServletRequest
+     * @param response ServletResponse
+     * @param chain FilterChain
+     * @throws IOException
+     * @throws ServletException
+     */
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
             throws IOException, ServletException {
